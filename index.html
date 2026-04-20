@@ -12,7 +12,6 @@
         :root { --gold: #FFB938; --glass: rgba(15, 15, 20, 0.7); }
         body { font-family: 'Inter', sans-serif; background: #000; color: #F3F3F3; overflow-x: hidden; }
         
-        /* Background Particle Effect */
         #hero-canvas { position: fixed; inset: 0; width: 100%; height: 100%; z-index: -1; opacity: 0.35; pointer-events: none; }
 
         .text-gold { color: var(--gold); }
@@ -46,12 +45,8 @@
         .feed-img { aspect-ratio: 4/5; object-fit: cover; width: 100%; transition: transform 0.6s ease; }
         .glass-card:hover .feed-img { transform: scale(1.1); }
 
-        /* ===== FIXS RESPONSIVOS ===== */
-
-        /* Evita overflow global */
         * { max-width: 100%; }
 
-        /* Hero controlado sin romper Tailwind */
         header h1 {
             font-weight: 900;
             line-height: 0.85;
@@ -59,7 +54,6 @@
             font-size: clamp(2.2rem, 7vw, 6.5rem);
         }
 
-        /* Mobile crítico */
         @media (max-width: 480px) {
             header h1 {
                 font-size: clamp(1.8rem, 8vw, 2.6rem) !important;
@@ -70,7 +64,6 @@
             }
         }
 
-        /* Ajustes generales */
         main { padding-top: 6.5rem; }
 
         @media (max-width: 767px) {
@@ -86,10 +79,8 @@
         @media (min-width: 1024px) {
             main { padding-left: 2.5rem; padding-right: 2.5rem; }
         }
-
     </style>
 </head>
-
 <body class="antialiased">
 
     <canvas id="hero-canvas"></canvas>
@@ -111,27 +102,29 @@
         </div>
     </nav>
 
-    <main class="max-w-7xl mx-auto px-6 py-32">
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 py-20 sm:py-32">
 
-        <header class="text-center mb-40" data-aos="zoom-out">
-            <h1 class="text-7xl md:text-[10rem] font-black leading-[0.8] tracking-tighter mb-12">
+        <header class="text-center mb-20 sm:mb-40" data-aos="zoom-out">
+            <h1 class="text-5xl sm:text-7xl md:text-[10rem] font-black leading-[0.8] tracking-tighter mb-8 sm:mb-12">
                 HUMANIZED <br> <span class="text-gold italic">FINANCES</span>
             </h1>
 
-          <div class="max-w-3xl mx-auto space-y-8">
-    <p class="text-xl md:text-3xl font-light text-gray-400 italic">
-        "We all have value thanks to the time at our disposal"
-    </p>
-    <div class="flex flex-col items-center mt-12">   <!-- ← AGREGAR mt-12 -->
-        <span class="w-12 h-[1px] bg-gold mb-4"></span>
-        <span class="text-[11px] font-bold uppercase tracking-[0.4em] text-gold">Maurice Vanegas, CEO Hu-Fi Movement</span>
-    </div>
-</div>
+            <div class="max-w-3xl mx-auto px-4 sm:px-0">
+                <div class="space-y-6 sm:space-y-8">
+                    <p class="text-lg sm:text-xl md:text-3xl font-light text-gray-400 italic">
+                        "We all have value thanks to the time at our disposal"
+                    </p>
+                    <div class="flex flex-col items-center mt-8 sm:mt-12">
+                        <span class="w-12 h-[1px] bg-gold mb-4"></span>
+                        <span class="text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.2em] sm:tracking-[0.4em] text-gold text-center">
+                            Maurice Vanegas, <br class="block sm:hidden"> CEO Hu-Fi Movement
+                        </span>
+                    </div>
+                </div>
             </div>
         </header>
 
-       <div class="flex flex-col lg:flex-row gap-16">
-            
+        <div class="flex flex-col lg:flex-row gap-16">
             <div class="w-full lg:w-2/3">
                 <div class="flex justify-between items-end mb-12 border-b border-white/10 pb-6">
                     <h2 class="text-xs font-black uppercase tracking-[0.5em] text-gray-500">Weekly Impact Feed</h2>
@@ -222,14 +215,17 @@
         </div>
     </main>
 
-    <section class="max-w-7xl mx-auto px-6 mb-40" data-aos="fade-up">
-        <div class="glass-card p-12 md:p-20 flex flex-col items-center text-center gap-10 border-t border-gold/20">
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 mb-40" data-aos="fade-up">
+        <div class="glass-card p-8 md:p-20 flex flex-col items-center text-center gap-10 border-t border-gold/20">
             <div class="space-y-4">
-                <h2 class="text-4xl md:text-6xl font-black uppercase tracking-tighter">Gateway to the <span class="text-gold">Protocol</span></h2>
-                <p class="text-gray-500 font-bold uppercase tracking-[0.5em] text-[10px]">Access official documentation & web3 tools</p>
+                <h2 class="text-3xl sm:text-4xl md:text-6xl font-black uppercase tracking-tighter">Gateway to the <span class="text-gold">Protocol</span></h2>
+                <p class="text-gray-500 font-bold uppercase tracking-[0.3em] sm:tracking-[0.5em] text-[10px]">Access official documentation & web3 tools</p>
             </div>
-            <a href="https://hu-fi.io/" target="_blank" class="cta-glow bg-gold text-black px-12 py-5 rounded-full text-xs font-black uppercase tracking-[0.3em] hover:bg-white hover:text-black transition-all">
-                Enter Hu-Fi.io
+            <a href="https://hu-fi.io/" target="_blank" 
+               class="cta-glow bg-gold text-black px-6 sm:px-12 py-5 rounded-full text-xs font-black uppercase tracking-[0.2em] sm:tracking-[0.3em] hover:bg-white hover:text-black transition-all flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 text-center">
+                <span>Enter</span>
+                <span class="hidden sm:inline">Hu-Fi.io</span>
+                <span class="sm:hidden">Hu-Fi.io</span>
             </a>
         </div>
     </section>
@@ -247,7 +243,6 @@
     <script>
         AOS.init({ duration: 1200, once: true });
 
-        // Simple Particle Engine for Background
         const canvas = document.getElementById('hero-canvas');
         const ctx = canvas.getContext('2d');
         let particles = [];
@@ -294,13 +289,5 @@
         init();
         animate();
     </script>
-
-    </main>
-
-<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-<script>
-AOS.init({ duration: 1200, once: true });
-</script>
-
 </body>
 </html>
