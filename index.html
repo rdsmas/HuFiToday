@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>HuFi Today | 2026 Ecosystem</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root { --gold: #FFB938; --glass: rgba(15, 15, 20, 0.7); }
+        body { font-family: 'Inter', sans-serif; background: #000; color: #F3F3F3; overflow-x: hidden; }
+        
+        /* Background Particle Effect */
+        #hero-canvas { position: fixed; inset: 0; width: 100%; height: 100%; z-index: -1; opacity: 0.35; pointer-events: none; }
+
+        .text-gold { color: var(--gold); }
+        .bg-gold { background-color: var(--gold); }
+        
+        .glass-card {
+            background: var(--glass);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 1.5rem;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .glass-card:hover { 
+            transform: translateY(-8px) scale(1.01); 
+            border-color: var(--gold);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        }
+
+        .cta-glow {
+            position: relative;
+            animation: ripple 2.5s infinite;
+            box-shadow: 0 0 0 0 rgba(255, 185, 56, 0.4);
+        }
+        @keyframes ripple {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 185, 56, 0.4); }
+            70% { transform: scale(1.05); box-shadow: 0 0 0 20px rgba(255, 185, 56, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 185, 56, 0); }
+        }
+
+        .feed-img { aspect-ratio: 4/5; object-fit: cover; width: 100%; transition: transform 0.6s ease; }
+        .glass-card:hover .feed-img { transform: scale(1.1); }
+
+        /* ===== FIXS RESPONSIVOS ===== */
+
+        /* Evita overflow global */
+        * { max-width: 100%; }
+
+        /* Hero controlado sin romper Tailwind */
+        header h1 {
+            font-weight: 900;
+            line-height: 0.85;
+            letter-spacing: -0.02em;
+            font-size: clamp(2.2rem, 7vw, 6.5rem);
+        }
+
+        /* Mobile crítico */
+        @media (max-width: 480px) {
+            header h1 {
+                font-size: clamp(1.8rem, 8vw, 2.6rem) !important;
+                line-height: 0.95;
+                letter-spacing: -0.01em;
+                word-break: break-word;
+                overflow-wrap: break-word;
+            }
+        }
+
+        /* Ajustes generales */
+        main { padding-top: 6.5rem; }
+
+        @media (max-width: 767px) {
+            main { padding-left: 1rem; padding-right: 1rem; }
+            aside.lg\:sticky { position: static; }
+            nav a.hidden.md\:flex { display: none !important; }
+        }
+
+        @media (min-width: 768px) {
+            main { padding-left: 1.5rem; padding-right: 1.5rem; }
+        }
+
+        @media (min-width: 1024px) {
+            main { padding-left: 2.5rem; padding-right: 2.5rem; }
+        }
+
+    </style>
+</head>
+
+<body class="antialiased">
+
+    <canvas id="hero-canvas"></canvas>
+
+    <nav class="fixed top-0 w-full z-50 border-b border-white/5 bg-black/50 backdrop-blur-xl px-6 py-4 flex justify-between items-center">
+        <div class="flex items-center gap-3 group cursor-pointer">
+            <div class="relative">
+                <img src="https://i.postimg.cc/tn5JFZLK/photo-5116418188827626511-y.jpg" class="w-10 h-10 rounded-full border border-gold/50 group-hover:rotate-12 transition-transform">
+                <div class="absolute inset-0 rounded-full bg-gold/20 animate-ping"></div>
+            </div>
+            <span class="font-black text-xl tracking-tighter uppercase">HUFI<span class="text-gold">TODAY</span></span>
+        </div>
+
+        <div class="flex gap-4">
+            <a href="https://www.instagram.com/hufitoday?igsh=MXNqdnk0bzFqeW5kaA==" target="_blank" class="hidden md:flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest hover:text-gold transition">
+                Instagram
+            </a>
+            <a href="https://t.me/Hu_Fi_Nigeria" class="bg-white text-black px-5 py-2 rounded-full text-[10px] font-black uppercase hover:bg-gold transition-colors shadow-lg">Community</a>
+        </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto px-6 py-32">
+
+        <header class="text-center mb-40" data-aos="zoom-out">
+            <h1 class="text-7xl md:text-[10rem] font-black leading-[0.8] tracking-tighter mb-12">
+                HUMANIZED <br> <span class="text-gold italic">FINANCES</span>
+            </h1>
+
+            <div class="max-w-3xl mx-auto space-y-8">
+                <p class="text-xl md:text-3xl font-light text-gray-400 italic">
+                    "We all have value thanks to the time at our disposal"
+                </p>
+                <div class="flex flex-col items-center">
+                    <span class="w-12 h-[1px] bg-gold mb-4"></span>
+                    <span class="text-[11px] font-bold uppercase tracking-[0.4em] text-gold">Maurice Vanegas, CEO Hu-Fi Movement</span>
+                </div>
+            </div>
+        </header>
+
+       <div class="flex flex-col lg:flex-row gap-16">
+            
+            <div class="w-full lg:w-2/3">
+                <div class="flex justify-between items-end mb-12 border-b border-white/10 pb-6">
+                    <h2 class="text-xs font-black uppercase tracking-[0.5em] text-gray-500">Weekly Impact Feed</h2>
+                    <span class="text-[10px] font-mono text-gold animate-pulse">● LIVE UPDATES</span>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <article class="glass-card group" data-aos="fade-up">
+                        <div class="overflow-hidden rounded-t-[1.5rem]">
+                            <img src="https://i.postimg.cc/HL5zNY9q/004-tools-2.jpg" class="feed-img" alt="Tools">
+                        </div>
+                        <div class="p-8">
+                            <div class="flex items-center gap-3 mb-4">
+                                <div class="w-8 h-8 rounded-full bg-gold/10 border border-gold/20 flex items-center justify-center text-xs font-bold text-gold">M</div>
+                                <span class="text-xs font-black uppercase tracking-widest text-white/80">@Manassehpl</span>
+                            </div>
+                            <p class="text-gray-400 leading-relaxed text-sm">Empowering the community through tools. Successfully implemented a Groundnut oil extractor via Autopay credit system.</p>
+                        </div>
+                    </article>
+
+                    <article class="glass-card group" data-aos="fade-up" data-aos-delay="100">
+                        <div class="overflow-hidden rounded-t-[1.5rem]">
+                            <img src="https://i.postimg.cc/GpYKfLxf/002-healthcare-hufi.jpg" class="feed-img" alt="Health">
+                        </div>
+                        <div class="p-8">
+                            <div class="flex items-center gap-3 mb-4">
+                                <div class="w-8 h-8 rounded-full bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-xs font-bold text-blue-400">S</div>
+                                <span class="text-xs font-black uppercase tracking-widest text-white/80">@mamansolomon</span>
+                            </div>
+                            <p class="text-gray-400 leading-relaxed text-sm">Blockchain-backed healthcare. A medical check-up successfully processed on credit for a family member.</p>
+                        </div>
+                    </article>
+
+                    <article class="glass-card group" data-aos="fade-up">
+                        <div class="overflow-hidden rounded-t-[1.5rem]">
+                            <img src="https://i.postimg.cc/MTS52Csw/011-desayuno-1.jpg" alt="Supplies" class="feed-img">
+                        </div>
+                        <div class="p-8">
+                            <div class="flex items-center gap-3 mb-4">
+                                <div class="w-8 h-8 rounded-full bg-gold/10 border border-gold/20 flex items-center justify-center text-xs font-bold text-gold">M</div>
+                                <span class="text-xs font-black uppercase tracking-widest text-white/80">@Murna1234</span>
+                            </div>
+                            <p class="text-gray-400 leading-relaxed text-sm">Essential supplies made accessible. Purchased local provisions using the Hu-Fi Autopay protocol.</p>
+                        </div>
+                    </article>
+
+                    <article class="glass-card group" data-aos="fade-up" data-aos-delay="100">
+                        <div class="overflow-hidden rounded-t-[1.5rem]">
+                            <img src="https://i.postimg.cc/7L79RHNr/006-machine-lady.jpg" alt="Impact" class="feed-img">
+                        </div>
+                        <div class="p-8">
+                            <div class="flex items-center gap-3 mb-4">
+                                <div class="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-xs font-bold text-white">B</div>
+                                <span class="text-xs font-black uppercase tracking-widest text-white/80">@boka0123</span>
+                            </div>
+                            <p class="text-gray-400 leading-relaxed text-sm">Closing the technological gap. Real-world machine operations powered by Web3 financial inclusion.</p>
+                        </div>
+                    </article>
+                </div>
+            </div>
+
+            <aside class="w-full lg:w-1/3 space-y-10 lg:sticky lg:top-32">
+                <div class="glass-card p-10 bg-gradient-to-br from-white/5 to-transparent" data-aos="fade-left">
+                    <h3 class="text-xs font-black uppercase tracking-widest mb-6">Network Health</h3>
+                    <div class="space-y-6">
+                        <div>
+                            <span class="text-[10px] text-gray-500 font-bold uppercase tracking-widest">Active Nodes</span>
+                            <div class="text-3xl font-black">430 <span class="text-gold text-sm uppercase">ETO</span></div>
+                        </div>
+                        <div>
+                            <span class="text-[10px] text-gray-500 font-bold uppercase tracking-widest">Auto Pay Merchants</span>
+                            <div class="text-3xl font-black">331 <span class="text-white/40 text-sm">Verified</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-card p-4 overflow-hidden group" data-aos="fade-left" data-aos-delay="100">
+                    <a href="https://www.youtube.com/watch?v=x_gg5ChR0i4" target="_blank" class="block relative rounded-xl overflow-hidden">
+                        <img src="https://i.ytimg.com/vi/x_gg5ChR0i4/maxresdefault.jpg" class="w-full grayscale group-hover:grayscale-0 transition-all duration-700">
+                        <div class="absolute inset-0 flex items-center justify-center bg-black/40">
+                            <div class="w-14 h-14 bg-gold rounded-full flex items-center justify-center shadow-2xl group-hover:scale-110 transition">
+                                <svg class="w-6 h-6 text-black" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </aside>
+        </div>
+    </main>
+
+    <section class="max-w-7xl mx-auto px-6 mb-40" data-aos="fade-up">
+        <div class="glass-card p-12 md:p-20 flex flex-col items-center text-center gap-10 border-t border-gold/20">
+            <div class="space-y-4">
+                <h2 class="text-4xl md:text-6xl font-black uppercase tracking-tighter">Gateway to the <span class="text-gold">Protocol</span></h2>
+                <p class="text-gray-500 font-bold uppercase tracking-[0.5em] text-[10px]">Access official documentation & web3 tools</p>
+            </div>
+            <a href="https://hu-fi.io/" target="_blank" class="cta-glow bg-gold text-black px-12 py-5 rounded-full text-xs font-black uppercase tracking-[0.3em] hover:bg-white hover:text-black transition-all">
+                Enter Hu-Fi.io
+            </a>
+        </div>
+    </section>
+
+    <footer class="py-20 text-center border-t border-white/5">
+        <div class="flex justify-center gap-8 mb-8 opacity-40">
+            <span class="text-[9px] font-bold uppercase tracking-widest">Transparency</span>
+            <span class="text-[9px] font-bold uppercase tracking-widest">Security</span>
+            <span class="text-[9px] font-bold uppercase tracking-widest">Humanity</span>
+        </div>
+        <p class="text-[9px] font-bold tracking-[0.8em] uppercase opacity-20">HuFi Today • MMXXVI</p>
+    </footer>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({ duration: 1200, once: true });
+
+        // Simple Particle Engine for Background
+        const canvas = document.getElementById('hero-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2;
+                this.speedX = Math.random() * 0.5 - 0.25;
+                this.speedY = Math.random() * 0.5 - 0.25;
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                if (this.x > canvas.width) this.x = 0;
+                if (this.x < 0) this.x = canvas.width;
+                if (this.y > canvas.height) this.y = 0;
+                if (this.y < 0) this.y = canvas.height;
+            }
+            draw() {
+                ctx.fillStyle = '#FFB938';
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function init() {
+            for (let i = 0; i < 100; i++) particles.push(new Particle());
+        }
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => { p.update(); p.draw(); });
+            requestAnimationFrame(animate);
+        }
+        init();
+        animate();
+    </script>
+
+    </main>
+
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+AOS.init({ duration: 1200, once: true });
+</script>
+
+</body>
+</html>
