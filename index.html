@@ -1,297 +1,513 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>HuFi Today | 2026 Ecosystem</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;900&display=swap" rel="stylesheet">
-    
-    <style>
-        :root { --gold: #FFB938; --glass: rgba(15, 15, 20, 0.7); }
-        body { font-family: 'Inter', sans-serif; background: #000; color: #F3F3F3; overflow-x: hidden; }
-        
-        #hero-canvas { position: fixed; inset: 0; width: 100%; height: 100%; z-index: -1; opacity: 0.35; pointer-events: none; }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>HuFi Club 2026 | Humanized Finance Ecosystem</title>
+  <!-- Preconnect & Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,100;14..32,300;14..32,400;14..32,600;14..32,800;14..32,900&display=swap" rel="stylesheet">
+  <!-- Tailwind + AOS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <style>
+    :root {
+      --gold: #FFB938;
+      --gold-glow: rgba(255, 185, 56, 0.35);
+      --black-deep: #050505;
+      --glass-bg: rgba(8, 8, 12, 0.65);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--black-deep);
+      color: #F5F5F5;
+      overflow-x: hidden;
+      scroll-behavior: smooth;
+    }
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: #0a0a0a; }
+    ::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 10px; }
 
-        .text-gold { color: var(--gold); }
-        .bg-gold { background-color: var(--gold); }
-        
-        .glass-card {
-            background: var(--glass);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 1.5rem;
-            overflow: hidden;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-        .glass-card:hover { 
-            transform: translateY(-8px) scale(1.01); 
-            border-color: var(--gold);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
-        }
-
-        .cta-glow {
-            position: relative;
-            animation: ripple 2.5s infinite;
-            box-shadow: 0 0 0 0 rgba(255, 185, 56, 0.4);
-        }
-        @keyframes ripple {
-            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 185, 56, 0.4); }
-            70% { transform: scale(1.05); box-shadow: 0 0 0 20px rgba(255, 185, 56, 0); }
-            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 185, 56, 0); }
-        }
-
-        .feed-img { aspect-ratio: 4/5; object-fit: cover; width: 100%; transition: transform 0.6s ease; }
-        .glass-card:hover .feed-img { transform: scale(1.1); }
-
-        * { max-width: 100%; }
-
-        header h1 {
-            font-weight: 900;
-            line-height: 0.85;
-            letter-spacing: -0.02em;
-            font-size: clamp(2.2rem, 7vw, 6.5rem);
-        }
-
-        @media (max-width: 480px) {
-            header h1 {
-                font-size: clamp(1.8rem, 8vw, 2.6rem) !important;
-                line-height: 0.95;
-                letter-spacing: -0.01em;
-                word-break: break-word;
-                overflow-wrap: break-word;
-            }
-        }
-
-        main { padding-top: 6.5rem; }
-
-        @media (max-width: 767px) {
-            main { padding-left: 1rem; padding-right: 1rem; }
-            aside.lg\:sticky { position: static; }
-            nav a.hidden.md\:flex { display: none !important; }
-        }
-
-        @media (min-width: 768px) {
-            main { padding-left: 1.5rem; padding-right: 1.5rem; }
-        }
-
-        @media (min-width: 1024px) {
-            main { padding-left: 2.5rem; padding-right: 2.5rem; }
-        }
-    </style>
+    /* Tipografía de impacto */
+    .text-club {
+      font-size: clamp(3.2rem, 12vw, 8rem);
+      line-height: 0.85;
+      font-weight: 900;
+      letter-spacing: -0.04em;
+      text-transform: uppercase;
+    }
+    /* Glassmorphism premium */
+    .glass-premium {
+      background: var(--glass-bg);
+      backdrop-filter: blur(14px);
+      border: 1px solid rgba(255, 185, 56, 0.2);
+      border-radius: 2rem;
+      transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+    }
+    .glass-premium:hover {
+      border-color: rgba(255, 185, 56, 0.6);
+      background: rgba(12, 12, 18, 0.8);
+    }
+    .glass-card-light {
+      background: rgba(255, 255, 255, 0.02);
+      backdrop-filter: blur(10px);
+      border-radius: 1.5rem;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    /* Botones */
+    .btn-gold {
+      background: var(--gold);
+      color: #000;
+      padding: 0.9rem 2.2rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-size: 0.7rem;
+      border-radius: 3rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .btn-gold:hover { transform: scale(1.03); box-shadow: 0 0 20px var(--gold-glow); }
+    .btn-outline {
+      border: 2px solid var(--gold);
+      background: transparent;
+      color: var(--gold);
+      padding: 0.9rem 2.2rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-size: 0.7rem;
+      border-radius: 3rem;
+      transition: 0.2s;
+    }
+    .btn-outline:hover { background: var(--gold); color: #000; transform: scale(1.02); }
+    /* Imágenes galería */
+    .portrait-2026 {
+      width: 100%;
+      aspect-ratio: 4 / 5;
+      object-fit: cover;
+      border-radius: 1.2rem;
+      filter: grayscale(0.9) contrast(1.1);
+      transition: all 0.5s ease;
+      border: 1px solid rgba(255,255,255,0.05);
+    }
+    .portrait-2026:hover {
+      filter: grayscale(0) contrast(1);
+      transform: translateY(-8px) scale(1.01);
+      border-color: var(--gold);
+    }
+    /* Like button + gamificación */
+    .like-btn {
+      cursor: pointer;
+      transition: 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .like-btn.liked svg { fill: #ff3b6f; stroke: #ff3b6f; }
+    /* Marquee */
+    .marquee-track {
+      overflow: hidden;
+      white-space: nowrap;
+      mask-image: linear-gradient(90deg, transparent, black 10%, black 90%, transparent);
+    }
+    .marquee-items {
+      display: inline-block;
+      animation: scrollMarquee 28s linear infinite;
+    }
+    @keyframes scrollMarquee {
+      0% { transform: translateX(0%); }
+      100% { transform: translateX(-50%); }
+    }
+    /* Modal */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.95);
+      backdrop-filter: blur(16px);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-container {
+      max-width: 480px;
+      width: 90%;
+      background: #0c0c10;
+      border: 2px solid var(--gold);
+      border-radius: 2rem;
+      padding: 2rem;
+    }
+    /* Scroll top */
+    .scroll-top {
+      position: fixed;
+      bottom: 1.8rem;
+      right: 1.8rem;
+      background: var(--gold);
+      color: black;
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      opacity: 0;
+      transition: 0.2s;
+      z-index: 99;
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+    @media (max-width: 768px) {
+      .glass-premium { padding: 1rem; }
+      .btn-gold, .btn-outline { padding: 0.6rem 1.2rem; font-size: 0.6rem; }
+    }
+  </style>
 </head>
-<body class="antialiased">
+<body>
 
-    <canvas id="hero-canvas"></canvas>
-
-    <nav class="fixed top-0 w-full z-50 border-b border-white/5 bg-black/50 backdrop-blur-xl px-6 py-4 flex justify-between items-center">
-        <div class="flex items-center gap-3 group cursor-pointer">
-            <div class="relative">
-                <img src="https://i.postimg.cc/tn5JFZLK/photo-5116418188827626511-y.jpg" class="w-10 h-10 rounded-full border border-gold/50 group-hover:rotate-12 transition-transform">
-                <div class="absolute inset-0 rounded-full bg-gold/20 animate-ping"></div>
-            </div>
-            <span class="font-black text-xl tracking-tighter uppercase">HUFI<span class="text-gold">TODAY</span></span>
-        </div>
-
-     <div class="flex gap-2 sm:gap-4">
-    <a href="https://www.instagram.com/hufitoday?igsh=MXNqdnk0bzFqeW5kaA==" target="_blank" 
-       class="flex items-center gap-1 text-[9px] sm:text-[10px] font-bold uppercase tracking-widest hover:text-gold transition bg-white/10 rounded-full px-3 py-1.5 sm:px-4 sm:py-2">
-        Instagram
-    </a>
-    <a href="https://t.me/Hu_Fi_Nigeria" 
-       class="bg-white text-black px-3 sm:px-5 py-1.5 sm:py-2 rounded-full text-[9px] sm:text-[10px] font-black uppercase hover:bg-gold transition-colors shadow-lg">
-        Community
-    </a>
+<!-- MODAL: MEMBERSHIP VERIFICATION (Proof of Life + Gamification) -->
+<div id="membershipModal" class="modal-overlay">
+  <div class="modal-container">
+    <h2 class="text-2xl font-black text-gold mb-2">🏅 Activate Your Membership</h2>
+    <p class="text-xs text-gray-400 mb-5">Earn <strong class="text-gold">Karma Points</strong> and unlock exclusive roles. Voluntary registration.</p>
+    <input type="text" id="telegramHandle" placeholder="Telegram username (e.g., @yourname)" class="w-full p-3 rounded-xl bg-black/60 border border-white/20 text-white mb-4 focus:border-gold outline-none">
+    <input type="text" id="walletAddress" placeholder="Wallet address (EOS / EVM)" class="w-full p-3 rounded-xl bg-black/60 border border-white/20 text-white mb-5 focus:border-gold outline-none">
+    <div class="flex gap-3">
+      <button id="submitMembership" class="bg-gold text-black px-5 py-2 rounded-full text-xs font-black uppercase">Send & Earn Karma</button>
+      <button id="closeModalBtn" class="border border-white/30 px-5 py-2 rounded-full text-xs">Cancel</button>
+    </div>
+    <p class="text-[9px] text-gray-500 mt-5">⚡ Your first registration gives you +50 Karma. After verification, you'll receive a "Verified HuFi" badge.</p>
+  </div>
 </div>
-    </nav>
 
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 py-20 sm:py-32">
+<!-- STICKY NAV (CLUB AMBIENCE) -->
+<nav class="fixed top-0 w-full z-50 p-5 md:p-6 flex justify-between items-center mix-blend-difference pointer-events-none">
+  <div class="flex items-center gap-3 pointer-events-auto">
+    <div class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
+    <span class="text-[9px] md:text-[10px] font-black tracking-[0.35em] uppercase">HuFi Network Live</span>
+  </div>
+  <div class="flex items-center gap-4 pointer-events-auto">
+    <div id="karmaDisplay" class="text-[9px] md:text-[10px] font-bold bg-white/10 px-3 py-1 rounded-full text-gold">Karma: 0</div>
+    <div class="text-[9px] md:text-[10px] font-bold uppercase tracking-[0.2em] opacity-50 hidden sm:block">Member ID: 2026-X</div>
+  </div>
+</nav>
 
-        <header class="text-center mb-20 sm:mb-40" data-aos="zoom-out">
-            <h1 class="text-5xl sm:text-7xl md:text-[10rem] font-black leading-[0.8] tracking-tighter mb-8 sm:mb-12">
-                HUMANIZED <br> <span class="text-gold italic">FINANCES</span>
-            </h1>
+<main class="max-w-7xl mx-auto px-5 md:px-10 py-20 md:py-24">
 
-            <div class="max-w-3xl mx-auto px-4 sm:px-0">
-                <div class="space-y-6 sm:space-y-8">
-                    <p class="text-lg sm:text-xl md:text-3xl font-light text-gray-400 italic">
-                        "We all have value thanks to the time at our disposal"
-                    </p>
-                    <div class="flex flex-col items-center mt-8 sm:mt-12">
-                        <span class="w-12 h-[1px] bg-gold mb-4"></span>
-                        <span class="text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.2em] sm:tracking-[0.4em] text-gold text-center">
-                            Maurice Vanegas, <br class="block sm:hidden"> CEO Hu-Fi Movement
-                        </span>
-                    </div>
-                </div>
-            </div>
-        </header>
-
-        <div class="flex flex-col lg:flex-row gap-16">
-            <div class="w-full lg:w-2/3">
-                <div class="flex justify-between items-end mb-12 border-b border-white/10 pb-6">
-                    <h2 class="text-xs font-black uppercase tracking-[0.5em] text-gray-500">Weekly Impact Feed</h2>
-                    <span class="text-[10px] font-mono text-gold animate-pulse">● LIVE UPDATES</span>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <article class="glass-card group" data-aos="fade-up">
-                        <div class="overflow-hidden rounded-t-[1.5rem]">
-                            <img src="https://i.postimg.cc/HL5zNY9q/004-tools-2.jpg" class="feed-img" alt="Tools">
-                        </div>
-                        <div class="p-8">
-                            <div class="flex items-center gap-3 mb-4">
-                                <div class="w-8 h-8 rounded-full bg-gold/10 border border-gold/20 flex items-center justify-center text-xs font-bold text-gold">M</div>
-                                <span class="text-xs font-black uppercase tracking-widest text-white/80">@Manassehpl</span>
-                            </div>
-                            <p class="text-gray-400 leading-relaxed text-sm">Empowering the community through tools. Successfully implemented a Groundnut oil extractor via Autopay credit system.</p>
-                        </div>
-                    </article>
-
-                    <article class="glass-card group" data-aos="fade-up" data-aos-delay="100">
-                        <div class="overflow-hidden rounded-t-[1.5rem]">
-                            <img src="https://i.postimg.cc/GpYKfLxf/002-healthcare-hufi.jpg" class="feed-img" alt="Health">
-                        </div>
-                        <div class="p-8">
-                            <div class="flex items-center gap-3 mb-4">
-                                <div class="w-8 h-8 rounded-full bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-xs font-bold text-blue-400">S</div>
-                                <span class="text-xs font-black uppercase tracking-widest text-white/80">@mamansolomon</span>
-                            </div>
-                            <p class="text-gray-400 leading-relaxed text-sm">Blockchain-backed healthcare. A medical check-up successfully processed on credit for a family member.</p>
-                        </div>
-                    </article>
-
-                    <article class="glass-card group" data-aos="fade-up">
-                        <div class="overflow-hidden rounded-t-[1.5rem]">
-                            <img src="https://i.postimg.cc/MTS52Csw/011-desayuno-1.jpg" alt="Supplies" class="feed-img">
-                        </div>
-                        <div class="p-8">
-                            <div class="flex items-center gap-3 mb-4">
-                                <div class="w-8 h-8 rounded-full bg-gold/10 border border-gold/20 flex items-center justify-center text-xs font-bold text-gold">M</div>
-                                <span class="text-xs font-black uppercase tracking-widest text-white/80">@Murna1234</span>
-                            </div>
-                            <p class="text-gray-400 leading-relaxed text-sm">Essential supplies made accessible. Purchased local provisions using the Hu-Fi Autopay protocol.</p>
-                        </div>
-                    </article>
-
-                    <article class="glass-card group" data-aos="fade-up" data-aos-delay="100">
-                        <div class="overflow-hidden rounded-t-[1.5rem]">
-                            <img src="https://i.postimg.cc/7L79RHNr/006-machine-lady.jpg" alt="Impact" class="feed-img">
-                        </div>
-                        <div class="p-8">
-                            <div class="flex items-center gap-3 mb-4">
-                                <div class="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-xs font-bold text-white">B</div>
-                                <span class="text-xs font-black uppercase tracking-widest text-white/80">@boka0123</span>
-                            </div>
-                            <p class="text-gray-400 leading-relaxed text-sm">Closing the technological gap. Real-world machine operations powered by Web3 financial inclusion.</p>
-                        </div>
-                    </article>
-                </div>
-            </div>
-
-            <aside class="w-full lg:w-1/3 space-y-10 lg:sticky lg:top-32">
-                <div class="glass-card p-10 bg-gradient-to-br from-white/5 to-transparent" data-aos="fade-left">
-                    <h3 class="text-xs font-black uppercase tracking-widest mb-6">Network Health</h3>
-                    <div class="space-y-6">
-                        <div>
-                            <span class="text-[10px] text-gray-500 font-bold uppercase tracking-widest">Active Nodes</span>
-                            <div class="text-3xl font-black">430 <span class="text-gold text-sm uppercase">ETO</span></div>
-                        </div>
-                        <div>
-                            <span class="text-[10px] text-gray-500 font-bold uppercase tracking-widest">Auto Pay Merchants</span>
-                            <div class="text-3xl font-black">331 <span class="text-white/40 text-sm">Verified</span></div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="glass-card p-4 overflow-hidden group" data-aos="fade-left" data-aos-delay="100">
-                    <a href="https://www.youtube.com/watch?v=x_gg5ChR0i4" target="_blank" class="block relative rounded-xl overflow-hidden">
-                        <img src="https://i.ytimg.com/vi/x_gg5ChR0i4/maxresdefault.jpg" class="w-full grayscale group-hover:grayscale-0 transition-all duration-700">
-                        <div class="absolute inset-0 flex items-center justify-center bg-black/40">
-                            <div class="w-14 h-14 bg-gold rounded-full flex items-center justify-center shadow-2xl group-hover:scale-110 transition">
-                                <svg class="w-6 h-6 text-black" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-            </aside>
+  <!-- HERO SECTION -->
+  <section class="text-center mb-36" data-aos="fade-up">
+    <div class="inline-block mb-6">
+      <span class="text-gold text-[10px] font-black tracking-[0.6em] uppercase bg-white/5 px-4 py-1 rounded-full">Humanized Finance 2026</span>
+    </div>
+    <h1 class="text-club">THE<br><span class="text-gold">HUFI</span></h1>
+    <p class="mt-8 text-gray-400 text-sm tracking-widest max-w-lg mx-auto uppercase font-light">Exclusive access to the largest Web3 ecosystem built on time as sovereign asset.</p>
+    <div class="mt-12 flex flex-wrap gap-5 justify-center">
+      <button id="heroModalBtn" class="btn-gold">⚡ Request Access</button>
+      <button id="heroProofBtn" class="btn-outline">🏅 Prove Membership</button>
+    </div>
+    <!-- Marquee achievements -->
+    <div class="mt-16 w-full glass-premium py-2 px-2 rounded-full">
+      <div class="marquee-track">
+        <div class="marquee-items flex gap-12 text-gold font-black text-[10px] tracking-[0.2em] uppercase">
+          <span>✦ 430+ ETO Sites</span><span>✦ 331 Autopay Active</span><span>✦ Web3 Inclusion</span>
+          <span>✦ Groundnut Oil Extractors</span><span>✦ #TimeIsValue</span><span>✦ 24/7 Community Hub</span>
+          <span>✦ 430+ ETO Sites</span><span>✦ 331 Autopay Active</span>
         </div>
-    </main>
+      </div>
+    </div>
+  </section>
 
-    <section class="max-w-7xl mx-auto px-4 sm:px-6 mb-40" data-aos="fade-up">
-        <div class="glass-card p-8 md:p-20 flex flex-col items-center text-center gap-10 border-t border-gold/20">
-            <div class="space-y-4">
-                <h2 class="text-3xl sm:text-4xl md:text-6xl font-black uppercase tracking-tighter">Gateway to the <span class="text-gold">Protocol</span></h2>
-                <p class="text-gray-500 font-bold uppercase tracking-[0.3em] sm:tracking-[0.5em] text-[10px]">Access official documentation & web3 tools</p>
+  <!-- STATS SECTION (animated counters) -->
+  <div class="mb-36" id="statsTrigger">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+      <div class="glass-premium p-8 text-center stat-card" data-target="430">
+        <div class="text-gold text-[11px] font-bold tracking-[0.2em] uppercase mb-3">ETO Ecosystem</div>
+        <h3 class="text-6xl md:text-7xl font-black text-gold stat-value">0</h3>
+        <p class="text-[10px] text-gray-400 uppercase mt-2">Verified Web Nodes</p>
+      </div>
+      <div class="glass-premium p-8 text-center stat-card" data-target="331">
+        <div class="text-gold text-[11px] font-bold tracking-[0.2em] uppercase mb-3">Global Automation</div>
+        <h3 class="text-6xl md:text-7xl font-black text-white stat-value">0</h3>
+        <p class="text-[10px] text-gray-400 uppercase mt-2">Active Autopay Contracts</p>
+      </div>
+      <div class="glass-premium p-8 text-center stat-card" data-target="100">
+        <div class="text-gold text-[11px] font-bold tracking-[0.2em] uppercase mb-3">Healthcare Coverage</div>
+        <h3 class="text-6xl md:text-7xl font-black text-gold stat-value">0%</h3>
+        <p class="text-[10px] text-gray-400 uppercase mt-2">Essential Drugs Availability</p>
+      </div>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="glass-premium p-5 text-center"><div class="text-3xl font-black text-gold">$4.82M</div><div class="text-[9px] uppercase tracking-wider">Total Credit Distributed</div></div>
+      <div class="glass-premium p-5 text-center"><div class="text-3xl font-black text-gold">12,480</div><div class="text-[9px] uppercase tracking-wider">Active HuFi Members</div></div>
+      <div class="glass-premium p-5 text-center"><div class="text-3xl font-black text-gold">127</div><div class="text-[9px] uppercase tracking-wider">Empowered Communities</div></div>
+    </div>
+  </div>
+
+  <!-- COMMUNITY STORIES + GALLERY -->
+  <section class="mb-36">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-14 items-start">
+      <div data-aos="fade-right">
+        <div class="flex items-center gap-3 mb-5"><span class="text-4xl">📍</span><h2 class="text-3xl md:text-4xl font-black uppercase text-gold">Joy of Living</h2></div>
+        <div class="glass-card-light p-6 md:p-8">
+          <h3 class="text-2xl font-bold mb-3">A Gift of Life at HuFi Clinic</h3>
+          <p class="text-gray-300 leading-relaxed">A baby girl was born into our community — delivered without bank deposits or bureaucracy. All medical care & essential medications were fully covered through credit + Autopay. <span class="text-gold font-semibold">This is blockchain with a human heartbeat.</span></p>
+          <div class="mt-5 text-[11px] text-gray-400 border-l-2 border-gold pl-3">Protagonists: @Amabel2 / reported by @kalindi1</div>
+        </div>
+        <div class="mt-10">
+          <h3 class="text-2xl font-black uppercase text-gold mb-5">Progress in Motion</h3>
+          <div class="space-y-4">
+            <div class="glass-card-light p-5"><h4 class="font-bold text-white">⚙️ Community Gears</h4><p class="text-sm text-gray-300 mt-1">Groundnut oil extractor & grinding machine operational via HuFi credit. @Manassehpl</p></div>
+            <div class="glass-card-light p-5"><h4 class="font-bold text-white">🚛 Vital Logistics</h4><p class="text-sm text-gray-300 mt-1">Water reached HuFi Clinic, transport trucks back in fields. @boka0123</p></div>
+          </div>
+        </div>
+      </div>
+      <div class="grid grid-cols-2 gap-4" data-aos="fade-left">
+        <img src="https://i.postimg.cc/GpYKfLxf/002-healthcare-hufi.jpg" class="portrait-2026" alt="HuFi Health">
+        <img src="https://i.postimg.cc/HL5zNY9q/004-tools-2.jpg" class="portrait-2026 mt-6" alt="Community tools">
+        <img src="https://i.postimg.cc/MTS52Csw/011-desayuno-1.jpg" class="portrait-2026" alt="Web3 breakfast">
+        <img src="https://i.postimg.cc/7L79RHNr/006-machine-lady.jpg" class="portrait-2026 mt-6" alt="Machine lady">
+      </div>
+    </div>
+  </section>
+
+  <!-- FEED CARDS (with likes + global karma contribution) + SIDEBAR -->
+  <section class="mb-36">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
+      <div class="lg:col-span-2">
+        <h3 class="text-sm font-black text-gold uppercase tracking-[0.3em] mb-6">⚡ Weekly Impact Feed</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          <!-- 4 cards with like buttons (each like adds 1 to global karma) -->
+          <div class="glass-premium overflow-hidden p-0">
+            <img src="https://i.postimg.cc/HL5zNY9q/004-tools-2.jpg" class="w-full aspect-[4/5] object-cover">
+            <div class="p-5">
+              <div class="flex justify-between items-center mb-3"><div class="flex gap-2 items-center"><div class="w-7 h-7 rounded-full bg-gold/20 flex items-center justify-center text-xs font-black">M</div><span class="font-semibold">@Manassehpl</span></div><div class="like-btn flex gap-1" data-likes="24"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"/></svg><span class="like-count text-xs font-bold">24</span></div></div>
+              <p class="text-sm text-gray-300">"Extending gratitude for the tools provided. Successfully set up my Groundnut oil extractor on credit."</p>
             </div>
-            <a href="https://hu-fi.io/" target="_blank" 
-               class="cta-glow bg-gold text-black px-6 sm:px-12 py-5 rounded-full text-xs font-black uppercase tracking-[0.2em] sm:tracking-[0.3em] hover:bg-white hover:text-black transition-all flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 text-center">
-                <span>Enter</span>
-                <span class="hidden sm:inline">Hu-Fi.io</span>
-                <span class="sm:hidden">Hu-Fi.io</span>
-            </a>
+          </div>
+          <div class="glass-premium overflow-hidden p-0">
+            <img src="https://i.postimg.cc/GpYKfLxf/002-healthcare-hufi.jpg" class="w-full aspect-[4/5] object-cover">
+            <div class="p-5">
+              <div class="flex justify-between items-center mb-3"><div class="flex gap-2"><div class="w-7 h-7 rounded-full bg-white/10 flex items-center justify-center text-xs">S</div><span>@mamansolomon</span></div><div class="like-btn flex gap-1" data-likes="42"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"/></svg><span class="like-count">42</span></div></div>
+              <p class="text-sm text-gray-300">"Happy to use Hu-Fi tools for my son's medical check-up on credit. Grateful for technology bringing real solutions."</p>
+            </div>
+          </div>
+          <div class="glass-premium overflow-hidden p-0">
+            <img src="https://i.postimg.cc/MTS52Csw/011-desayuno-1.jpg" class="w-full aspect-[4/5] object-cover">
+            <div class="p-5">
+              <div class="flex justify-between items-center mb-3"><div class="flex gap-2"><div class="w-7 h-7 rounded-full bg-gold/20 flex items-center justify-center text-xs font-black">M</div><span>@Murna1234</span></div><div class="like-btn flex gap-1" data-likes="37"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"/></svg><span class="like-count">37</span></div></div>
+              <p class="text-sm text-gray-300">"Appreciation for the opportunity to use blockchain tools. Purchased essential supplies on credit via Autopay."</p>
+            </div>
+          </div>
+          <div class="glass-premium overflow-hidden p-0">
+            <img src="https://i.postimg.cc/7L79RHNr/006-machine-lady.jpg" class="w-full aspect-[4/5] object-cover">
+            <div class="p-5">
+              <div class="flex justify-between items-center mb-3"><div class="flex gap-2"><div class="w-7 h-7 rounded-full bg-white/10 flex items-center justify-center text-xs">B</div><span>@boka0123</span></div><div class="like-btn flex gap-1" data-likes="61"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"/></svg><span class="like-count">61</span></div></div>
+              <p class="text-sm text-gray-300">"Empowering members through Web3 technology. Bridging the gap between innovation and real community impact."</p>
+            </div>
+          </div>
         </div>
-    </section>
+      </div>
+      <!-- Sidebar -->
+      <div class="space-y-6">
+        <div class="glass-premium p-5 border-l-4 border-l-blue-500"><h3 class="font-black text-white mb-3">📡 Telegram Hub</h3><a href="https://t.me/Hu_Fi_Nigeria" target="_blank" class="block w-full py-3 bg-blue-600 text-white text-center rounded-xl text-[10px] font-black uppercase">⚡ Join Community →</a></div>
+        <div class="glass-premium p-4"><h3 class="font-black text-white mb-3">▶ Featured Video</h3><a href="https://www.youtube.com/watch?v=x_gg5ChR0i4" target="_blank"><img src="https://i.ytimg.com/vi/x_gg5ChR0i4/maxresdefault.jpg" class="w-full rounded-xl opacity-80 hover:opacity-100 transition"></a></div>
+        <div class="glass-premium p-5 border-l-4 border-l-gold"><h3 class="font-black text-white mb-3">🏆 Sponsored Impact</h3><img src="https://i.postimg.cc/nzJ2bydq/promo-mega.jpg" class="w-full h-28 object-cover rounded-lg mb-3"><p class="text-xs text-gray-300 mb-3">Empowering communities through Web3 automation.</p><a href="https://eospglmlt.com/" target="_blank" class="btn-outline block text-center py-2 text-[10px]">Learn More →</a></div>
+        <div class="glass-premium p-5"><h3 class="font-black text-white mb-3">💡 Founder's Insight</h3><p class="text-sm italic text-gray-300">“Time is our most honest reserve of value. HuFi provides tools based on what you are capable of building tomorrow.”</p><p class="text-[9px] text-gold mt-3">— Maurice Vanegas</p></div>
+        <div class="glass-premium p-5"><h3 class="font-black text-white mb-2">🧩 Weekly Anecdote</h3><h4 class="font-bold text-gold">The Web3 Breakfast</h4><p class="text-xs text-gray-300 mt-1">A member purchased corn juice & eggs using Web3 credit. Blockchain feeding a family before sunrise.</p><div class="mt-2 text-[9px] text-gray-400">@Manassehpl · @Halima_sv</div></div>
+        <button id="sidebarProofBtn" class="btn-outline w-full py-3 text-[10px]">🏅 Prove Your Membership</button>
+      </div>
+    </div>
+  </section>
 
-    <footer class="py-20 text-center border-t border-white/5">
-        <div class="flex justify-center gap-8 mb-8 opacity-40">
-            <span class="text-[9px] font-bold uppercase tracking-widest">Transparency</span>
-            <span class="text-[9px] font-bold uppercase tracking-widest">Security</span>
-            <span class="text-[9px] font-bold uppercase tracking-widest">Humanity</span>
-        </div>
-        <p class="text-[9px] font-bold tracking-[0.8em] uppercase opacity-20">HuFi Today • MMXXVI</p>
-    </footer>
+  <!-- FINAL CTA SECTION -->
+  <section class="text-center">
+    <div class="glass-premium p-10 md:p-14 max-w-4xl mx-auto">
+      <h2 class="text-3xl md:text-5xl font-black uppercase">Explore the <span class="text-gold">Full Protocol</span></h2>
+      <p class="text-gray-400 text-sm mt-3">Official HuFi Global Gateway</p>
+      <div class="mt-8 flex gap-5 flex-wrap justify-center">
+        <a href="https://hu-fi.io/" target="_blank" class="btn-gold">Visit Hu-Fi.io ↗</a>
+        <button id="finalProofBtn" class="btn-outline">🏅 Activate Membership</button>
+      </div>
+    </div>
+  </section>
+</main>
 
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script>
-        AOS.init({ duration: 1200, once: true });
+<footer class="text-center py-8 opacity-50 border-t border-white/10 mt-16">
+  <p class="text-[8px] tracking-[0.4em] uppercase">HuFi Club · Humanizing Finance through Web3 · 2026</p>
+</footer>
 
-        const canvas = document.getElementById('hero-canvas');
-        const ctx = canvas.getContext('2d');
-        let particles = [];
+<div class="scroll-top" id="scrollTopBtn">↑</div>
 
-        function resize() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+  (function() {
+    // AOS
+    AOS.init({ duration: 800, once: true, offset: 60 });
+
+    // ---------- GAMIFICATION: KARMA SYSTEM ----------
+    let karmaPoints = localStorage.getItem('hufi_karma') ? parseInt(localStorage.getItem('hufi_karma')) : 0;
+    const karmaDisplay = document.getElementById('karmaDisplay');
+    function updateKarmaUI() {
+      karmaDisplay.innerText = `Karma: ${karmaPoints}`;
+      localStorage.setItem('hufi_karma', karmaPoints);
+    }
+    updateKarmaUI();
+
+    // Add karma from likes (each unique like gives +1, but avoid double counting per post)
+    // We'll store which posts the user has liked in localStorage to prevent spam
+    let likedPosts = JSON.parse(localStorage.getItem('hufi_liked_posts') || '[]');
+    document.querySelectorAll('.like-btn').forEach(btn => {
+      const postId = btn.closest('.glass-premium') ? Array.from(btn.closest('.glass-premium').parentNode.children).indexOf(btn.closest('.glass-premium')) : Math.random();
+      const countSpan = btn.querySelector('.like-count');
+      let likes = parseInt(btn.getAttribute('data-likes') || countSpan.innerText);
+      
+      // Check if already liked by this user (using a unique identifier based on post content)
+      const postText = btn.closest('.glass-premium')?.querySelector('p')?.innerText || '';
+      const postKey = `like_${postText.substring(0, 30)}`;
+      if (likedPosts.includes(postKey)) {
+        btn.classList.add('liked');
+      }
+      
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isLiked = btn.classList.contains('liked');
+        if (!isLiked) {
+          likes++;
+          btn.classList.add('liked');
+          // Award karma (+1 per like, once per post)
+          if (!likedPosts.includes(postKey)) {
+            likedPosts.push(postKey);
+            karmaPoints += 1;
+            updateKarmaUI();
+            // Optional: show floating notification
+            const notif = document.createElement('div');
+            notif.innerText = '+1 Karma';
+            notif.className = 'fixed bottom-20 right-5 bg-gold text-black text-xs font-bold px-3 py-1 rounded-full animate-pulse z-50';
+            document.body.appendChild(notif);
+            setTimeout(() => notif.remove(), 1500);
+          }
+        } else {
+          likes--;
+          btn.classList.remove('liked');
+          // Remove karma if unliked (but only if previously added)
+          const index = likedPosts.indexOf(postKey);
+          if (index !== -1) {
+            likedPosts.splice(index, 1);
+            karmaPoints -= 1;
+            updateKarmaUI();
+          }
         }
-        window.addEventListener('resize', resize);
-        resize();
+        countSpan.innerText = likes;
+        btn.setAttribute('data-likes', likes);
+        localStorage.setItem('hufi_liked_posts', JSON.stringify(likedPosts));
+      });
+    });
 
-        class Particle {
-            constructor() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                this.size = Math.random() * 2;
-                this.speedX = Math.random() * 0.5 - 0.25;
-                this.speedY = Math.random() * 0.5 - 0.25;
-            }
-            update() {
-                this.x += this.speedX;
-                this.y += this.speedY;
-                if (this.x > canvas.width) this.x = 0;
-                if (this.x < 0) this.x = canvas.width;
-                if (this.y > canvas.height) this.y = 0;
-                if (this.y < 0) this.y = canvas.height;
-            }
-            draw() {
-                ctx.fillStyle = '#FFB938';
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fill();
-            }
-        }
+    // ---------- COUNTER ANIMATION ----------
+    const statCards = document.querySelectorAll('.stat-card');
+    let countersStarted = false;
+    function startCounters() {
+      if (countersStarted) return;
+      countersStarted = true;
+      statCards.forEach(card => {
+        const target = parseInt(card.getAttribute('data-target'), 10);
+        if (isNaN(target)) return;
+        const isPercent = (target === 100);
+        const valueEl = card.querySelector('.stat-value');
+        if (!valueEl) return;
+        let current = 0;
+        const duration = 1600;
+        const steps = 70;
+        const increment = target / steps;
+        let step = 0;
+        const timer = setInterval(() => {
+          step++;
+          current += increment;
+          if (step >= steps) { current = target; clearInterval(timer); }
+          valueEl.innerText = isPercent ? Math.floor(current) + '%' : Math.floor(current);
+        }, duration / steps);
+      });
+    }
+    const statsSection = document.getElementById('statsTrigger');
+    const observerStats = new IntersectionObserver((entries) => {
+      entries.forEach(entry => { if (entry.isIntersecting) { startCounters(); observerStats.unobserve(entry.target); } });
+    }, { threshold: 0.4 });
+    if (statsSection) observerStats.observe(statsSection);
 
-        function init() {
-            for (let i = 0; i < 100; i++) particles.push(new Particle());
-        }
-        function animate() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            particles.forEach(p => { p.update(); p.draw(); });
-            requestAnimationFrame(animate);
-        }
-        init();
-        animate();
-    </script>
+    // ---------- MODAL MEMBERSHIP (PROOF OF LIFE) with Karma reward ----------
+    const modal = document.getElementById('membershipModal');
+    const openModalBtns = document.querySelectorAll('#heroModalBtn, #heroProofBtn, #sidebarProofBtn, #finalProofBtn');
+    const closeModalBtn = document.getElementById('closeModalBtn');
+    const submitBtn = document.getElementById('submitMembership');
+    
+    function openModal() { modal.style.display = 'flex'; }
+    function closeModal() { modal.style.display = 'none'; }
+    openModalBtns.forEach(btn => btn.addEventListener('click', (e) => { e.preventDefault(); openModal(); }));
+    closeModalBtn.addEventListener('click', closeModal);
+    window.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+    
+    // TELEGRAM INTEGRATION (using provided token, but numeric CHAT_ID is required)
+    // IMPORTANT: The user must replace 'AQUI_TU_CHAT_ID_NUMERICO' with the numeric chat ID (e.g., 123456789)
+    // You can get it by sending a message to @userinfobot or to your bot and visiting:
+    // https://api.telegram.org/bot<TOKEN>/getUpdates
+    const BOT_TOKEN = '8636771391:AAF5n9pLvGjCv7kEYWvhPZMmxxRXP-P8-LQ';
+    const CHAT_ID = 'AQUI_TU_CHAT_ID_NUMERICO';  // <-- REPLACE WITH NUMERIC ID (e.g., '123456789')
+    const useRealTelegram = (CHAT_ID !== 'AQUI_TU_CHAT_ID_NUMERICO' && CHAT_ID.length > 5);
+    
+    submitBtn.addEventListener('click', async () => {
+      const tgUser = document.getElementById('telegramHandle').value.trim();
+      const wallet = document.getElementById('walletAddress').value.trim();
+      if (!tgUser) { alert('Please enter your Telegram username (e.g., @username)'); return; }
+      
+      // Award Karma for first registration (50 points)
+      const hasRegistered = localStorage.getItem('hufi_registered');
+      if (!hasRegistered) {
+        karmaPoints += 50;
+        updateKarmaUI();
+        localStorage.setItem('hufi_registered', 'true');
+        alert('🎉 +50 Karma points for becoming a verified member!');
+      }
+      
+      const message = `✅ NEW MEMBERSHIP PROOF\n👤 Telegram: ${tgUser}\n💳 Wallet: ${wallet || 'not specified'}\n🌍 HuFi Club\nKarma: ${karmaPoints}`;
+      
+      if (useRealTelegram) {
+        try {
+          const response = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ chat_id: CHAT_ID, text: message })
+          });
+          if (response.ok) {
+            alert('✅ Registration sent to Telegram. Thank you for proving your membership!');
+            closeModal();
+            document.getElementById('telegramHandle').value = '';
+            document.getElementById('walletAddress').value = '';
+          } else {
+            alert('Error sending request. Make sure the CHAT_ID is numeric and the bot is a member of that chat.');
+          }
+        } catch(err) { alert('Network error. Please check your connection.'); }
+      } else {
+        // Demo mode: store in localStorage
+        let registrations = JSON.parse(localStorage.getItem('hufi_members') || '[]');
+        registrations.push({ telegram: tgUser, wallet: wallet, timestamp: new Date().toISOString(), karma: karmaPoints });
+        localStorage.setItem('hufi_members', JSON.stringify(registrations));
+        alert('🎉 [DEMO MODE] Registration saved locally. To enable real Telegram alerts, set a numeric CHAT_ID (e.g., from @userinfobot).');
+        console.log('Membership demo:', { tgUser, wallet, karmaPoints });
+        closeModal();
+        document.getElementById('telegramHandle').value = '';
+        document.getElementById('walletAddress').value = '';
+      }
+    });
+
+    // ---------- SCROLL TO TOP ----------
+    const scrollBtn = document.getElementById('scrollTopBtn');
+    window.addEventListener('scroll', () => {
+      scrollBtn.style.opacity = window.scrollY > 600 ? '1' : '0';
+    });
+    scrollBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+  })();
+</script>
 </body>
 </html>
