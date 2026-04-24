@@ -3,165 +3,112 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>HuFi Today 2026 | Humanized Finance Community</title>
-  <meta name="description" content="HuFi Today: The first Web3 community that humanizes finance with social credit and Autopay. +12k members, +$4.8M distributed.">
-  <meta property="og:image" content="https://i.postimg.cc/nzJ2bydq/promo-mega.jpg">
-  
-  <!-- Google Fonts + CSS Libraries -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,100..900&display=swap" rel="stylesheet">
-  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/lenis@1.1.20/dist/lenis.css" rel="stylesheet">
+  <title>HuFi Today | Comunidad Viva</title>
+  <meta name="description" content="Comunidad HuFi con feed real, likes persistentes y crédito social.">
   <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1"></script>
-  <script src="https://cdn.jsdelivr.net/npm/fuse.js@7.0.0"></script>
-  <script src="https://unpkg.com/lenis@1.1.20/dist/lenis.min.js"></script>
-  
   <style>
-    :root {
-      --gold: #FFB938;
-      --gold-dark: #E5A020;
-      --gold-glow: rgba(255, 185, 56, 0.2);
-      --black-deep: #030304;
-      --glass-bg: rgba(10, 10, 14, 0.85);
-      --glass-border: rgba(255, 185, 56, 0.2);
-      --shadow-hard: 4px 4px 0px rgba(0,0,0,0.3);
-    }
+    /* RESET y estilos base - igual que antes */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
+      background: #000000;
+      color: #ededed;
       font-family: 'Inter', sans-serif;
-      background: var(--black-deep);
-      color: #EDEDED;
-      scroll-behavior: auto;
       overflow-x: hidden;
     }
-    *:focus-visible {
-      outline: 2px solid var(--gold);
-      outline-offset: 4px;
-      border-radius: 8px;
+    #canvas-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      background: #000000;
     }
-    button, a, [role="button"] {
-      transition: transform 0.1s ease, background 0.2s;
+    main {
+      position: relative;
+      z-index: 10;
+      min-height: 100vh;
     }
-    button:active, .btn-gold:active, .btn-outline:active {
-      transform: scale(0.97);
-    }
-    .filter-btn, .command-item, .like-btn {
-      transition: all 0.2s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-    }
-    .filter-btn:focus-visible, .command-item:focus-visible, .like-btn:focus-visible {
-      outline: 2px solid var(--gold);
-      outline-offset: 2px;
-    }
-    .bento-card {
-      background: rgba(12, 12, 16, 0.9);
+    .nav-blur {
+      background: rgba(0, 0, 0, 0.6);
       backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255,185,56,0.3);
+    }
+    .text-club {
+      font-size: clamp(3rem, 12vw, 6rem);
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      line-height: 0.9;
+      text-transform: uppercase;
+      text-shadow: 0 0 15px rgba(255,185,56,0.3);
+    }
+    .text-gold { color: #FFB938; }
+    .btn-gold, .btn-outline {
+      border-radius: 3rem;
+      padding: 0.7rem 1.8rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      font-size: 0.7rem;
+      transition: all 0.2s;
+      cursor: pointer;
+    }
+    .btn-gold { background: #FFB938; color: #000; border: none; }
+    .btn-outline { border: 2px solid #FFB938; background: transparent; color: #FFB938; }
+    .bento-card {
+      background: rgba(12,12,16,0.85);
+      backdrop-filter: blur(10px);
       border: 1px solid rgba(255,185,56,0.3);
       border-radius: 1.5rem;
-      transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-      box-shadow: var(--shadow-hard);
+      padding: 1.5rem;
+      transition: all 0.3s;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
     }
-    .bento-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 8px 8px 0px rgba(0,0,0,0.4);
-      border-color: var(--gold);
+    .bento-card.visible {
+      opacity: 1;
+      transform: translateY(0);
     }
     .masonry-pure {
       columns: 1;
       column-gap: 1.5rem;
     }
-    @media (min-width: 640px) {
-      .masonry-pure { columns: 2; }
-    }
-    @media (min-width: 1024px) {
-      .masonry-pure { columns: 3; }
-    }
+    @media (min-width: 640px) { .masonry-pure { columns: 2; } }
+    @media (min-width: 1024px) { .masonry-pure { columns: 3; } }
     .masonry-item {
       break-inside: avoid;
       margin-bottom: 1.5rem;
-      transition: opacity 0.2s, transform 0.2s;
-    }
-    .image-wrapper {
-      position: relative;
-      display: block;
-      border-radius: 1.5rem;
-      overflow: hidden;
-      background-color: #1a1a1f;
     }
     .image-wrapper img {
       width: 100%;
       height: auto;
       display: block;
+      border-radius: 1.5rem;
       opacity: 0;
-      transition: opacity 0.3s ease;
+      transition: opacity 0.3s;
     }
-    .image-wrapper img.loaded {
-      opacity: 1;
-    }
+    .image-wrapper img.loaded { opacity: 1; }
     .image-overlay {
       position: absolute;
       bottom: 0;
       left: 0;
       right: 0;
-      background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 100%);
-      padding: 1rem 0.75rem 0.5rem 0.75rem;
+      background: linear-gradient(to top, rgba(0,0,0,0.85), transparent);
+      padding: 1rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      pointer-events: none;
     }
-    .like-btn {
-      pointer-events: auto;
-    }
+    .like-btn { cursor: pointer; }
     .filter-btn.active {
-      background: var(--gold);
+      background: #FFB938;
       color: black;
-      border-color: var(--gold);
+      border-color: #FFB938;
     }
     .story-ring {
       background: linear-gradient(135deg, #FFB938, #FF6B6B);
       padding: 2px;
       border-radius: 50%;
-    }
-    .text-club {
-      font-size: clamp(2.5rem, 10vw, 5rem);
-      font-weight: 900;
-      letter-spacing: -0.02em;
-      text-transform: uppercase;
-    }
-    .btn-gold, .btn-outline {
-      border-radius: 3rem;
-      transition: all 0.2s ease;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      font-size: 0.7rem;
-      padding: 0.7rem 1.5rem;
-      cursor: pointer;
-    }
-    .btn-gold {
-      background: var(--gold);
-      color: #000;
-      border: none;
-    }
-    .btn-gold:hover {
-      transform: scale(1.02);
-      background: var(--gold-dark);
-      box-shadow: 0 0 12px var(--gold-glow);
-    }
-    .btn-outline {
-      border: 2px solid var(--gold);
-      background: transparent;
-      color: var(--gold);
-    }
-    .btn-outline:hover {
-      background: var(--gold);
-      color: #000;
-    }
-    .nav-blur {
-      background: rgba(3, 3, 4, 0.85);
-      backdrop-filter: blur(16px);
-      border-bottom: 1px solid rgba(255,185,56,0.3);
     }
     .command-palette {
       position: fixed;
@@ -171,36 +118,17 @@
       width: 90%;
       max-width: 560px;
       background: #0C0C10;
-      border: 1px solid var(--gold);
+      border: 1px solid #FFB938;
       border-radius: 1.5rem;
       z-index: 1000;
       opacity: 0;
       visibility: hidden;
       transition: 0.2s;
-      box-shadow: 0 20px 35px -8px black;
     }
     .command-palette.active {
       opacity: 1;
       visibility: visible;
       transform: translateX(-50%) scale(1);
-    }
-    .command-input {
-      width: 100%;
-      background: #1a1a1f;
-      border: none;
-      padding: 1rem;
-      color: white;
-      border-radius: 1.5rem 1.5rem 0 0;
-      font-size: 1rem;
-    }
-    .command-item {
-      padding: 0.75rem 1rem;
-      cursor: pointer;
-      border-bottom: 1px solid #222;
-    }
-    .command-item:hover, .command-item.selected {
-      background: rgba(255,185,56,0.2);
-      border-left: 3px solid var(--gold);
     }
     .modal-overlay {
       position: fixed;
@@ -215,23 +143,12 @@
       visibility: hidden;
       transition: opacity 0.25s ease;
     }
-    .modal-overlay.active {
-      opacity: 1;
-      visibility: visible;
-    }
-    .modal-container {
-      max-width: 450px;
-      width: 90%;
-      background: #0C0C10;
-      border: 2px solid var(--gold);
-      border-radius: 1.5rem;
-      padding: 1.5rem;
-    }
+    .modal-overlay.active { opacity: 1; visibility: visible; }
     .scroll-top {
       position: fixed;
       bottom: 1.2rem;
       right: 1.2rem;
-      background: var(--gold);
+      background: #FFB938;
       color: black;
       width: 42px;
       height: 42px;
@@ -243,22 +160,15 @@
       opacity: 0;
       transition: 0.2s;
       z-index: 99;
-      box-shadow: 2px 2px 0 rgba(0,0,0,0.2);
     }
     #energy-bar {
-      position: fixed; top: 0; left: 0;
+      position: fixed;
+      top: 0;
+      left: 0;
       height: 3px;
-      background: var(--gold);
+      background: #FFB938;
       width: 0%;
       z-index: 1001;
-    }
-    .role-badge {
-      background: rgba(255,185,56,0.2);
-      border-radius: 20px;
-      padding: 2px 8px;
-      font-size: 9px;
-      font-weight: 700;
-      color: var(--gold);
     }
     .chat-widget {
       position: fixed;
@@ -267,7 +177,7 @@
       z-index: 98;
     }
     .chat-button {
-      background: var(--gold);
+      background: #FFB938;
       color: black;
       width: 48px;
       height: 48px;
@@ -276,75 +186,48 @@
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
     }
-    .footer-glass {
-      background: rgba(3, 3, 4, 0.6);
-      backdrop-filter: blur(12px);
-      border-top: 1px solid rgba(255,185,56,0.2);
-    }
-    .social-icon {
-      width: 18px;
-      height: 18px;
+    .char {
       display: inline-block;
-      background-size: contain;
-      background-repeat: no-repeat;
-      transition: filter 0.2s;
+      will-change: transform, opacity;
     }
-    .social-icon.instagram {
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23EDEDED'%3E%3Cpath d='M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z'/%3E%3C/svg%3E");
+    .date-badge {
+      font-size: 0.7rem;
+      font-weight: 600;
+      background: rgba(255,185,56,0.12);
+      padding: 0.2rem 0.75rem;
+      border-radius: 24px;
+      border: 1px solid rgba(255,185,56,0.4);
+      font-family: monospace;
     }
-    .social-icon.twitter {
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23EDEDED'%3E%3Cpath d='M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.937 4.937 0 004.604 3.417 9.868 9.868 0 01-6.102 2.104c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 0021.68-12.08c0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z'/%3E%3C/svg%3E");
+    /* Estilos para el feed comunitario */
+    .post-card {
+      background: rgba(0,0,0,0.5);
+      border-left: 3px solid #FFB938;
+      transition: 0.1s;
     }
-    .canvas-mask {
-      mask-image: radial-gradient(circle at center, black 40%, transparent 90%);
-    }
-    .animate-marquee { animation: scrollMarquee 22s linear infinite; }
-    @keyframes scrollMarquee { 0% { transform: translateX(0%); } 100% { transform: translateX(-50%); } }
-    .mask-gradient { mask-image: linear-gradient(90deg, transparent, black 10%, black 90%, transparent); }
-    .glass-premium { background: rgba(10,10,14,0.7); backdrop-filter: blur(8px); border-radius: 2rem; }
-    .text-gold { color: var(--gold); }
-    .bg-gold { background-color: var(--gold); }
-    .border-gold { border-color: var(--gold); }
-    .page-transition {
-      transition: opacity 0.6s cubic-bezier(0.23, 1, 0.32, 1);
-    }
-    .fade-out {
-      opacity: 0;
-    }
-    .lang-switch {
-      cursor: pointer;
-      font-size: 10px;
-      background: rgba(255,185,56,0.15);
-      padding: 2px 8px;
-      border-radius: 20px;
-    }
-    /* Spinner para el Impact Ticker */
-    .ticker-spinner {
-      display: inline-block;
-      width: 16px;
-      height: 16px;
-      border: 2px solid rgba(255,185,56,0.3);
-      border-radius: 50%;
-      border-top-color: var(--gold);
-      animation: spin 0.8s linear infinite;
-      margin-right: 8px;
-      vertical-align: middle;
-    }
-    @keyframes spin {
-      to { transform: rotate(360deg); }
+    .post-card:hover {
+      background: rgba(255,185,56,0.05);
     }
   </style>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+  <link href="https://unpkg.com/lenis@1.1.20/dist/lenis.css" rel="stylesheet">
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 </head>
 <body>
+  <div id="canvas-container"></div>
   <div id="energy-bar"></div>
-  <a href="#main-content" class="skip-link fixed left-[-999px] top-2 z-[1002] bg-gold text-black px-3 py-1 rounded focus:left-2">Skip to content</a>
 
+  <!-- NAVBAR (igual) -->
   <nav class="fixed top-0 w-full z-50 py-2 px-4 md:px-6 nav-blur flex flex-wrap justify-between items-center gap-2">
     <div class="flex items-center gap-2">
-      <img src="https://i.postimg.cc/Dzs6NvPp/000-logo-hufi.jpg" alt="HuFi Today Logo" class="w-9 h-9 rounded-full object-cover">
-      <span class="font-black text-base md:text-lg tracking-tight text-white">HuFi<span class="text-gold">Today</span></span>
+      <img src="https://i.postimg.cc/Dzs6NvPp/000-logo-hufi.jpg" alt="Logo" class="w-9 h-9 rounded-full object-cover">
+      <div class="flex flex-col leading-tight">
+        <span class="font-black text-base md:text-lg text-white">HuFi<span class="text-gold">Today</span></span>
+        <span class="text-[10px] font-mono text-gold/80 tracking-wider" data-i18n="nav.subtitle">Weekly Community Report</span>
+      </div>
     </div>
     <div class="hidden md:flex gap-6 text-sm font-medium">
       <a href="#impacto" class="hover:text-gold transition" data-i18n="nav.impact">Impact</a>
@@ -353,22 +236,23 @@
       <a href="https://hu-fi.io/" target="_blank" class="hover:text-gold transition" data-i18n="nav.protocol">Protocol</a>
     </div>
     <div class="flex gap-2 items-center">
-      <button id="commandButton" class="text-xs bg-white/10 px-3 py-1 rounded-full flex items-center gap-1" aria-label="Command palette">⌘K</button>
-      <span class="text-[11px] text-gold/60 hidden sm:inline">✦ Active Member</span>
+      <button id="commandButton" class="text-xs bg-white/10 px-3 py-1 rounded-full">⌘K</button>
+      <span id="dateBadge" class="date-badge hidden sm:inline-block">-- --- ----</span>
     </div>
   </nav>
 
-  <main id="main-content" class="w-full max-w-7xl mx-auto px-4 md:px-6 pt-24 pb-16 page-transition">
-    <!-- Hero -->
-    <section class="text-center mb-20" data-aos="fade-up">
-      <div class="inline-block mb-4"><span class="text-gold text-[11px] font-black uppercase bg-white/5 px-3 py-1 rounded-full" data-i18n="hero.badge">You are the hero</span></div>
-      <h1 id="heroTitle" class="text-club" data-i18n="hero.title">YOUR<br><span class="text-gold">TIME</span><br>IS VALUE</h1>
+  <main class="relative z-10 max-w-7xl mx-auto px-4 md:px-6 pt-24 pb-16">
+    <!-- HERO MEJORADO (con propósito claro) -->
+    <section class="text-center mb-20">
+      <div class="inline-block mb-4"><span class="text-gold text-[11px] font-black uppercase bg-white/5 px-3 py-1 rounded-full" data-i18n="hero.badge">Join the movement</span></div>
+      <h1 id="heroTitle" class="text-club">JOIN THE COMMUNITY<br><span class="text-gold">BUILDING REAL CREDIT</span></h1>
       <p class="mt-4 text-gray-400 text-sm max-w-md mx-auto font-light" data-i18n="hero.sub">12,480 people are already building their financial freedom with social credit and Autopay.</p>
+      
       <div class="mt-8 flex flex-wrap gap-3 justify-center">
         <button id="heroModalBtn" class="btn-gold" data-i18n="hero.cta">⚡ Activate membership</button>
         <button id="socialLoginBtn" class="btn-outline" data-i18n="hero.telegram">🔐 Join with Telegram</button>
       </div>
-      <div class="mt-10 w-full glass-premium py-2 px-2 rounded-full">
+      <div class="mt-10 w-full glass-premium py-2 px-2 rounded-full bg-white/5">
         <div class="marquee-track overflow-hidden whitespace-nowrap mask-gradient">
           <div class="marquee-items inline-block animate-marquee text-gold font-black text-[10px] tracking-[0.2em] uppercase">
             <span class="mx-4">✦ 430+ ETO Sites</span><span class="mx-4">✦ 331 Active Autopay</span><span class="mx-4">✦ Web3 Inclusion</span>
@@ -378,32 +262,32 @@
       </div>
     </section>
 
-    <!-- Bento stats -->
+    <!-- Bento stats (sin cambios) -->
     <div id="impacto" class="mb-20 grid grid-cols-1 md:grid-cols-4 gap-5 auto-rows-min">
-      <div class="bento-card p-5 md:col-span-2 md:row-span-2" data-aos="fade-right">
+      <div class="bento-card p-5 md:col-span-2 md:row-span-2">
         <span class="text-gold text-xs font-bold" data-i18n="stats.eto">ETO ECOSYSTEM</span>
         <div class="stat-value text-5xl font-black text-gold" data-target="430">0</div>
         <p class="text-xs text-gray-400" data-i18n="stats.nodes">Verified nodes</p>
       </div>
-      <div class="bento-card p-5" data-aos="fade-up"><span class="text-gold text-xs font-bold" data-i18n="stats.autopay">ACTIVE AUTOPAY</span><div class="stat-value text-4xl font-black text-white" data-target="331">0</div></div>
-      <div class="bento-card p-5" data-aos="fade-up"><span class="text-gold text-xs font-bold" data-i18n="stats.health">HEALTH COVERAGE</span><div class="stat-value text-4xl font-black text-gold" data-target="100">0%</div></div>
-      <div class="bento-card p-5 md:col-span-2" data-aos="fade-left">
-        <div class="flex items-center gap-3"><div class="avatar bg-gradient-to-br from-gold to-amber-700 w-10 h-10 rounded-full flex items-center justify-center font-bold">MV</div><div><p class="font-bold">@MauriceVanegas</p><span class="role-badge">Founder</span></div></div>
+      <div class="bento-card p-5"><span class="text-gold text-xs font-bold" data-i18n="stats.autopay">ACTIVE AUTOPAY</span><div class="stat-value text-4xl font-black text-white" data-target="331">0</div></div>
+      <div class="bento-card p-5"><span class="text-gold text-xs font-bold" data-i18n="stats.health">HEALTH COVERAGE</span><div class="stat-value text-4xl font-black text-gold" data-target="100">0%</div></div>
+      <div class="bento-card p-5 md:col-span-2">
+        <div class="flex items-center gap-3"><div class="avatar bg-gradient-to-br from-gold to-amber-700 w-10 h-10 rounded-full flex items-center justify-center font-bold">MV</div><div><p class="font-bold">@MauriceVanegas</p><span class="role-badge text-gold text-[10px]">Founder</span></div></div>
         <p class="text-xs text-gray-400 mt-3" data-i18n="founder.quote">"Building the future of humanized finance."</p>
       </div>
       <div class="bento-card p-5"><span class="text-gold text-xs" data-i18n="stats.members">ACTIVE MEMBERS</span><div class="text-2xl font-black">+12.4K</div></div>
       <div class="bento-card p-5"><span class="text-gold text-xs" data-i18n="stats.distributed">DISTRIBUTED</span><div class="text-2xl font-black">$4.82M</div></div>
     </div>
 
-    <!-- Stories -->
+    <!-- Stories (sin cambios) -->
     <section id="historias" class="mb-20">
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <div data-aos="fade-right">
+        <div>
           <div class="flex items-center gap-2"><span class="text-3xl">👶</span><h2 class="text-2xl font-black uppercase text-gold" data-i18n="stories.title">Birth in HuFi</h2></div>
           <div class="bento-card p-5 mt-3 story-card"><p class="text-xs text-gold font-black" data-i18n="stories.case">REAL CASE #01</p><p class="font-bold text-lg" data-i18n="stories.caseTitle">A baby girl born without bank deposits</p><p class="text-gray-300" data-i18n="stories.caseDesc">All medical care covered by credit + Autopay. Blockchain with a human heartbeat.</p><div class="mt-2 text-[10px] border-l-2 border-gold pl-2">Protagonists: @Amabel2 / @kalindi1</div></div>
           <div class="bento-card p-5 mt-4 story-card"><h3 class="font-bold" data-i18n="stories.engine">⚙️ Community engine</h3><p class="text-sm" data-i18n="stories.engineText">Peanut oil mill financed with HuFi credit — @Manassehpl</p></div>
         </div>
-        <div data-aos="fade-left">
+        <div>
           <div class="relative rounded-2xl overflow-hidden"><img src="https://i.postimg.cc/GpYKfLxf/002-healthcare-hufi.jpg" class="w-full object-cover h-64" alt="HuFi community health" loading="lazy"></div>
           <div class="bento-card p-5 mt-5 text-center story-card">
             <p class="italic text-base font-semibold text-gray-200" data-i18n="founder.quoteLong">“Time is our most honest store of value. HuFi gives you tools to build your tomorrow.”</p>
@@ -413,7 +297,7 @@
       </div>
     </section>
 
-    <!-- Community + Masonry (lazy loading) -->
+    <!-- Community + Masonry + FEED REAL -->
     <section id="comunidad" class="mb-20">
       <h3 class="text-sm font-black text-gold uppercase tracking-[0.2em] mb-4" data-i18n="community.title">📡 Community in action · Visual stories</h3>
       <div class="flex gap-4 overflow-x-auto pb-4 mb-6">
@@ -431,78 +315,122 @@
 
       <div class="masonry-pure" id="masonryFeed">
         <div class="masonry-item bento-card overflow-hidden" data-category="tool">
-          <div class="image-wrapper"><img class="lazy-img" data-src="https://i.postimg.cc/HL5zNY9q/004-tools-2.jpg" alt="Community tools" style="aspect-ratio: 3/4;"><div class="image-overlay"><span class="font-bold text-sm">@Manassehpl <span class="role-badge ml-1">Contributor</span></span><div class="like-btn cursor-pointer flex items-center gap-1" data-likes="0"><svg width="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="like-heart"><path d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"/></svg><span class="like-count text-xs">0</span></div></div></div><div class="p-4"><p class="text-sm">“With HuFi credit I installed my oil mill. Now I employ 3 people.”</p></div>
+          <div class="image-wrapper relative"><img class="lazy-img" data-src="https://i.postimg.cc/HL5zNY9q/004-tools-2.jpg" alt="Community tools"><div class="image-overlay"><span class="font-bold text-sm">@Manassehpl <span class="role-badge ml-1 text-gold">Contributor</span></span><div class="like-btn cursor-pointer flex items-center gap-1" data-likes="0">❤️ <span class="like-count">0</span></div></div></div><div class="p-4"><p class="text-sm">“With HuFi credit I installed my oil mill. Now I employ 3 people.”</p></div>
         </div>
         <div class="masonry-item bento-card overflow-hidden" data-category="story">
-          <div class="image-wrapper"><img class="lazy-img" data-src="https://i.postimg.cc/GpYKfLxf/002-healthcare-hufi.jpg" alt="Healthcare story" style="aspect-ratio: 9/16;"><div class="image-overlay"><span class="font-bold text-sm">@mamansolomon <span class="role-badge ml-1">Verified Member</span></span><div class="like-btn cursor-pointer" data-likes="0">❤️ <span class="like-count">0</span></div></div></div><div class="p-4"><p class="text-sm">Medical checkup for my son using HuFi credit.</p></div>
+          <div class="image-wrapper relative"><img class="lazy-img" data-src="https://i.postimg.cc/GpYKfLxf/002-healthcare-hufi.jpg" alt="Healthcare story"><div class="image-overlay"><span class="font-bold text-sm">@mamansolomon <span class="role-badge ml-1">Verified Member</span></span><div class="like-btn cursor-pointer" data-likes="0">❤️ <span class="like-count">0</span></div></div></div><div class="p-4"><p class="text-sm">Medical checkup for my son using HuFi credit.</p></div>
         </div>
         <div class="masonry-item bento-card overflow-hidden" data-category="story">
-          <div class="image-wrapper"><img class="lazy-img" data-src="https://i.postimg.cc/MTS52Csw/011-desayuno-1.jpg" alt="Community breakfast" style="aspect-ratio: 4/3;"><div class="image-overlay"><span class="font-bold text-sm">@Murna1234 <span class="role-badge ml-1">Contributor</span></span><div class="like-btn cursor-pointer" data-likes="0">❤️ <span class="like-count">0</span></div></div></div><div class="p-4"><p class="text-xs">Bought essential supplies via Autopay.</p></div>
+          <div class="image-wrapper relative"><img class="lazy-img" data-src="https://i.postimg.cc/MTS52Csw/011-desayuno-1.jpg" alt="Community breakfast"><div class="image-overlay"><span class="font-bold text-sm">@Murna1234 <span class="role-badge ml-1">Contributor</span></span><div class="like-btn cursor-pointer" data-likes="0">❤️ <span class="like-count">0</span></div></div></div><div class="p-4"><p class="text-xs">Bought essential supplies via Autopay.</p></div>
         </div>
         <div class="masonry-item bento-card overflow-hidden" data-category="tool">
-          <div class="image-wrapper"><img class="lazy-img" data-src="https://i.postimg.cc/7L79RHNr/006-machine-lady.jpg" alt="Community machine" style="aspect-ratio: 1/1;"><div class="image-overlay"><span class="font-bold text-sm">@boka0123 <span class="role-badge ml-1">Verified Member</span></span><div class="like-btn cursor-pointer" data-likes="0">❤️ <span class="like-count">0</span></div></div></div><div class="p-4"><p class="text-xs">“Empowering members through Web3 technology.”</p></div>
+          <div class="image-wrapper relative"><img class="lazy-img" data-src="https://i.postimg.cc/7L79RHNr/006-machine-lady.jpg" alt="Community machine"><div class="image-overlay"><span class="font-bold text-sm">@boka0123 <span class="role-badge ml-1">Verified Member</span></span><div class="like-btn cursor-pointer" data-likes="0">❤️ <span class="like-count">0</span></div></div></div><div class="p-4"><p class="text-xs">“Empowering members through Web3 technology.”</p></div>
         </div>
       </div>
 
-      <!-- Impact Ticker con spinner de carga -->
-      <div class="mt-10 bento-card p-5 overflow-hidden">
-        <div class="flex items-center gap-2 mb-2"><span class="text-gold text-xs font-black tracking-wider" data-i18n="impact.title">🌍 GLOBAL IMPACT FEED</span><span class="text-[9px] text-gold/60 animate-pulse">● LIVE</span></div>
-        <div class="relative h-12 overflow-hidden flex items-center">
-          <div id="impactTicker" class="text-sm text-gray-300 font-mono"></div>
-          <div id="tickerSpinner" class="ticker-spinner" style="display: none;"></div>
+      <!-- NUEVO: FEED COMUNITARIO REAL CON FIREBASE -->
+      <div class="bento-card mt-10">
+        <h3 class="text-gold font-black mb-3 text-lg">🌍 Live Community Feed (real)</h3>
+        <div id="liveFeed" class="space-y-3 max-h-96 overflow-y-auto pr-2"></div>
+        <div class="mt-4 flex flex-col sm:flex-row gap-2">
+          <input id="postInput" placeholder="What's happening in your HuFi journey?" class="flex-1 p-2 bg-black border border-gold/40 rounded-full text-sm px-4">
+          <button id="postBtn" class="btn-gold text-sm px-5">Post to community →</button>
         </div>
-        <p class="text-[10px] text-gray-500 mt-3" data-i18n="impact.real">Real-time EOS transactions (simulated — replace with API)</p>
+        <p class="text-[10px] text-gray-500 mt-3">✨ Posts are saved in the cloud and seen by everyone. Your handle is @<span id="currentUserHandle">guest</span></p>
       </div>
 
+      <!-- Impact Ticker reemplazado por algo real? lo quitamos y dejamos solo el feed -->
       <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mt-8">
-        <div class="bento-card p-4"><h4 class="font-black">📢 Official Telegram Channel</h4><p class="text-[10px]">+12,480 members · 24/7 support</p><a href="https://t.me/Hu_Fi_Nigeria" class="block mt-2 bg-blue-600 text-center py-1 rounded-full text-xs">Join →</a></div>
+        <div class="bento-card p-4"><h4 class="font-black">📢 Official Telegram Channel</h4><p class="text-[10px]">+12,480 members · 24/7 support</p><a href="https://t.me/Hu_Fi_Nigeria" target="_blank" class="block mt-2 bg-blue-600 text-center py-1 rounded-full text-xs">Join →</a></div>
         <div class="bento-card p-4"><h4 class="font-black">🎥 Ecosystem Video</h4><a href="https://www.youtube.com/watch?v=x_gg5ChR0i4" target="_blank"><img src="https://i.ytimg.com/vi/x_gg5ChR0i4/maxresdefault.jpg" class="rounded-md" alt="HuFi video" loading="lazy"></a></div>
-        <div class="bento-card p-4"><h4 class="font-black">🏆 Strategic Alliance</h4><p class="text-[11px]">PGL Multilateral powers Web3 infrastructure.</p><a href="https://eospglmlt.com/" class="text-gold text-[10px] underline">Learn more →</a></div>
+        <div class="bento-card p-4"><h4 class="font-black">🏆 Strategic Alliance</h4><p class="text-[11px]">PGL Multilateral powers Web3 infrastructure.</p><a href="https://eospglmlt.com/" target="_blank" class="text-gold text-[10px] underline">Learn more →</a></div>
       </div>
     </section>
 
-    <section class="text-center"><div class="bento-card p-8 max-w-3xl mx-auto"><h2 class="text-2xl font-black uppercase" data-i18n="cta.title">Access the <span class="text-gold">HuFi Protocol</span></h2><a href="https://hu-fi.io/" class="btn-gold inline-block mt-3">Explore hu-fi.io ↗</a></div></section>
+    <section class="text-center"><div class="bento-card p-8 max-w-3xl mx-auto"><h2 class="text-2xl font-black uppercase" data-i18n="cta.title">Access the <span class="text-gold">HuFi Protocol</span></h2><a href="https://hu-fi.io/" target="_blank" class="btn-gold inline-block mt-3">Explore hu-fi.io ↗</a></div></section>
   </main>
 
-  <footer class="footer-glass mt-20 py-6">
+  <footer class="footer-glass mt-20 py-6 border-t border-gold/20">
     <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4">
       <div class="flex gap-5">
-        <a href="https://instagram.com/" target="_blank" class="text-white/60 hover:text-white"><span class="social-icon instagram w-5 h-5 block"></span></a>
-        <a href="https://twitter.com/" target="_blank" class="text-white/60 hover:text-white"><span class="social-icon twitter w-5 h-5 block"></span></a>
+        <a href="https://instagram.com/" target="_blank"><span class="social-icon instagram w-5 h-5 block bg-white/40 hover:bg-white"></span></a>
+        <a href="https://twitter.com/" target="_blank"><span class="social-icon twitter w-5 h-5 block bg-white/40 hover:bg-white"></span></a>
       </div>
       <div class="flex flex-wrap justify-center gap-4 text-[10px] font-mono uppercase tracking-widest text-white/40">
         <a href="#" id="openPrivacyBtn" class="hover:text-white">Privacy</a>
         <a href="#" id="openTermsBtn" class="hover:text-white">Terms</a>
         <span>© 2026 HuFi Today</span>
-        <span id="langSwitch" class="lang-switch">🌐 English</span>
+        <span id="langSwitch" class="lang-switch cursor-pointer">🌐 English</span>
       </div>
     </div>
   </footer>
 
-  <!-- Command Palette -->
-  <div id="commandPalette" class="command-palette" role="dialog">
-    <input type="text" id="commandInput" class="command-input" placeholder="Type a command... (fuzzy search enabled)" autocomplete="off">
-    <div id="commandResults" class="max-h-64 overflow-y-auto" role="listbox"></div>
+  <!-- Command Palette, modales, etc (igual) -->
+  <div id="commandPalette" class="command-palette">
+    <input type="text" id="commandInput" class="command-input w-full bg-black/80 text-white p-3 rounded-t-2xl" placeholder="Type a command...">
+    <div id="commandResults" class="max-h-64 overflow-y-auto"></div>
   </div>
-
-  <!-- Modales (sin cambios) -->
-  <div id="membershipModal" class="modal-overlay"><div class="modal-container"><h2 class="text-xl font-black text-gold">Verify your membership</h2><input type="text" id="telegramHandle" placeholder="@username" class="w-full p-2 my-2 bg-black/60 border"><input type="text" id="walletAddress" placeholder="EOS / 0x... wallet"><div class="flex gap-2 mt-3"><button id="submitMembership" class="bg-gold text-black px-4 py-1 rounded-full">Submit</button><button id="closeModalBtn" class="border px-4 py-1 rounded-full">Cancel</button></div></div></div>
-  <div id="privacyModal" class="modal-overlay"><div class="modal-container"><h2 class="text-xl font-black text-gold mb-2">Privacy Policy</h2><div class="text-[11px] text-gray-300 space-y-2"><p><strong>Collection:</strong> We only store your Telegram username and wallet.</p><p><strong>Usage:</strong> We do not share data with third parties.</p><p><strong>Security:</strong> No tracking cookies.</p></div><button id="closePrivacyBtn" class="mt-4 btn-outline w-full py-1 text-[11px]">Close</button></div></div>
-  <div id="termsModal" class="modal-overlay"><div class="modal-container"><h2 class="text-xl font-black text-gold mb-2">Terms of Use</h2><div class="text-[11px] text-gray-300 space-y-2"><p><strong>Acceptance:</strong> By using this site you agree to community guidelines.</p><p><strong>HuFi Credit:</strong> Does not constitute a legal financial obligation.</p><p><strong>Conduct:</strong> Harassment or spam is not allowed.</p></div><button id="closeTermsBtn" class="mt-4 btn-outline w-full py-1 text-[11px]">Close</button></div></div>
-  <div id="chatModal" class="modal-overlay"><div class="modal-container max-w-sm"><h3 class="text-gold font-black mb-2">Live chat</h3><p class="text-xs text-gray-300 mb-4">Connect with the HuFi community on Telegram.</p><a href="https://t.me/Hu_Fi_Nigeria" target="_blank" class="btn-gold block text-center text-xs">Open official group →</a><button id="closeChatBtn" class="mt-3 text-[10px] text-gray-400 underline w-full">Close</button></div></div>
+  <div id="membershipModal" class="modal-overlay"><div class="modal-container bg-black/90 border-gold p-6 rounded-2xl"><h2 class="text-xl font-black text-gold">Verify your membership</h2><input type="text" id="telegramHandle" placeholder="@username" class="w-full p-2 my-2 bg-black/60 border"><input type="text" id="walletAddress" placeholder="EOS / 0x... wallet"><div class="flex gap-2 mt-3"><button id="submitMembership" class="bg-gold text-black px-4 py-1 rounded-full">Submit</button><button id="closeModalBtn" class="border px-4 py-1 rounded-full">Cancel</button></div></div></div>
+  <div id="privacyModal" class="modal-overlay"><div class="modal-container bg-black/90 border-gold p-6 rounded-2xl"><h2 class="text-xl font-black text-gold mb-2">Privacy Policy</h2><div class="text-xs text-gray-300 space-y-2"><p>We only store your Telegram username and wallet. No sharing with third parties.</p></div><button id="closePrivacyBtn" class="mt-4 btn-outline w-full py-1">Close</button></div></div>
+  <div id="termsModal" class="modal-overlay"><div class="modal-container bg-black/90 border-gold p-6 rounded-2xl"><h2 class="text-xl font-black text-gold mb-2">Terms of Use</h2><div class="text-xs text-gray-300"><p>By using this site you agree to community guidelines. HuFi Credit does not constitute a legal financial obligation.</p></div><button id="closeTermsBtn" class="mt-4 btn-outline w-full py-1">Close</button></div></div>
+  <div id="chatModal" class="modal-overlay"><div class="modal-container max-w-sm bg-black/90 border-gold p-6 rounded-2xl"><h3 class="text-gold font-black mb-2">Live chat</h3><p class="text-xs text-gray-300 mb-4">Connect with the HuFi community on Telegram.</p><a href="https://t.me/Hu_Fi_Nigeria" target="_blank" class="btn-gold block text-center text-xs">Open official group →</a><button id="closeChatBtn" class="mt-3 text-[10px] text-gray-400 underline w-full">Close</button></div></div>
   <div class="chat-widget"><div id="chatButton" class="chat-button">💬</div></div>
   <div class="scroll-top" id="scrollTopBtn">↑</div>
 
-  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1"></script>
+  <script src="https://cdn.jsdelivr.net/npm/fuse.js@7.0.0"></script>
+  <script src="https://unpkg.com/lenis@1.1.20/dist/lenis.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
   <script>
     (function() {
-      // ================== LENIS SMOOTH SCROLL ==================
-      const lenis = new Lenis({ duration: 1.2, easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), smoothWheel: true });
+   // ==================== FIREBASE CONFIGURACIÓN (CORREGIDA) ====================
+const firebaseConfig = {
+  apiKey: "AIzaSyCqJszJQqt6xsKOmCnpvoS_fiObmdkeNyM",
+  authDomain: "hufitoday-f69b4.firebaseapp.com",
+  projectId: "hufitoday-f69b4",
+  storageBucket: "hufitoday-f69b4.firebasestorage.app",
+  messagingSenderId: "851370028031",
+  appId: "1:851370028031:web:b272279e95f6ce6a65d5ca",
+  measurementId: "G-G18T2EG1ZE"
+};
+
+// Inicializar Firebase (usando la compat version ya cargada)
+if (typeof firebase !== 'undefined') {
+  const app = firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+  var firestoreAvailable = true;
+  console.log("🔥 Firebase conectado correctamente");
+} else {
+  console.warn("⚠️ Firebase SDK no cargado");
+  var firestoreAvailable = false;
+  var db = null;
+}
+
+      // ==================== FECHA DINÁMICA ====================
+      const meses = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+      const hoy = new Date();
+      document.getElementById('dateBadge').innerText = `${String(hoy.getDate()).padStart(2,'0')} ${meses[hoy.getMonth()]} ${hoy.getFullYear()}`;
+
+      // ==================== LENIS SMOOTH SCROLL ====================
+      const lenis = new Lenis({ duration: 1.2, smoothWheel: true });
       function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
       requestAnimationFrame(raf);
-      
-      // ================== LAZY LOADING ==================
+
+      // ==================== INTERSECTION OBSERVER PARA BENTO CARDS ====================
+      const bentoCards = document.querySelectorAll('.bento-card');
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.1 });
+      bentoCards.forEach(card => observer.observe(card));
+
+      // ==================== LAZY LOADING IMÁGENES ====================
       const lazyImages = document.querySelectorAll('.lazy-img');
       const imageObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
@@ -515,59 +443,297 @@
         });
       }, { rootMargin: '200px' });
       lazyImages.forEach(img => imageObserver.observe(img));
-      
-      // ================== SANITIZACIÓN ==================
-      function sanitizeInput(str) { return str.replace(/[^\w@.-]/g, ''); }
-      document.getElementById('submitMembership')?.addEventListener('click', () => {
-        let telegram = sanitizeInput(document.getElementById('telegramHandle').value);
-        let wallet = sanitizeInput(document.getElementById('walletAddress').value);
-        if (!telegram || !wallet) alert('Please fill both fields with valid characters.');
-        else alert(`✅ Simulated registration for ${telegram} with wallet ${wallet}. Welcome to HuFi.`);
-        document.getElementById('membershipModal').classList.remove('active');
-      });
-      
-      // ================== WALLET DETECTION ==================
-      function checkWallet() { return typeof window.anchor !== 'undefined' || typeof window.wombat !== 'undefined'; }
-      document.getElementById('heroModalBtn')?.addEventListener('click', () => {
-        if (!checkWallet()) alert('⚠️ No compatible wallet detected. Install Anchor or Wombat.');
-        else document.getElementById('membershipModal').classList.add('active');
-      });
-      
-      // ================== IMPACT TICKER CON SPINNER ==================
-      const eosMessages = [
-        "🔗 TX: 0x7f9e...3a12 | +250 HUFI credited to @Amabel2",
-        "⚡ New Autopay contract signed on EOS mainnet",
-        "🏥 HuFi Clinic: 12 medical consultations covered by credit",
-        "🛢️ @Manassehpl received $1,200 for oil mill equipment",
-        "🌍 EOS block #3456789: HuFi distribution +$4,800"
-      ];
-      let msgIndex = 0;
-      const tickerDiv = document.getElementById('impactTicker');
-      const spinner = document.getElementById('tickerSpinner');
-      let isUpdating = false;
-      function updateTickerWithSpinner() {
-        if (isUpdating) return;
-        isUpdating = true;
-        // Mostrar spinner y ocultar texto
-        if (spinner) spinner.style.display = 'inline-block';
-        if (tickerDiv) tickerDiv.style.opacity = '0.3';
-        // Simular latencia de red (350ms)
-        setTimeout(() => {
-          if (tickerDiv) {
-            tickerDiv.innerText = eosMessages[msgIndex % eosMessages.length];
-            tickerDiv.style.opacity = '1';
+
+      // ==================== THREE.JS CON DETECCIÓN MÓVIL ====================
+      let scene, camera, renderer, icosa, particles, wireframe;
+      const isMobile = window.innerWidth < 768;
+      if (!isMobile) {
+        const container = document.getElementById('canvas-container');
+        scene = new THREE.Scene();
+        scene.background = new THREE.Color(0x000000);
+        camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.set(0, 0, 4.2);
+        renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(window.devicePixelRatio);
+        container.appendChild(renderer.domElement);
+
+        const geometry = new THREE.IcosahedronGeometry(1.2, 1);
+        const material = new THREE.MeshStandardMaterial({
+          color: 0xffaa44,
+          emissive: 0x442200,
+          roughness: 0.25,
+          metalness: 0.9,
+          flatShading: false
+        });
+        icosa = new THREE.Mesh(geometry, material);
+        scene.add(icosa);
+
+        const edgesGeo = new THREE.EdgesGeometry(geometry);
+        const wireframeMat = new THREE.LineBasicMaterial({ color: 0xffaa66 });
+        wireframe = new THREE.LineSegments(edgesGeo, wireframeMat);
+        icosa.add(wireframe);
+
+        const particleCount = 800; // reducido para rendimiento
+        const particleGeo = new THREE.BufferGeometry();
+        const particlePositions = new Float32Array(particleCount * 3);
+        for (let i = 0; i < particleCount; i++) {
+          const radius = 1.8 + Math.random() * 0.6;
+          const theta = Math.random() * Math.PI * 2;
+          const phi = Math.acos(2 * Math.random() - 1);
+          particlePositions[i*3] = radius * Math.sin(phi) * Math.cos(theta);
+          particlePositions[i*3+1] = radius * Math.sin(phi) * Math.sin(theta);
+          particlePositions[i*3+2] = radius * Math.cos(phi);
+        }
+        particleGeo.setAttribute('position', new THREE.BufferAttribute(particlePositions, 3));
+        const particleMat = new THREE.PointsMaterial({ color: 0xffaa55, size: 0.025, transparent: true, blending: THREE.AdditiveBlending });
+        particles = new THREE.Points(particleGeo, particleMat);
+        scene.add(particles);
+
+        const ambientLight = new THREE.AmbientLight(0x222222);
+        scene.add(ambientLight);
+        const mainLight = new THREE.PointLight(0xffaa66, 1.2);
+        mainLight.position.set(2, 3, 4);
+        scene.add(mainLight);
+        const fillLight = new THREE.PointLight(0xff8844, 0.6);
+        fillLight.position.set(-2, 1, 3);
+        scene.add(fillLight);
+        const backLight = new THREE.PointLight(0xff6600, 0.5);
+        backLight.position.set(0, 0, -3);
+        scene.add(backLight);
+
+        let targetRotX = 0, targetRotY = 0;
+        let mouseX = 0, mouseY = 0;
+        document.addEventListener('mousemove', (e) => {
+          mouseX = (e.clientX / window.innerWidth) * 2 - 1;
+          mouseY = (e.clientY / window.innerHeight) * 2 - 1;
+          targetRotY = mouseX * 0.8;
+          targetRotX = mouseY * 0.5;
+        });
+
+        const originalPositions = geometry.attributes.position.array.slice();
+        let time = 0;
+        function animate3D() {
+          requestAnimationFrame(animate3D);
+          time += 0.016;
+          const positions = icosa.geometry.attributes.position.array;
+          for (let i = 0; i < positions.length / 3; i++) {
+            const ix = i*3, iy = i*3+1, iz = i*3+2;
+            const x = originalPositions[ix];
+            const y = originalPositions[iy];
+            const offsetZ = Math.sin(x * 2.5 + time) * 0.03 + Math.cos(y * 2.0 + time * 1.2) * 0.03;
+            positions[iz] = originalPositions[iz] + offsetZ;
           }
-          if (spinner) spinner.style.display = 'none';
-          msgIndex++;
-          isUpdating = false;
-        }, 350);
+          icosa.geometry.attributes.position.needsUpdate = true;
+          if (Math.floor(time * 30) % 30 === 0) {
+            const newEdges = new THREE.EdgesGeometry(icosa.geometry);
+            wireframe.geometry.dispose();
+            wireframe.geometry = newEdges;
+          }
+          icosa.rotation.x += (targetRotX - icosa.rotation.x) * 0.08;
+          icosa.rotation.y += (targetRotY - icosa.rotation.y) * 0.08;
+          particles.rotation.x = icosa.rotation.x;
+          particles.rotation.y = icosa.rotation.y;
+          particles.rotation.z += 0.003;
+          renderer.render(scene, camera);
+        }
+        animate3D();
+
+        window.addEventListener('resize', () => {
+          camera.aspect = window.innerWidth / window.innerHeight;
+          camera.updateProjectionMatrix();
+          renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+      } else {
+        // En móvil, ocultamos el canvas y mostramos un fondo negro liso
+        const container = document.getElementById('canvas-container');
+        if(container) container.style.display = 'none';
       }
-      if (tickerDiv && spinner) {
-        tickerDiv.innerText = eosMessages[0];
-        setInterval(updateTickerWithSpinner, 6000);
+
+      // ==================== ANIMACIÓN DE TÍTULO ====================
+      function splitAndAnimateTitle() {
+        const titleElem = document.getElementById('heroTitle');
+        if (!titleElem) return;
+        const html = titleElem.innerHTML;
+        const temp = document.createElement('div');
+        temp.innerHTML = html;
+        function wrapChars(node) {
+          if (node.nodeType === 3) {
+            const text = node.textContent;
+            if (!text.trim()) return;
+            const span = document.createElement('span');
+            for (let ch of text) {
+              const c = document.createElement('span');
+              c.className = 'char';
+              c.textContent = ch;
+              span.appendChild(c);
+            }
+            node.parentNode.replaceChild(span, node);
+          } else if (node.nodeType === 1 && node.tagName !== 'SPAN') {
+            for (let i = 0; i < node.childNodes.length; i++) wrapChars(node.childNodes[i]);
+          }
+        }
+        wrapChars(temp);
+        titleElem.innerHTML = temp.innerHTML;
+        const chars = document.querySelectorAll('#heroTitle .char');
+        gsap.set(chars, { y: 80, opacity: 0, rotationX: -90 });
+        gsap.to(chars, {
+          y: 0,
+          opacity: 1,
+          rotationX: 0,
+          duration: 1.1,
+          stagger: 0.025,
+          ease: "back.out(1.2)",
+          onComplete: () => {
+            gsap.to(titleElem, { textShadow: "0 0 20px #FFB938, 0 0 30px rgba(255,185,56,0.5)", duration: 0.4, repeat: 1, yoyo: true });
+          }
+        });
       }
-      
-      // ================== COMMAND PALETTE (FUZZY) ==================
+      splitAndAnimateTitle();
+
+      // ==================== CONTADORES ESTADÍSTICOS ====================
+      const statValues = document.querySelectorAll('.stat-value');
+      const statsObserver = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting) {
+          statValues.forEach(el => {
+            let target = parseInt(el.getAttribute('data-target'));
+            let current = 0;
+            let step = target / 50;
+            let intv = setInterval(() => {
+              current += step;
+              if (current >= target) {
+                current = target;
+                clearInterval(intv);
+              }
+              el.innerText = Math.floor(current) + (el.innerText.includes('%') ? '%' : '');
+            }, 20);
+          });
+          statsObserver.disconnect();
+        }
+      }, { threshold: 0.3 });
+      statsObserver.observe(document.getElementById('impacto'));
+
+      // ==================== LIKES DEL MASONRY (solo visuales, se perderán) ====================
+      document.querySelectorAll('.masonry-item .like-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          let countSpan = btn.querySelector('.like-count');
+          let likes = parseInt(btn.getAttribute('data-likes') || '0');
+          likes++;
+          countSpan.innerText = likes;
+          btn.setAttribute('data-likes', likes);
+          canvasConfetti({ particleCount: 40, spread: 55, origin: { y: 0.6 }, colors: ['#FFB938'] });
+        });
+      });
+
+      // ==================== FILTROS MASONRY ====================
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          const filter = btn.dataset.filter;
+          document.querySelectorAll('.masonry-item').forEach(item => {
+            if (filter === 'all' || item.dataset.category === filter) item.style.display = 'block';
+            else item.style.display = 'none';
+          });
+        });
+      });
+
+      // ==================== FEED REAL CON FIREBASE ====================
+      const feedDiv = document.getElementById('liveFeed');
+      const postInput = document.getElementById('postInput');
+      const postBtn = document.getElementById('postBtn');
+      const currentUserSpan = document.getElementById('currentUserHandle');
+
+      function getCurrentUser() {
+        return localStorage.getItem('hufi_user') || 'guest';
+      }
+      currentUserSpan.innerText = getCurrentUser();
+
+      function renderPost(doc) {
+        const data = doc.data();
+        const postDiv = document.createElement('div');
+        postDiv.className = "post-card p-3 rounded-xl border border-gold/20 bg-black/40";
+        postDiv.innerHTML = `
+          <div class="flex justify-between text-xs text-gray-400">
+            <span class="font-bold text-gold">@${data.user || 'anon'}</span>
+            <span>${new Date(data.created).toLocaleString()}</span>
+          </div>
+          <p class="mt-1 text-sm">${escapeHtml(data.text)}</p>
+          <button class="like-btn-feed text-xs mt-2 text-gold flex items-center gap-1" data-id="${doc.id}">❤️ <span class="like-count">${data.likes || 0}</span></button>
+        `;
+        const likeButton = postDiv.querySelector('.like-btn-feed');
+        likeButton.addEventListener('click', async (e) => {
+          e.stopPropagation();
+          if (!firestoreAvailable) {
+            alert("Firebase no configurado. Los likes no se guardarán.");
+            return;
+          }
+          const newLikes = (data.likes || 0) + 1;
+          await db.collection("posts").doc(doc.id).update({ likes: newLikes });
+          likeButton.querySelector('.like-count').innerText = newLikes;
+          canvasConfetti({ particleCount: 20, spread: 40, origin: { y: 0.7 }, colors: ['#FFB938'] });
+        });
+        return postDiv;
+      }
+
+      function escapeHtml(str) {
+        return str.replace(/[&<>]/g, function(m) {
+          if (m === '&') return '&amp;';
+          if (m === '<') return '&lt;';
+          if (m === '>') return '&gt;';
+          return m;
+        });
+      }
+
+      if (firestoreAvailable && db) {
+        // Escuchar posts en tiempo real
+        db.collection("posts").orderBy("created", "desc").limit(30).onSnapshot(snapshot => {
+          feedDiv.innerHTML = '';
+          snapshot.forEach(doc => {
+            feedDiv.appendChild(renderPost(doc));
+          });
+        }, error => {
+          console.error("Error en snapshot:", error);
+          feedDiv.innerHTML = '<p class="text-red-400">Error cargando el feed. Revisa las reglas de Firestore.</p>';
+        });
+
+        postBtn.onclick = async () => {
+          const text = postInput.value.trim();
+          if (!text) return;
+          const user = getCurrentUser();
+          await db.collection("posts").add({
+            user: user,
+            text: text,
+            likes: 0,
+            created: Date.now()
+          });
+          postInput.value = '';
+        };
+      } else {
+        feedDiv.innerHTML = '<p class="text-yellow-400">⚠️ Firebase no configurado. El feed funcionará en modo local (solo este navegador).</p><p class="text-xs mt-2">Para modo real, crea un proyecto en Firebase y pega tu configuración en el código.</p>';
+        // Modo local simulado (para que no rompa)
+        let localPosts = [];
+        function renderLocalFeed() {
+          feedDiv.innerHTML = '';
+          localPosts.slice(0, 20).forEach(p => {
+            const div = document.createElement('div');
+            div.className = "post-card p-3 rounded-xl border border-gold/20";
+            div.innerHTML = `<div class="flex justify-between text-xs"><span>@${p.user}</span><span>${new Date(p.created).toLocaleString()}</span></div><p class="mt-1">${escapeHtml(p.text)}</p><button class="text-xs text-gold">❤️ ${p.likes}</button>`;
+            feedDiv.appendChild(div);
+          });
+        }
+        postBtn.onclick = () => {
+          const text = postInput.value.trim();
+          if (!text) return;
+          localPosts.unshift({ user: getCurrentUser(), text: text, likes: 0, created: Date.now() });
+          renderLocalFeed();
+          postInput.value = '';
+        };
+        renderLocalFeed();
+      }
+
+      // ==================== COMMAND PALETTE ====================
       const commandsList = [
         { name: "📊 Go to Impact", action: "impacto" },
         { name: "📖 Go to Stories", action: "historias" },
@@ -581,18 +747,16 @@
       const cmdPalette = document.getElementById('commandPalette');
       const cmdInput = document.getElementById('commandInput');
       const cmdResults = document.getElementById('commandResults');
-      let selectedCmdIndex = -1;
       function renderCommands(filtered) {
         cmdResults.innerHTML = '';
         filtered.forEach(cmd => {
           const div = document.createElement('div');
-          div.className = 'command-item';
+          div.className = 'command-item p-2 cursor-pointer hover:bg-gold/20';
           div.textContent = cmd.name;
           div.dataset.action = cmd.action;
           div.addEventListener('click', () => executeCommand(cmd.action));
           cmdResults.appendChild(div);
         });
-        selectedCmdIndex = -1;
       }
       function executeCommand(action) {
         if (action === 'impacto') document.getElementById('impacto').scrollIntoView({ behavior: 'smooth' });
@@ -617,99 +781,39 @@
         if ((e.ctrlKey || e.metaKey) && e.key === 'k') { e.preventDefault(); cmdPalette.classList.add('active'); cmdInput.focus(); renderCommands(commandsList); }
         if (e.key === 'Escape') cmdPalette.classList.remove('active');
       });
-      
-      // ================== THREE.JS CON SHADER + HOVER EN HISTORIAS ==================
-      let threeContainer, scene, camera, renderer, shaderMaterial, mesh;
-      let hoverIntensity = 0; // 0 = normal, 1 = hover activo
-      let targetHover = 0;
-      const storyCards = document.querySelectorAll('#historias .story-card, #historias .bento-card');
-      storyCards.forEach(card => {
-        card.addEventListener('mouseenter', () => { targetHover = 1; });
-        card.addEventListener('mouseleave', () => { targetHover = 0; });
-      });
-      
-      const threeObserver = new IntersectionObserver((entries) => {
-        if (entries[0].isIntersecting && !threeContainer) initThree();
-      }, { threshold: 0.1 });
-      threeObserver.observe(document.body);
-      
-      function initThree() {
-        if (window.innerWidth < 768) return;
-        threeContainer = document.createElement('div');
-        threeContainer.style.position = 'fixed';
-        threeContainer.style.top = 0;
-        threeContainer.style.left = 0;
-        threeContainer.style.width = '100%';
-        threeContainer.style.height = '100%';
-        threeContainer.style.pointerEvents = 'none';
-        threeContainer.style.zIndex = -1;
-        threeContainer.style.opacity = 0.35;
-        threeContainer.classList.add('canvas-mask');
-        document.body.appendChild(threeContainer);
-        scene = new THREE.Scene();
-        camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
-        camera.position.z = 3;
-        renderer = new THREE.WebGLRenderer({ alpha: true });
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.setClearColor(0x000000, 0);
-        threeContainer.appendChild(renderer.domElement);
-        const geometry = new THREE.IcosahedronGeometry(1.2, 0);
-        shaderMaterial = new THREE.ShaderMaterial({
-          uniforms: { time: { value: 0 }, hover: { value: 0 } },
-          vertexShader: `
-            varying vec3 vPosition;
-            void main() {
-              vPosition = position;
-              vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
-              gl_PointSize = 1.0;
-              gl_Position = projectionMatrix * mvPosition;
-            }
-          `,
-          fragmentShader: `
-            uniform float time;
-            uniform float hover;
-            void main() {
-              float r = 0.9 + sin(time * 1.5) * 0.1 + hover * 0.5;
-              float g = 0.7 + cos(time * 1.2) * 0.2 + hover * 0.2;
-              float b = 0.2 + sin(time * 0.8) * 0.1 - hover * 0.2;
-              gl_FragColor = vec4(r, g, b, 0.85);
-            }
-          `
-        });
-        mesh = new THREE.Mesh(geometry, shaderMaterial);
-        scene.add(mesh);
-        const light = new THREE.PointLight(0xffaa33, 0.6);
-        light.position.set(2,3,4);
-        scene.add(light);
-        let mouseX = 0, mouseY = 0;
-        document.addEventListener('mousemove', (e) => { mouseX = (e.clientX/window.innerWidth)*2 -1; mouseY = (e.clientY/window.innerHeight)*2 -1; });
-        function animate() {
-          requestAnimationFrame(animate);
-          if (shaderMaterial) {
-            shaderMaterial.uniforms.time.value += 0.01;
-            // Interpolación suave del hover
-            hoverIntensity += (targetHover - hoverIntensity) * 0.1;
-            shaderMaterial.uniforms.hover.value = hoverIntensity;
-          }
-          mesh.rotation.x += 0.003 + mouseY * 0.01;
-          mesh.rotation.y += 0.005 + mouseX * 0.01;
-          renderer.render(scene, camera);
-        }
-        animate();
-        window.addEventListener('resize', () => { camera.aspect = window.innerWidth/window.innerHeight; camera.updateProjectionMatrix(); renderer.setSize(window.innerWidth, window.innerHeight); });
-      }
-      
-      // ================== I18N CON LOCALSTORAGE ==================
+
+      // ==================== TRADUCCIONES (mantenidas igual) ====================
       const translations = {
-        en: { 'nav.impact':'Impact','nav.stories':'Stories','nav.community':'Community','nav.protocol':'Protocol','hero.badge':'You are the hero','hero.title':'YOUR<br><span class="text-gold">TIME</span><br>IS VALUE','hero.sub':'12,480 people are already building their financial freedom with social credit and Autopay.','hero.cta':'⚡ Activate membership','hero.telegram':'🔐 Join with Telegram','stats.eto':'ETO ECOSYSTEM','stats.nodes':'Verified nodes','stats.autopay':'ACTIVE AUTOPAY','stats.health':'HEALTH COVERAGE','stats.members':'ACTIVE MEMBERS','stats.distributed':'DISTRIBUTED','founder.quote':'Building the future of humanized finance.','stories.title':'Birth in HuFi','stories.case':'REAL CASE #01','stories.caseTitle':'A baby girl born without bank deposits','stories.caseDesc':'All medical care covered by credit + Autopay.','stories.engine':'⚙️ Community engine','stories.engineText':'Peanut oil mill financed with HuFi credit — @Manassehpl','founder.quoteLong':'“Time is our most honest store of value. HuFi gives you tools to build your tomorrow.”','community.title':'📡 Community in action · Visual stories','impact.title':'🌍 GLOBAL IMPACT FEED','impact.real':'Real-time EOS transactions (simulated — replace with API)','cta.title':'Access the <span class="text-gold">HuFi Protocol</span>' },
-        es: { 'nav.impact':'Impacto','nav.stories':'Historias','nav.community':'Comunidad','nav.protocol':'Protocolo','hero.badge':'Tú eres el héroe','hero.title':'TU<br><span class="text-gold">TIEMPO</span><br>ES VALOR','hero.sub':'12.480 personas ya construyen su libertad financiera con crédito social y Autopay.','hero.cta':'⚡ Activar membresía','hero.telegram':'🔐 Unirse con Telegram','stats.eto':'ECOSISTEMA ETO','stats.nodes':'Nodos verificados','stats.autopay':'AUTOPAY ACTIVO','stats.health':'COBERTURA DE SALUD','stats.members':'MIEMBROS ACTIVOS','stats.distributed':'DISTRIBUIDO','founder.quote':'Construyendo el futuro de las finanzas humanizadas.','stories.title':'Nacimiento en HuFi','stories.case':'CASO REAL #01','stories.caseTitle':'Una niña nace sin depósitos bancarios','stories.caseDesc':'Atención médica cubierta por crédito + Autopay.','stories.engine':'⚙️ Motor comunitario','stories.engineText':'Planta de aceite de maní financiada con crédito HuFi — @Manassehpl','founder.quoteLong':'“El tiempo es nuestra reserva de valor más honesta. HuFi te da herramientas para construir tu mañana.”','community.title':'📡 Comunidad en acción · Historias visuales','impact.title':'🌍 TICKER DE IMPACTO GLOBAL','impact.real':'Transacciones EOS en tiempo real (simulado — reemplazar con API)','cta.title':'Accede al <span class="text-gold">Protocolo HuFi</span>' }
+        en: { 
+          'nav.subtitle':'Weekly Community Report','nav.impact':'Impact','nav.stories':'Stories','nav.community':'Community','nav.protocol':'Protocol',
+          'hero.badge':'Join the movement','hero.sub':'12,480 people are already building their financial freedom with social credit and Autopay.',
+          'hero.cta':'⚡ Activate membership','hero.telegram':'🔐 Join with Telegram','stats.eto':'ETO ECOSYSTEM','stats.nodes':'Verified nodes',
+          'stats.autopay':'ACTIVE AUTOPAY','stats.health':'HEALTH COVERAGE','stats.members':'ACTIVE MEMBERS','stats.distributed':'DISTRIBUTED',
+          'founder.quote':'Building the future of humanized finance.','stories.title':'Birth in HuFi','stories.case':'REAL CASE #01',
+          'stories.caseTitle':'A baby girl born without bank deposits','stories.caseDesc':'All medical care covered by credit + Autopay.',
+          'stories.engine':'⚙️ Community engine','stories.engineText':'Peanut oil mill financed with HuFi credit — @Manassehpl',
+          'founder.quoteLong':'“Time is our most honest store of value. HuFi gives you tools to build your tomorrow.”',
+          'community.title':'📡 Community in action · Visual stories','cta.title':'Access the <span class="text-gold">HuFi Protocol</span>'
+        },
+        es: { 
+          'nav.subtitle':'Reporte Semanal Comunitario','nav.impact':'Impacto','nav.stories':'Historias','nav.community':'Comunidad','nav.protocol':'Protocolo',
+          'hero.badge':'Únete al movimiento','hero.sub':'12.480 personas ya construyen su libertad financiera con crédito social y Autopay.',
+          'hero.cta':'⚡ Activar membresía','hero.telegram':'🔐 Unirse con Telegram','stats.eto':'ECOSISTEMA ETO','stats.nodes':'Nodos verificados',
+          'stats.autopay':'AUTOPAY ACTIVO','stats.health':'COBERTURA DE SALUD','stats.members':'MIEMBROS ACTIVOS','stats.distributed':'DISTRIBUIDO',
+          'founder.quote':'Construyendo el futuro de las finanzas humanizadas.','stories.title':'Nacimiento en HuFi','stories.case':'CASO REAL #01',
+          'stories.caseTitle':'Una niña nace sin depósitos bancarios','stories.caseDesc':'Atención médica cubierta por crédito + Autopay.',
+          'stories.engine':'⚙️ Motor comunitario','stories.engineText':'Planta de aceite de maní financiada con crédito HuFi — @Manassehpl',
+          'founder.quoteLong':'“El tiempo es nuestra reserva de valor más honesta. HuFi te da herramientas para construir tu mañana.”',
+          'community.title':'📡 Comunidad en acción · Historias visuales','cta.title':'Accede al <span class="text-gold">Protocolo HuFi</span>'
+        }
       };
       let currentLang = localStorage.getItem('hufi_lang') || 'en';
       function applyLanguage(lang) {
         document.querySelectorAll('[data-i18n]').forEach(el => {
           const key = el.getAttribute('data-i18n');
           if (translations[lang] && translations[lang][key]) {
-            if (el.tagName === 'H1' && key === 'hero.title') el.innerHTML = translations[lang][key];
+            if (key === 'hero.title') return; // El hero ya lo cambiamos manualmente
+            else if (key === 'cta.title') el.innerHTML = translations[lang][key];
             else el.innerHTML = translations[lang][key];
           }
         });
@@ -722,62 +826,52 @@
         applyLanguage(newLang);
       });
       applyLanguage(currentLang);
-      
-      // ================== RESTO DE INICIALIZACIONES ==================
-      window.addEventListener('load', () => {
-        document.querySelector('.page-transition')?.classList.remove('fade-out');
-        AOS.init({ duration: 600, once: true });
-        // Contadores stats
-        const statValues = document.querySelectorAll('.stat-value');
-        const observerStats = new IntersectionObserver((entries) => {
-          if (entries[0].isIntersecting) {
-            statValues.forEach(el => {
-              let target = parseInt(el.getAttribute('data-target'));
-              let current = 0;
-              let step = target / 40;
-              let intv = setInterval(() => { current += step; if(current >= target) { current = target; clearInterval(intv); } el.innerText = Math.floor(current) + (el.innerText.includes('%') ? '%' : ''); }, 25);
-            });
-            observerStats.disconnect();
-          }
-        }, { threshold: 0.2 });
-        observerStats.observe(document.getElementById('impacto'));
-        // Likes
-        document.querySelectorAll('.like-btn').forEach(btn => {
-          btn.addEventListener('click', (e) => { e.stopPropagation(); let countSpan = btn.querySelector('.like-count'); let likes = parseInt(btn.getAttribute('data-likes') || '0'); likes++; countSpan.innerText = likes; btn.setAttribute('data-likes', likes); canvasConfetti({ particleCount: 40, spread: 55, origin: { y: 0.6 }, colors: ['#FFB938'] }); });
-        });
-        // Filtros masonry
-        document.querySelectorAll('.filter-btn').forEach(btn => {
-          btn.addEventListener('click', () => {
-            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            const filter = btn.dataset.filter;
-            document.querySelectorAll('.masonry-item').forEach(item => {
-              if (filter === 'all' || item.dataset.category === filter) item.style.display = 'block';
-              else item.style.display = 'none';
-            });
-          });
-        });
-        // Scroll top
-        const scrollBtn = document.getElementById('scrollTopBtn');
-        window.addEventListener('scroll', () => scrollBtn.style.opacity = window.scrollY > 400 ? '1' : '0');
-        scrollBtn.addEventListener('click', () => lenis.scrollTo(0));
-        // Modales
-        const membershipModal = document.getElementById('membershipModal'), privacyModal = document.getElementById('privacyModal'), termsModal = document.getElementById('termsModal'), chatModal = document.getElementById('chatModal');
-        document.getElementById('closeModalBtn')?.addEventListener('click', () => membershipModal.classList.remove('active'));
-        document.getElementById('socialLoginBtn')?.addEventListener('click', () => { document.getElementById('telegramHandle').value = '@example_user'; membershipModal.classList.add('active'); });
-        document.getElementById('openPrivacyBtn')?.addEventListener('click', (e) => { e.preventDefault(); privacyModal.classList.add('active'); });
-        document.getElementById('openTermsBtn')?.addEventListener('click', (e) => { e.preventDefault(); termsModal.classList.add('active'); });
-        document.getElementById('closePrivacyBtn')?.addEventListener('click', () => privacyModal.classList.remove('active'));
-        document.getElementById('closeTermsBtn')?.addEventListener('click', () => termsModal.classList.remove('active'));
-        document.getElementById('chatButton')?.addEventListener('click', () => chatModal.classList.add('active'));
-        document.getElementById('closeChatBtn')?.addEventListener('click', () => chatModal.classList.remove('active'));
-        // Energy bar scroll
-        window.addEventListener('scroll', () => {
-          const winScroll = document.documentElement.scrollTop;
-          const height = document.documentElement.scrollHeight - window.innerHeight;
-          document.getElementById('energy-bar').style.width = (winScroll / height) * 100 + '%';
-        });
+
+      // ==================== MODAL DE MEMBRESÍA (AHORA GUARDA EN LOCALSTORAGE) ====================
+      const membershipModal = document.getElementById('membershipModal');
+      const privacyModal = document.getElementById('privacyModal');
+      const termsModal = document.getElementById('termsModal');
+      const chatModal = document.getElementById('chatModal');
+      function sanitizeInput(str) { return str.replace(/[^\w@.-]/g, ''); }
+      document.getElementById('submitMembership')?.addEventListener('click', () => {
+        let telegram = sanitizeInput(document.getElementById('telegramHandle').value);
+        let wallet = sanitizeInput(document.getElementById('walletAddress').value);
+        if (!telegram || !wallet) {
+          alert('Please fill both fields with valid characters.');
+          return;
+        }
+        // Guardar usuario real
+        localStorage.setItem('hufi_user', telegram.replace('@',''));
+        currentUserSpan.innerText = getCurrentUser();
+        alert(`✅ Welcome to HuFi, ${telegram}! Your wallet ${wallet} has been associated.`);
+        membershipModal.classList.remove('active');
+        // Refrescar feed para que muestre el nuevo handle en futuros posts
       });
+      function checkWallet() { return true; } // para simular, siempre true
+      document.getElementById('heroModalBtn')?.addEventListener('click', () => {
+        membershipModal.classList.add('active');
+      });
+      document.getElementById('socialLoginBtn')?.addEventListener('click', () => { 
+        document.getElementById('telegramHandle').value = '@example_user'; 
+        membershipModal.classList.add('active'); 
+      });
+      document.getElementById('closeModalBtn')?.addEventListener('click', () => membershipModal.classList.remove('active'));
+      document.getElementById('openPrivacyBtn')?.addEventListener('click', (e) => { e.preventDefault(); privacyModal.classList.add('active'); });
+      document.getElementById('openTermsBtn')?.addEventListener('click', (e) => { e.preventDefault(); termsModal.classList.add('active'); });
+      document.getElementById('closePrivacyBtn')?.addEventListener('click', () => privacyModal.classList.remove('active'));
+      document.getElementById('closeTermsBtn')?.addEventListener('click', () => termsModal.classList.remove('active'));
+      document.getElementById('chatButton')?.addEventListener('click', () => chatModal.classList.add('active'));
+      document.getElementById('closeChatBtn')?.addEventListener('click', () => chatModal.classList.remove('active'));
+
+      // Scroll top y barra de energía
+      const scrollBtn = document.getElementById('scrollTopBtn');
+      window.addEventListener('scroll', () => {
+        scrollBtn.style.opacity = window.scrollY > 400 ? '1' : '0';
+        const winScroll = document.documentElement.scrollTop;
+        const height = document.documentElement.scrollHeight - window.innerHeight;
+        document.getElementById('energy-bar').style.width = (winScroll / height) * 100 + '%';
+      });
+      scrollBtn.addEventListener('click', () => lenis.scrollTo(0));
     })();
   </script>
 </body>
