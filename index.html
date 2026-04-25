@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>HuFi Today | The Living Weekly Report</title>
-  <meta name="description" content="Weekly proof of human credit. Real people, real impact, no banks.">
+  <title>HuFi Today | Comunidad Viva · Ledger narrativo</title>
+  <meta name="description" content="Comunidad HuFi con feed real, likes persistentes y reputación.">
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -41,11 +41,52 @@
     .date-badge { font-size: 0.7rem; font-weight: 600; background: rgba(255,185,56,0.12); padding: 0.2rem 0.75rem; border-radius: 24px; border: 1px solid rgba(255,185,56,0.4); font-family: monospace; }
     .post-card { background: rgba(0,0,0,0.5); border-left: 3px solid #FFB938; transition: 0.1s; }
     .post-card:hover { background: rgba(255,185,56,0.05); }
-    .post-card.featured-post { border: 2px solid #FFB938; background: rgba(255,185,56,0.05); }
     .social-icon { display: inline-block; width: 24px; height: 24px; background-size: contain; background-repeat: no-repeat; background-position: center; opacity: 0.7; transition: opacity 0.2s; }
     .social-icon:hover { opacity: 1; }
     .icon-insta { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23FFB938'%3E%3Cpath d='M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 11-2.881 0 1.44 1.44 0 012.88 0z'/%3E%3C/svg%3E"); }
     .icon-x { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23FFB938'%3E%3Cpath d='M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z'/%3E%3C/svg%3E"); }
+    /* === MEJORAS PREMIUM === */
+    .feed-card {
+      background: rgba(255, 255, 255, 0.03);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 185, 56, 0.1);
+      transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+    .feed-card:hover {
+      border-color: rgba(255, 185, 56, 0.5);
+      box-shadow: 0 0 20px rgba(255, 185, 56, 0.1);
+      transform: translateY(-2px);
+    }
+    .status-pulse {
+      width: 8px;
+      height: 8px;
+      background: #ffb938;
+      border-radius: 50%;
+      box-shadow: 0 0 0 0 rgba(255, 185, 56, 0.7);
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(255, 185, 56, 0.7); }
+      70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(255, 185, 56, 0); }
+      100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(255, 185, 56, 0); }
+    }
+    .scan-line {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, rgba(255, 185, 56, 0.2), transparent);
+      z-index: 50;
+      pointer-events: none;
+      animation: scan 8s linear infinite;
+    }
+    @keyframes scan {
+      0% { top: -10%; }
+      100% { top: 110%; }
+    }
+    .animate-ping-once { animation: ping 0.3s ease-out; }
+    @keyframes ping { 0% { transform: scale(1); } 50% { transform: scale(1.3); } 100% { transform: scale(1); } }
   </style>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
   <link href="https://unpkg.com/lenis@1.1.20/dist/lenis.css" rel="stylesheet">
@@ -53,656 +94,638 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 </head>
 <body>
-  <div id="canvas-container"></div>
-  <div id="energy-bar"></div>
+<div class="scan-line"></div>
+<div id="canvas-container"></div>
+<div id="energy-bar"></div>
 
-  <nav class="fixed top-0 w-full z-50 py-2 px-4 md:px-6 nav-blur flex flex-wrap justify-between items-center gap-2">
-    <div class="flex items-center gap-2">
-      <img src="https://i.postimg.cc/Dzs6NvPp/000-logo-hufi.jpg" alt="Logo" class="w-9 h-9 rounded-full object-cover">
-      <div class="flex flex-col leading-tight">
-        <span class="font-black text-base md:text-lg text-white">HuFi<span class="text-gold">Today</span></span>
-        <span class="text-[10px] font-mono text-gold/80 tracking-wider">Weekly Report</span>
-      </div>
+<nav class="fixed top-0 w-full z-50 py-2 px-4 md:px-6 nav-blur flex flex-wrap justify-between items-center gap-2">
+  <div class="flex items-center gap-2">
+    <img src="https://i.postimg.cc/Dzs6NvPp/000-logo-hufi.jpg" alt="Logo" class="w-9 h-9 rounded-full object-cover">
+    <div class="flex flex-col leading-tight">
+      <span class="font-black text-base md:text-lg text-white">HuFi<span class="text-gold">Today</span></span>
+      <span class="text-[10px] font-mono text-gold/80 tracking-wider" data-i18n="nav.subtitle">Weekly Community Report</span>
     </div>
-    <div class="hidden md:flex gap-6 text-sm font-medium">
-      <a href="#weekly-summary" class="hover:text-gold transition" data-i18n="nav.impact">Impact</a>
-      <a href="#story-of-week" class="hover:text-gold transition" data-i18n="nav.story">Story</a>
-      <a href="#community-signals" class="hover:text-gold transition" data-i18n="nav.signals">Signals</a>
-      <a href="https://hu-fi.io/" target="_blank" class="hover:text-gold transition">Protocol</a>
+  </div>
+  <div class="hidden md:flex gap-6 text-sm font-medium">
+    <a href="#impacto" class="hover:text-gold transition" data-i18n="nav.impact">Impact</a>
+    <a href="#historias" class="hover:text-gold transition" data-i18n="nav.stories">Stories</a>
+    <a href="#comunidad" class="hover:text-gold transition" data-i18n="nav.community">Community</a>
+    <a href="https://hu-fi.io/" target="_blank" class="hover:text-gold transition" data-i18n="nav.protocol">Protocol</a>
+  </div>
+  <div class="flex gap-2 items-center">
+    <button id="commandButton" class="text-xs bg-white/10 px-3 py-1 rounded-full">⌘K</button>
+    <span id="dateBadge" class="date-badge hidden sm:inline-block">-- --- ----</span>
+  </div>
+</nav>
+
+<main class="relative z-10 max-w-7xl mx-auto px-4 md:px-6 pt-24 pb-16">
+  <section class="text-center mb-20">
+    <div class="inline-block mb-4"><span class="text-gold text-[11px] font-black uppercase bg-white/5 px-3 py-1 rounded-full" data-i18n="hero.badge">Join the movement</span></div>
+    <h1 id="heroTitle" class="text-club">JOIN THE COMMUNITY<br><span class="text-gold">BUILDING REAL CREDIT</span></h1>
+    <p class="mt-4 text-gray-400 text-sm max-w-md mx-auto font-light" data-i18n="hero.sub">12,480 people are already building community reputation and access to HuFi tools.</p>
+    <div class="mt-8 flex flex-wrap gap-3 justify-center">
+      <button id="heroModalBtn" class="btn-gold" data-i18n="hero.cta">⚡ Join the community</button>
+      <button id="socialLoginBtn" class="btn-outline" data-i18n="hero.telegram">🔐 Join with Telegram</button>
     </div>
-    <div class="flex gap-2 items-center">
-      <button id="commandButton" class="text-xs bg-white/10 px-3 py-1 rounded-full">⌘K</button>
-      <span id="dateBadge" class="date-badge hidden sm:inline-block">-- --- ----</span>
-    </div>
-  </nav>
-
-  <main class="relative z-10 max-w-7xl mx-auto px-4 md:px-6 pt-24 pb-16">
-    <!-- HERO mejorado -->
-    <section class="text-center mb-12">
-      <div class="text-[10px] text-gold uppercase tracking-widest mb-3">WEEKLY PROOF OF HUMAN CREDIT</div>
-      <h1 id="heroTitle" class="text-club">CREDIT<br><span class="text-gold">WITHOUT BANKS</span></h1>
-      <p class="mt-4 text-gray-400 text-sm max-w-md mx-auto font-light" data-i18n="hero.sub">This week: real people accessed healthcare, tools and income — without collateral, without permission.</p>
-      <div class="mt-8">
-        <button id="heroModalBtn" class="btn-gold dynamic-cta">Start your credit story today →</button>
-      </div>
-      <p class="text-[11px] text-gray-500 mt-3">Trusted by 12,480+ members across emerging economies</p>
-    </section>
-
-    <!-- WHAT IS HUFI? (nueva sección) -->
-    <section class="mb-20 text-center max-w-3xl mx-auto">
-      <div class="inline-block px-3 py-1 rounded-full bg-gold/10 text-gold text-[10px] font-black uppercase tracking-wider mb-3">The Protocol</div>
-      <h2 class="text-2xl md:text-3xl font-black uppercase tracking-tight" data-i18n="what.title">What is HuFi?</h2>
-      <p class="text-gray-300 text-sm md:text-base mt-4 leading-relaxed" data-i18n="what.desc">
-        HuFi is a human credit protocol where your reputation – not your bank account – unlocks access to healthcare, tools, and working capital.<br>
-        Each week, we publish real evidence of people building credit without collateral.
-      </p>
-      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-8 text-left">
-        <div class="bg-black/40 p-3 rounded-xl border border-gold/20"><span class="text-gold font-black">1️⃣</span><p class="text-xs mt-1" data-i18n="what.step1">Participate in the economy</p></div>
-        <div class="bg-black/40 p-3 rounded-xl border border-gold/20"><span class="text-gold font-black">2️⃣</span><p class="text-xs mt-1" data-i18n="what.step2">Build on-chain reputation</p></div>
-        <div class="bg-black/40 p-3 rounded-xl border border-gold/20"><span class="text-gold font-black">3️⃣</span><p class="text-xs mt-1" data-i18n="what.step3">Access real-world credit</p></div>
-      </div>
-    </section>
-
-    <!-- THIS WEEK AT A GLANCE (stats con copy narrativo) -->
-    <div id="weekly-summary" class="mb-20 grid grid-cols-1 md:grid-cols-4 gap-5 auto-rows-min">
-      <div class="bento-card p-5 md:col-span-2 md:row-span-2">
-        <span class="text-gold text-xs font-black uppercase tracking-wider" data-i18n="stats.people_label">People who accessed credit this week</span>
-        <div class="stat-value text-5xl font-black text-gold" data-target="430">0</div>
-        <p class="text-xs text-gray-400">new ETO nodes activated</p>
-      </div>
-      <div class="bento-card p-5">
-        <span class="text-gold text-xs font-black uppercase tracking-wider" data-i18n="stats.autopay_label">Families on Autopay</span>
-        <div class="stat-value text-4xl font-black text-white" data-target="331">0</div>
-      </div>
-      <div class="bento-card p-5">
-        <span class="text-gold text-xs font-black uppercase tracking-wider" data-i18n="stats.health_label">Families protected from health emergencies</span>
-        <div class="stat-value text-4xl font-black text-gold" data-target="100">0%</div>
-      </div>
-      <div class="bento-card p-5 md:col-span-2">
-        <div class="flex items-center gap-3"><div class="avatar bg-gradient-to-br from-gold to-amber-700 w-10 h-10 rounded-full flex items-center justify-center font-bold">MV</div><div><p class="font-bold">@MauriceVanegas</p><span class="role-badge text-gold text-[10px]">Founder</span></div></div>
-        <p class="text-xs text-gray-400 mt-3">"This week we proved that credit can be human."</p>
-      </div>
-      <div class="bento-card p-5">
-        <span class="text-gold text-xs font-black uppercase tracking-wider" data-i18n="stats.members_label">Active members</span>
-        <div class="text-2xl font-black">+12.4K</div>
-      </div>
-      <div class="bento-card p-5">
-        <span class="text-gold text-xs font-black uppercase tracking-wider" data-i18n="stats.distributed_label">Distributed this week</span>
-        <div class="text-2xl font-black">$4.82M</div>
-      </div>
-    </div>
-
-    <!-- STORY OF THE WEEK (más cine, menos texto) -->
-    <section id="story-of-week" class="mb-20">
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <div>
-          <div class="flex items-center gap-2 mb-4"><span class="text-3xl">👶</span><h2 class="text-2xl font-black uppercase text-gold" data-i18n="story.title">Story of the Week</h2></div>
-          <div class="bento-card p-5 story-card">
-            <p class="text-xs text-gold font-black">REAL CASE #01</p>
-            <p class="font-bold text-lg">A baby girl born without bank deposits</p>
-            <p class="text-gray-300" data-i18n="story.desc">No savings. No insurance. No problem. HuFi covered everything.</p>
-            <div class="mt-2 text-[10px] border-l-2 border-gold pl-2">Protagonists: @Amabel2 / @kalindi1</div>
-          </div>
-          <div class="bento-card p-5 mt-4">
-            <h3 class="font-bold">⚙️ Community engine</h3>
-            <p class="text-sm">Peanut oil mill financed with HuFi credit — @Manassehpl</p>
-          </div>
-        </div>
-        <div>
-          <div class="relative rounded-2xl overflow-hidden">
-            <img src="https://i.postimg.cc/GpYKfLxf/002-healthcare-hufi.jpg" class="w-full object-cover h-64" alt="HuFi community health" loading="lazy">
-            <div class="absolute bottom-2 left-2 bg-black/60 px-2 py-1 rounded text-[10px] text-gold">© HuFi Community</div>
-          </div>
-          <div class="bento-card p-5 mt-5 text-center">
-            <p class="italic text-base font-semibold text-gray-200">“Time is our most honest store of value. HuFi gives you tools to build your tomorrow.”</p>
-            <p class="text-gold text-sm mt-2 font-bold">— Maurice Vanegas, Founder</p>
-          </div>
+    <div class="mt-10 w-full glass-premium py-2 px-2 rounded-full bg-white/5">
+      <div class="marquee-track overflow-hidden whitespace-nowrap mask-gradient">
+        <div class="marquee-items inline-block animate-marquee text-gold font-black text-[10px] tracking-[0.2em] uppercase">
+          <span class="mx-4">✦ 430+ ETO Sites</span><span class="mx-4">✦ 331 Active Autopay</span><span class="mx-4">✦ Web3 Inclusion</span>
+          <span class="mx-4">✦ Peanut Oil Mills</span><span class="mx-4">✦ #TimeIsValue</span><span class="mx-4">✦ 12,480 Members</span>
         </div>
       </div>
-    </section>
-
-    <!-- COMMUNITY SIGNALS (FEED SEGURO) -->
-    <section id="community-signals" class="mb-20">
-      <h3 class="text-sm font-black text-gold uppercase tracking-[0.2em] mb-2" data-i18n="signals.title">📡 Community Signals — Verified activity</h3>
-      <p class="text-[11px] text-gray-500 mb-3">Verified on-chain activity from real members</p>
-      <div class="bento-card mt-2">
-        <div id="liveFeed" class="space-y-3 max-h-[600px] overflow-y-auto pr-2"></div>
-        <p class="text-[10px] text-gray-500 mt-3 text-center">✨ These are real contributions from members. Want to appear in next week's report? <button id="hiddenCta" class="text-gold underline dynamic-cta">Start your credit story today →</button></p>
-      </div>
-
-      <!-- Field Evidence (Masonry) -->
-      <div class="mt-16">
-        <h3 class="text-sm font-black text-gold uppercase tracking-[0.2em] mb-4" data-i18n="evidence.title">📸 Field Evidence — Visual stories</h3>
-        <div class="flex gap-4 overflow-x-auto pb-4 mb-6">
-          <div class="flex flex-col items-center gap-1"><div class="story-ring rounded-full p-[2px]"><div class="bg-black rounded-full p-[2px]"><img src="https://i.postimg.cc/Dzs6NvPp/000-logo-hufi.jpg" class="w-14 h-14 rounded-full object-cover" alt="HuFi"></div></div><span class="text-[10px]">HuFi</span></div>
-          <div class="flex flex-col items-center gap-1"><div class="story-ring rounded-full p-[2px]"><div class="bg-black rounded-full p-[2px]"><img src="https://i.postimg.cc/GpYKfLxf/002-healthcare-hufi.jpg" class="w-14 h-14 rounded-full object-cover" alt="@Amabel2"></div></div><span class="text-[10px]">@Amabel2</span></div>
-          <div class="flex flex-col items-center gap-1"><div class="story-ring rounded-full p-[2px]"><div class="bg-black rounded-full p-[2px]"><img src="https://i.postimg.cc/HL5zNY9q/004-tools-2.jpg" class="w-14 h-14 rounded-full object-cover" alt="@Manasseh"></div></div><span class="text-[10px]">@Manasseh</span></div>
-          <div class="flex flex-col items-center gap-1"><div class="story-ring rounded-full p-[2px]"><div class="bg-black rounded-full p-[2px]"><img src="https://i.postimg.cc/7L79RHNr/006-machine-lady.jpg" class="w-14 h-14 rounded-full object-cover" alt="@Murna"></div></div><span class="text-[10px]">@Murna</span></div>
-        </div>
-
-        <div class="flex gap-2 mb-6 justify-center md:justify-start">
-          <button class="filter-btn active px-4 py-1 rounded-full text-[11px] font-bold border border-gold" data-filter="all">All</button>
-          <button class="filter-btn px-4 py-1 rounded-full text-[11px] font-bold border border-gold" data-filter="story">Health</button>
-          <button class="filter-btn px-4 py-1 rounded-full text-[11px] font-bold border border-gold" data-filter="tool">Work</button>
-        </div>
-
-        <div class="masonry-pure" id="masonryFeed">
-          <div class="masonry-item bento-card overflow-hidden" data-category="tool">
-            <div class="image-wrapper relative"><img class="lazy-img" data-src="https://i.postimg.cc/HL5zNY9q/004-tools-2.jpg" alt="Community tools"><div class="image-overlay"><span class="font-bold text-sm">@Manassehpl <span class="role-badge ml-1 text-gold">Contributor</span></span><div class="like-btn cursor-pointer flex items-center gap-1" data-likes="0">❤️ <span class="like-count">0</span></div></div></div><div class="p-4"><p class="text-sm">“With HuFi credit I installed my oil mill. Now I employ 3 people.”</p></div>
-          </div>
-          <div class="masonry-item bento-card overflow-hidden featured" data-category="story">
-            <div class="image-wrapper relative"><img class="lazy-img" data-src="https://i.postimg.cc/GpYKfLxf/002-healthcare-hufi.jpg" alt="Healthcare story"><div class="image-overlay"><span class="font-bold text-sm">@mamansolomon <span class="role-badge ml-1">Verified Member</span></span><div class="like-btn cursor-pointer" data-likes="0">❤️ <span class="like-count">0</span></div></div></div><div class="p-4"><p class="text-xs text-gold uppercase tracking-wide">Featured</p><p class="text-sm">Medical checkup for my son using HuFi credit.</p></div>
-          </div>
-          <div class="masonry-item bento-card overflow-hidden" data-category="story">
-            <div class="image-wrapper relative"><img class="lazy-img" data-src="https://i.postimg.cc/MTS52Csw/011-desayuno-1.jpg" alt="Community breakfast"><div class="image-overlay"><span class="font-bold text-sm">@Murna1234 <span class="role-badge ml-1">Contributor</span></span><div class="like-btn cursor-pointer" data-likes="0">❤️ <span class="like-count">0</span></div></div></div><div class="p-4"><p class="text-xs">Bought essential supplies via Autopay.</p></div>
-          </div>
-          <div class="masonry-item bento-card overflow-hidden" data-category="tool">
-            <div class="image-wrapper relative"><img class="lazy-img" data-src="https://i.postimg.cc/7L79RHNr/006-machine-lady.jpg" alt="Community machine"><div class="image-overlay"><span class="font-bold text-sm">@boka0123 <span class="role-badge ml-1">Verified Member</span></span><div class="like-btn cursor-pointer" data-likes="0">❤️ <span class="like-count">0</span></div></div></div><div class="p-4"><p class="text-xs">“Empowering members through Web3 technology.”</p></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mt-12">
-        <div class="bento-card p-4"><h4 class="font-black">📢 Official Telegram Channel</h4><p class="text-[10px]">+12,480 members · 24/7 support</p><a href="https://t.me/Hu_Fi_Nigeria" target="_blank" class="block mt-2 bg-blue-600 text-center py-1 rounded-full text-xs">Join →</a></div>
-        <div class="bento-card p-4"><h4 class="font-black">🎥 Ecosystem Video</h4><a href="https://www.youtube.com/watch?v=x_gg5ChR0i4" target="_blank"><img src="https://i.ytimg.com/vi/x_gg5ChR0i4/maxresdefault.jpg" class="rounded-md" alt="HuFi video" loading="lazy"></a></div>
-        <div class="bento-card p-4"><h4 class="font-black">🏆 Strategic Alliance</h4><p class="text-[11px]">PGL Multilateral powers Web3 infrastructure.</p><a href="https://eospglmlt.com/" target="_blank" class="text-gold text-[10px] underline">Learn more →</a></div>
-      </div>
-    </section>
-
-    <!-- CTA FINAL (mejorado) -->
-    <section class="text-center">
-      <div class="bento-card p-8 max-w-3xl mx-auto">
-        <h2 class="text-2xl font-black uppercase" data-i18n="cta.title">Start your credit story today</h2>
-        <p class="text-gray-400 text-sm mt-2" data-i18n="cta.sub">No banks. No collateral. Just your reputation.</p>
-        <button id="finalCtaBtn" class="btn-gold inline-block mt-4 dynamic-cta">Start your credit story today →</button>
-      </div>
-    </section>
-  </main>
-
-  <footer class="footer-glass mt-20 py-6 border-t border-gold/20">
-    <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4">
-      <div class="flex gap-5">
-        <a href="https://instagram.com/hufi" target="_blank" class="social-icon icon-insta" aria-label="Instagram HuFi"></a>
-        <a href="https://x.com/hufi" target="_blank" class="social-icon icon-x" aria-label="X HuFi"></a>
-      </div>
-      <div class="flex flex-wrap justify-center gap-4 text-[10px] font-mono uppercase tracking-widest text-white/40">
-        <a href="#" id="openPrivacyBtn" class="hover:text-white">Privacy</a>
-        <a href="#" id="openTermsBtn" class="hover:text-white">Terms</a>
-        <span>© 2026 HuFi Today</span>
-        <span id="langSwitch" class="lang-switch cursor-pointer">🌐 English</span>
-      </div>
     </div>
-  </footer>
+  </section>
 
-  <!-- MODALES -->
-  <div id="commandPalette" class="command-palette"><input type="text" id="commandInput" class="command-input w-full bg-black/80 text-white p-3 rounded-t-2xl" placeholder="Type a command..."><div id="commandResults" class="max-h-64 overflow-y-auto"></div></div>
-  <div id="membershipModal" class="modal-overlay"><div class="modal-container bg-black/90 border-gold p-6 rounded-2xl"><h2 class="text-xl font-black text-gold">Verify your membership</h2><input type="text" id="telegramHandle" placeholder="@username" class="w-full p-2 my-2 bg-black/60 border"><input type="text" id="walletAddress" placeholder="EOS / 0x... wallet"><div class="flex gap-2 mt-3"><button id="submitMembership" class="bg-gold text-black px-4 py-1 rounded-full">Submit</button><button id="closeModalBtn" class="border px-4 py-1 rounded-full">Cancel</button></div></div></div>
-  <div id="privacyModal" class="modal-overlay"><div class="modal-container bg-black/90 border-gold p-6 rounded-2xl"><h2 class="text-xl font-black text-gold mb-2">Privacy Policy</h2><div class="text-xs text-gray-300 space-y-2"><p>We only store your Telegram username and wallet. No sharing with third parties.</p></div><button id="closePrivacyBtn" class="mt-4 btn-outline w-full py-1">Close</button></div></div>
-  <div id="termsModal" class="modal-overlay"><div class="modal-container bg-black/90 border-gold p-6 rounded-2xl"><h2 class="text-xl font-black text-gold mb-2">Terms of Use</h2><div class="text-xs text-gray-300"><p>By using this site you agree to community guidelines. HuFi Credit does not constitute a legal financial obligation.</p></div><button id="closeTermsBtn" class="mt-4 btn-outline w-full py-1">Close</button></div></div>
-  <div id="chatModal" class="modal-overlay"><div class="modal-container max-w-sm bg-black/90 border-gold p-6 rounded-2xl"><h3 class="text-gold font-black mb-2">Live chat</h3><p class="text-xs text-gray-300 mb-4">Connect with the HuFi community on Telegram.</p><a href="https://t.me/Hu_Fi_Nigeria" target="_blank" class="btn-gold block text-center text-xs">Open official group →</a><button id="closeChatBtn" class="mt-3 text-[10px] text-gray-400 underline w-full">Close</button></div></div>
-  <div class="chat-widget"><div id="chatButton" class="chat-button">💬</div></div>
-  <div class="scroll-top" id="scrollTopBtn">↑</div>
+  <div id="impacto" class="mb-20 grid grid-cols-1 md:grid-cols-4 gap-5 auto-rows-min">
+    <div class="bento-card p-5 md:col-span-2 md:row-span-2"><span class="text-gold text-xs font-bold" data-i18n="stats.eto">ETO ECOSYSTEM</span><div class="stat-value text-5xl font-black text-gold" data-target="430">0</div><p class="text-xs text-gray-400" data-i18n="stats.nodes">Verified nodes</p></div>
+    <div class="bento-card p-5"><span class="text-gold text-xs font-bold" data-i18n="stats.autopay">ACTIVE AUTOPAY</span><div class="stat-value text-4xl font-black text-white" data-target="331">0</div></div>
+    <div class="bento-card p-5"><span class="text-gold text-xs font-bold" data-i18n="stats.health">HEALTH COVERAGE</span><div class="stat-value text-4xl font-black text-gold" data-target="100">0%</div></div>
+    <div class="bento-card p-5 md:col-span-2"><div class="flex items-center gap-3"><div class="avatar bg-gradient-to-br from-gold to-amber-700 w-10 h-10 rounded-full flex items-center justify-center font-bold">MV</div><div><p class="font-bold">@MauriceVanegas</p><span class="role-badge text-gold text-[10px]">Founder</span></div></div><p class="text-xs text-gray-400 mt-3" data-i18n="founder.quote">"Building the future of humanized finance."</p></div>
+    <div class="bento-card p-5"><span class="text-gold text-xs" data-i18n="stats.members">ACTIVE MEMBERS</span><div class="text-2xl font-black">+12.4K</div></div>
+    <div class="bento-card p-5"><span class="text-gold text-xs" data-i18n="stats.distributed">DISTRIBUTED</span><div class="text-2xl font-black">$4.82M</div></div>
+  </div>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1"></script>
-  <script src="https://cdn.jsdelivr.net/npm/fuse.js@7.0.0"></script>
-  <script src="https://unpkg.com/lenis@1.1.20/dist/lenis.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <section id="historias" class="mb-20">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <div><div class="flex items-center gap-2"><span class="text-3xl">👶</span><h2 class="text-2xl font-black uppercase text-gold" data-i18n="stories.title">Birth in HuFi</h2></div><div class="bento-card p-5 mt-3 story-card"><p class="text-xs text-gold font-black" data-i18n="stories.case">REAL CASE #01</p><p class="font-bold text-lg" data-i18n="stories.caseTitle">A baby girl born without bank deposits</p><p class="text-gray-300" data-i18n="stories.caseDesc">All medical care covered by credit + Autopay. Blockchain with a human heartbeat.</p><div class="mt-2 text-[10px] border-l-2 border-gold pl-2">Protagonists: @Amabel2 / @kalindi1</div></div><div class="bento-card p-5 mt-4 story-card"><h3 class="font-bold" data-i18n="stories.engine">⚙️ Community engine</h3><p class="text-sm" data-i18n="stories.engineText">Peanut oil mill financed with HuFi credit — @Manassehpl</p></div></div>
+      <div><div class="relative rounded-2xl overflow-hidden"><img src="https://i.postimg.cc/GpYKfLxf/002-healthcare-hufi.jpg" class="w-full object-cover h-64" alt="HuFi community health" loading="lazy"></div><div class="bento-card p-5 mt-5 text-center story-card"><p class="italic text-base font-semibold text-gray-200" data-i18n="founder.quoteLong">“Time is our most honest store of value. HuFi gives you tools to build your tomorrow.”</p><p class="text-gold text-sm mt-2 font-bold">— Maurice Vanegas, Founder</p></div></div>
+    </div>
+  </section>
 
-  <script>
-    (function() {
-      // ========== FIREBASE CONFIG ==========
-      const firebaseConfig = {
-        apiKey: "AIzaSyCqJszJQqt6xsKOmCnpvoS_fiObmdkeNyM",
-        authDomain: "hufitoday-f69b4.firebaseapp.com",
-        projectId: "hufitoday-f69b4",
-        storageBucket: "hufitoday-f69b4.firebasestorage.app",
-        messagingSenderId: "851370028031",
-        appId: "1:851370028031:web:b272279e95f6ce6a65d5ca",
-        measurementId: "G-G18T2EG1ZE"
-      };
-      let db, firestoreAvailable = false;
-      if (typeof firebase !== 'undefined') {
-        try { const app = firebase.initializeApp(firebaseConfig); db = firebase.firestore(app); firestoreAvailable = true; console.log("🔥 Firebase ready"); } catch(e) { console.error(e); }
-      }
+  <section id="comunidad" class="mb-20">
+    <h3 class="text-sm font-black text-gold uppercase tracking-[0.2em] mb-4" data-i18n="community.title">📡 Community in action · Visual stories</h3>
+    <div class="flex gap-4 overflow-x-auto pb-4 mb-6">
+      <div class="flex flex-col items-center gap-1"><div class="story-ring rounded-full p-[2px]"><div class="bg-black rounded-full p-[2px]"><img src="https://i.postimg.cc/Dzs6NvPp/000-logo-hufi.jpg" class="w-14 h-14 rounded-full object-cover" alt="HuFi"></div></div><span class="text-[10px]">HuFi</span></div>
+      <div class="flex flex-col items-center gap-1"><div class="story-ring rounded-full p-[2px]"><div class="bg-black rounded-full p-[2px]"><img src="https://i.postimg.cc/GpYKfLxf/002-healthcare-hufi.jpg" class="w-14 h-14 rounded-full object-cover" alt="@Amabel2"></div></div><span class="text-[10px]">@Amabel2</span></div>
+      <div class="flex flex-col items-center gap-1"><div class="story-ring rounded-full p-[2px]"><div class="bg-black rounded-full p-[2px]"><img src="https://i.postimg.cc/HL5zNY9q/004-tools-2.jpg" class="w-14 h-14 rounded-full object-cover" alt="@Manasseh"></div></div><span class="text-[10px]">@Manasseh</span></div>
+      <div class="flex flex-col items-center gap-1"><div class="story-ring rounded-full p-[2px]"><div class="bg-black rounded-full p-[2px]"><img src="https://i.postimg.cc/7L79RHNr/006-machine-lady.jpg" class="w-14 h-14 rounded-full object-cover" alt="@Murna"></div></div><span class="text-[10px]">@Murna</span></div>
+    </div>
+    <div class="flex gap-2 mb-6 justify-center md:justify-start">
+      <button class="filter-btn active px-4 py-1 rounded-full text-[11px] font-bold border border-gold" data-filter="all">All</button>
+      <button class="filter-btn px-4 py-1 rounded-full text-[11px] font-bold border border-gold" data-filter="story">Stories</button>
+      <button class="filter-btn px-4 py-1 rounded-full text-[11px] font-bold border border-gold" data-filter="tool">Tools</button>
+    </div>
+    <div class="masonry-pure" id="masonryFeed">
+      <div class="masonry-item bento-card overflow-hidden" data-category="tool"><div class="image-wrapper relative"><img class="lazy-img" data-src="https://i.postimg.cc/HL5zNY9q/004-tools-2.jpg" alt="Community tools"><div class="image-overlay"><span class="font-bold text-sm">@Manassehpl <span class="role-badge ml-1 text-gold">Contributor</span></span><div class="like-btn cursor-pointer flex items-center gap-1" data-likes="0">❤️ <span class="like-count">0</span></div></div></div><div class="p-4"><p class="text-sm">“With HuFi credit I installed my oil mill. Now I employ 3 people.”</p></div></div>
+      <div class="masonry-item bento-card overflow-hidden" data-category="story"><div class="image-wrapper relative"><img class="lazy-img" data-src="https://i.postimg.cc/GpYKfLxf/002-healthcare-hufi.jpg" alt="Healthcare story"><div class="image-overlay"><span class="font-bold text-sm">@mamansolomon <span class="role-badge ml-1">Verified Member</span></span><div class="like-btn cursor-pointer" data-likes="0">❤️ <span class="like-count">0</span></div></div></div><div class="p-4"><p class="text-sm">Medical checkup for my son using HuFi credit.</p></div></div>
+      <div class="masonry-item bento-card overflow-hidden" data-category="story"><div class="image-wrapper relative"><img class="lazy-img" data-src="https://i.postimg.cc/MTS52Csw/011-desayuno-1.jpg" alt="Community breakfast"><div class="image-overlay"><span class="font-bold text-sm">@Murna1234 <span class="role-badge ml-1">Contributor</span></span><div class="like-btn cursor-pointer" data-likes="0">❤️ <span class="like-count">0</span></div></div></div><div class="p-4"><p class="text-xs">Bought essential supplies via Autopay.</p></div></div>
+      <div class="masonry-item bento-card overflow-hidden" data-category="tool"><div class="image-wrapper relative"><img class="lazy-img" data-src="https://i.postimg.cc/7L79RHNr/006-machine-lady.jpg" alt="Community machine"><div class="image-overlay"><span class="font-bold text-sm">@boka0123 <span class="role-badge ml-1">Verified Member</span></span><div class="like-btn cursor-pointer" data-likes="0">❤️ <span class="like-count">0</span></div></div></div><div class="p-4"><p class="text-xs">“Empowering members through Web3 technology.”</p></div></div>
+    </div>
 
-      // ========== FECHA Y FORMATO ==========
-      const meses = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
-      const hoy = new Date();
-      const weekDateStr = `${String(hoy.getDate()).padStart(2,'0')} ${meses[hoy.getMonth()]} ${hoy.getFullYear()}`;
-      document.getElementById('dateBadge').innerText = `WEEK OF ${weekDateStr}`;
+    <!-- FEED REFORZADO - LEDGER VIVO -->
+    <div class="bento-card mt-10 feed-card">
+      <div class="flex items-center justify-between mb-2">
+        <h3 class="text-gold font-black text-lg flex items-center gap-2">
+          🌍 Live Community Ledger 
+          <span class="status-pulse"></span>
+        </h3>
+        <span class="text-[9px] font-mono text-gold/70">● LIVE</span>
+      </div>
+      <p class="text-[10px] text-gray-400 mb-2">⚠️ Community posts are public and moderated. Be respectful.</p>
+      <div id="liveFeed" class="space-y-3 max-h-96 overflow-y-auto pr-2"></div>
+      <div class="mt-4 flex flex-col sm:flex-row gap-2">
+        <input id="postInput" placeholder="Write a signal to the ledger..." class="flex-1 p-2 bg-black border border-gold/40 rounded-full text-sm px-4">
+        <button id="postBtn" class="btn-gold text-sm px-5">Signal to ledger →</button>
+      </div>
+      <p class="text-[10px] text-gray-500 mt-3">✨ Posts are saved in the cloud. Your handle is @<span id="currentUserHandle">guest</span></p>
+    </div>
 
-      // ========== LENIS ==========
-      const lenis = new Lenis({ duration: 1.2, smoothWheel: true });
-      function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
-      requestAnimationFrame(raf);
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mt-8">
+      <div class="bento-card p-4"><h4 class="font-black">📢 Official Telegram Channel</h4><p class="text-[10px]">+12,480 members · 24/7 support</p><a href="https://t.me/Hu_Fi_Nigeria" target="_blank" class="block mt-2 bg-blue-600 text-center py-1 rounded-full text-xs">Join →</a></div>
+      <div class="bento-card p-4"><h4 class="font-black">🎥 Ecosystem Video</h4><a href="https://www.youtube.com/watch?v=x_gg5ChR0i4" target="_blank"><img src="https://i.ytimg.com/vi/x_gg5ChR0i4/maxresdefault.jpg" class="rounded-md" alt="HuFi video" loading="lazy"></a></div>
+      <div class="bento-card p-4"><h4 class="font-black">🏆 Strategic Alliance</h4><p class="text-[11px]">PGL Multilateral powers Web3 infrastructure.</p><a href="https://eospglmlt.com/" target="_blank" class="text-gold text-[10px] underline">Learn more →</a></div>
+    </div>
+  </section>
 
-      // ========== OBSERVER BENTO ==========
-      const bentoCards = document.querySelectorAll('.bento-card');
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('visible'); observer.unobserve(entry.target); } });
-      }, { threshold: 0.1 });
-      bentoCards.forEach(card => observer.observe(card));
+  <section class="text-center"><div class="bento-card p-8 max-w-3xl mx-auto"><h2 class="text-2xl font-black uppercase" data-i18n="cta.title">Access the <span class="text-gold">HuFi Protocol</span></h2><a href="https://hu-fi.io/" target="_blank" class="btn-gold inline-block mt-3">Explore hu-fi.io ↗</a></div></section>
+</main>
 
-      // ========== LAZY IMAGES ==========
-      const lazyImages = document.querySelectorAll('.lazy-img');
-      const imageObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            const img = entry.target;
-            img.src = img.dataset.src;
-            img.onload = () => img.classList.add('loaded');
-            imageObserver.unobserve(img);
-          }
-        });
-      }, { rootMargin: '200px' });
-      lazyImages.forEach(img => imageObserver.observe(img));
+<footer class="footer-glass mt-20 py-6 border-t border-gold/20">
+  <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4">
+    <div class="flex gap-5">
+      <a href="https://instagram.com/hufi" target="_blank" class="social-icon icon-insta" aria-label="Instagram HuFi"></a>
+      <a href="https://x.com/hufi" target="_blank" class="social-icon icon-x" aria-label="X HuFi"></a>
+    </div>
+    <div class="flex flex-wrap justify-center gap-4 text-[10px] font-mono uppercase tracking-widest text-white/40">
+      <a href="#" id="openPrivacyBtn" class="hover:text-white">Privacy</a>
+      <a href="#" id="openTermsBtn" class="hover:text-white">Terms</a>
+      <span>© 2026 HuFi Today</span>
+      <span id="langSwitch" class="lang-switch cursor-pointer">🌐 English</span>
+    </div>
+  </div>
+</footer>
 
-      // ========== THREE.JS con lazy y partículas reducidas ==========
-      let scene, camera, renderer, icosa, particles, wireframe;
-      const isMobile = window.innerWidth < 768;
-      if (!isMobile && typeof THREE !== 'undefined') {
-        const startThree = () => {
-          try {
-            const container = document.getElementById('canvas-container');
-            scene = new THREE.Scene();
-            scene.background = new THREE.Color(0x000000);
-            camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
-            camera.position.set(0, 0, 4.2);
-            renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
-            renderer.setSize(window.innerWidth, window.innerHeight);
-            container.appendChild(renderer.domElement);
-            const geometry = new THREE.IcosahedronGeometry(1.2, 1);
-            const material = new THREE.MeshStandardMaterial({ color: 0xffaa44, emissive: 0x442200 });
-            icosa = new THREE.Mesh(geometry, material);
-            scene.add(icosa);
-            const edgesGeo = new THREE.EdgesGeometry(geometry);
-            wireframe = new THREE.LineSegments(edgesGeo, new THREE.LineBasicMaterial({ color: 0xffaa66 }));
-            icosa.add(wireframe);
-            const particleCount = 300; // reducido drásticamente
-            const particleGeo = new THREE.BufferGeometry();
-            const particlePositions = new Float32Array(particleCount * 3);
-            for (let i = 0; i < particleCount; i++) {
-              const radius = 1.8 + Math.random() * 0.6;
-              const theta = Math.random() * Math.PI * 2;
-              const phi = Math.acos(2 * Math.random() - 1);
-              particlePositions[i*3] = radius * Math.sin(phi) * Math.cos(theta);
-              particlePositions[i*3+1] = radius * Math.sin(phi) * Math.sin(theta);
-              particlePositions[i*3+2] = radius * Math.cos(phi);
-            }
-            particleGeo.setAttribute('position', new THREE.BufferAttribute(particlePositions, 3));
-            particles = new THREE.Points(particleGeo, new THREE.PointsMaterial({ color: 0xffaa55, size: 0.025, blending: THREE.AdditiveBlending }));
-            scene.add(particles);
-            const ambientLight = new THREE.AmbientLight(0x222222);
-            scene.add(ambientLight);
-            const mainLight = new THREE.PointLight(0xffaa66, 1.2);
-            mainLight.position.set(2,3,4);
-            scene.add(mainLight);
-            const fillLight = new THREE.PointLight(0xff8844, 0.6);
-            fillLight.position.set(-2,1,3);
-            scene.add(fillLight);
-            const backLight = new THREE.PointLight(0xff6600, 0.5);
-            backLight.position.set(0,0,-3);
-            scene.add(backLight);
-            let targetRotX=0,targetRotY=0;
-            document.addEventListener('mousemove', (e) => {
-              let mx = (e.clientX/window.innerWidth)*2-1;
-              let my = (e.clientY/window.innerHeight)*2-1;
-              targetRotY = mx*0.8;
-              targetRotX = my*0.5;
-            });
-            const originalPositions = geometry.attributes.position.array.slice();
-            let time = 0;
-            function animate3D() {
-              if (document.visibilityState !== 'visible') { requestAnimationFrame(animate3D); return; }
-              time += 0.016;
-              const positions = icosa.geometry.attributes.position.array;
-              for (let i = 0; i < positions.length / 3; i++) {
-                const ix = i*3, iy = i*3+1, iz = i*3+2;
-                const x = originalPositions[ix], y = originalPositions[iy];
-                const offsetZ = Math.sin(x*2.5+time)*0.03 + Math.cos(y*2.0+time*1.2)*0.03;
-                positions[iz] = originalPositions[iz] + offsetZ;
-              }
-              icosa.geometry.attributes.position.needsUpdate = true;
-              if (Math.floor(time*30)%30===0) {
-                const newEdges = new THREE.EdgesGeometry(icosa.geometry);
-                wireframe.geometry.dispose();
-                wireframe.geometry = newEdges;
-              }
-              icosa.rotation.x += (targetRotX - icosa.rotation.x)*0.08;
-              icosa.rotation.y += (targetRotY - icosa.rotation.y)*0.08;
-              particles.rotation.x = icosa.rotation.x;
-              particles.rotation.y = icosa.rotation.y;
-              particles.rotation.z += 0.003;
-              renderer.render(scene, camera);
-              requestAnimationFrame(animate3D);
-            }
-            animate3D();
-            window.addEventListener('resize', () => { camera.aspect = window.innerWidth/window.innerHeight; camera.updateProjectionMatrix(); renderer.setSize(window.innerWidth, window.innerHeight); });
-          } catch(e) { console.warn("Three.js error", e); }
-        };
-        if ('requestIdleCallback' in window) {
-          requestIdleCallback(startThree, { timeout: 2000 });
+<!-- Modales -->
+<div id="commandPalette" class="command-palette"><input type="text" id="commandInput" class="command-input w-full bg-black/80 text-white p-3 rounded-t-2xl" placeholder="Type a command..."><div id="commandResults" class="max-h-64 overflow-y-auto"></div></div>
+<div id="membershipModal" class="modal-overlay">
+  <div class="modal-container bg-black/90 border-gold p-6 rounded-2xl">
+    <h2 class="text-xl font-black text-gold">Sovereign Identity</h2>
+    <p class="text-xs text-gray-400 mb-3">Link your Telegram to validate your presence in the ledger.</p>
+    <input type="text" id="telegramHandle" placeholder="@username" class="w-full p-2 my-1 bg-black/60 border border-gold/40 rounded">
+    <div id="codeSection" style="display:none;">
+      <p class="text-xs text-gold mt-2">Verification code: <span id="simulatedCode" class="font-mono bg-black p-1">123456</span></p>
+      <input type="text" id="verificationCode" placeholder="Enter code" class="w-full p-2 my-1 bg-black/60 border border-gold/40 rounded">
+    </div>
+    <input type="text" id="walletAddress" placeholder="EOS / 0x... wallet (optional)" class="w-full p-2 my-1 bg-black/60 border border-gold/40 rounded">
+    <div class="flex gap-2 mt-3">
+      <button id="requestCodeBtn" class="bg-gold text-black px-4 py-1 rounded-full text-xs">Send code</button>
+      <button id="submitMembership" class="bg-gold/50 text-black px-4 py-1 rounded-full text-xs" disabled>Verify & Join</button>
+      <button id="closeModalBtn" class="border px-4 py-1 rounded-full text-xs">Cancel</button>
+    </div>
+  </div>
+</div>
+<div id="privacyModal" class="modal-overlay"><div class="modal-container bg-black/90 border-gold p-6 rounded-2xl"><h2 class="text-xl font-black text-gold mb-2">Privacy Policy</h2><div class="text-xs text-gray-300 space-y-2"><p>We only store your Telegram username and wallet. No sharing with third parties.</p></div><button id="closePrivacyBtn" class="mt-4 btn-outline w-full py-1">Close</button></div></div>
+<div id="termsModal" class="modal-overlay"><div class="modal-container bg-black/90 border-gold p-6 rounded-2xl"><h2 class="text-xl font-black text-gold mb-2">Terms of Use</h2><div class="text-xs text-gray-300"><p>By using this site you agree to community guidelines. HuFi Credit does not constitute a legal financial obligation.</p></div><button id="closeTermsBtn" class="mt-4 btn-outline w-full py-1">Close</button></div></div>
+<div id="chatModal" class="modal-overlay"><div class="modal-container max-w-sm bg-black/90 border-gold p-6 rounded-2xl"><h3 class="text-gold font-black mb-2">Live chat</h3><p class="text-xs text-gray-300 mb-4">Connect with the HuFi community on Telegram.</p><a href="https://t.me/Hu_Fi_Nigeria" target="_blank" class="btn-gold block text-center text-xs">Open official group →</a><button id="closeChatBtn" class="mt-3 text-[10px] text-gray-400 underline w-full">Close</button></div></div>
+<div class="chat-widget"><div id="chatButton" class="chat-button">💬</div></div>
+<div class="scroll-top" id="scrollTopBtn">↑</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@7.0.0"></script>
+<script src="https://unpkg.com/lenis@1.1.20/dist/lenis.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+<script>
+(function() {
+// ========== FIREBASE CONFIG ==========
+  const firebaseConfig = {
+    apiKey: "AIzaSyCqJszJQqt6xsKOmCnpvoS_fiObmdkeNyM",
+    authDomain: "hufitoday-f69b4.firebaseapp.com",
+    projectId: "hufitoday-f69b4",
+    storageBucket: "hufitoday-f69b4.firebasestorage.app",
+    messagingSenderId: "851370028031",
+    appId: "1:851370028031:web:b272279e95f6ce6a65d5ca",
+    measurementId: "G-G18T2EG1ZE"
+  };
+
+  let db;
+  let firestoreAvailable = false;
+
+  if (typeof firebase !== 'undefined') {
+    try {
+      const app = firebase.initializeApp(firebaseConfig);
+      db = firebase.firestore(app);
+      firestoreAvailable = true;
+      console.log("Firebase ready");
+
+      // Gestión de Autenticación Anónima
+      firebase.auth().onAuthStateChanged(async (user) => {
+        if (user) {
+          console.log('Anonymous UID:', user.uid);
+          localStorage.setItem('hufi_uid', user.uid);
         } else {
-          setTimeout(startThree, 1500);
-        }
-      } else {
-        document.getElementById('canvas-container').style.display = 'none';
-      }
-
-      // ========== ANIMACIÓN TÍTULO ==========
-      function splitAndAnimateTitle() {
-        const titleElem = document.getElementById('heroTitle');
-        if (!titleElem) return;
-        const html = titleElem.innerHTML;
-        const temp = document.createElement('div');
-        temp.innerHTML = html;
-        function wrapChars(node) {
-          if (node.nodeType === 3) {
-            const text = node.textContent;
-            if (!text.trim()) return;
-            const span = document.createElement('span');
-            for (let ch of text) { const c = document.createElement('span'); c.className = 'char'; c.textContent = ch; span.appendChild(c); }
-            node.parentNode.replaceChild(span, node);
-          } else if (node.nodeType === 1 && node.tagName !== 'SPAN') {
-            for (let i = 0; i < node.childNodes.length; i++) wrapChars(node.childNodes[i]);
-          }
-        }
-        wrapChars(temp);
-        titleElem.innerHTML = temp.innerHTML;
-        const chars = document.querySelectorAll('#heroTitle .char');
-        gsap.set(chars, { y: 80, opacity: 0, rotationX: -90 });
-        gsap.to(chars, { y: 0, opacity: 1, rotationX: 0, duration: 1.1, stagger: 0.025, ease: "back.out(1.2)" });
-      }
-      splitAndAnimateTitle();
-
-      // ========== CONTADORES ==========
-      const statValues = document.querySelectorAll('.stat-value');
-      const statsObserver = new IntersectionObserver((entries) => {
-        if (entries[0].isIntersecting) {
-          statValues.forEach(el => {
-            let target = parseInt(el.getAttribute('data-target'));
-            let current = 0, step = target / 50;
-            let intv = setInterval(() => {
-              current += step;
-              if (current >= target) { current = target; clearInterval(intv); }
-              el.innerText = Math.floor(current) + (el.innerText.includes('%') ? '%' : '');
-            }, 20);
-          });
-          statsObserver.disconnect();
-        }
-      }, { threshold: 0.3 });
-      statsObserver.observe(document.getElementById('weekly-summary'));
-
-      // ========== LIKES MASONRY (seguro) ==========
-      document.querySelectorAll('.masonry-item .like-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-          e.stopPropagation();
-          let countSpan = btn.querySelector('.like-count');
-          let likes = parseInt(btn.getAttribute('data-likes') || '0');
-          likes++;
-          countSpan.innerText = likes;
-          btn.setAttribute('data-likes', likes);
-          canvasConfetti({ particleCount: 40, spread: 55, origin: { y: 0.6 }, colors: ['#FFB938'] });
-        });
-      });
-
-      // ========== FILTROS MASONRY ==========
-      document.querySelectorAll('.filter-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-          document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-          btn.classList.add('active');
-          const filter = btn.dataset.filter;
-          document.querySelectorAll('.masonry-item').forEach(item => {
-            if (filter === 'all' || item.dataset.category === filter) item.style.display = 'block';
-            else item.style.display = 'none';
-          });
-        });
-      });
-
-      // ========== FEED SEGURO (sin innerHTML) ==========
-      const feedDiv = document.getElementById('liveFeed');
-      function createPostElement(data, docId, isFirst) {
-        const container = document.createElement('div');
-        container.className = `post-card p-3 rounded-xl border border-gold/20 bg-black/40 ${isFirst ? 'featured-post' : ''}`;
-        if (isFirst) {
-          const badge = document.createElement('div');
-          badge.className = 'text-[9px] text-gold uppercase font-bold mb-1';
-          badge.textContent = '📌 Community Pulse';
-          container.appendChild(badge);
-        }
-        const header = document.createElement('div');
-        header.className = 'flex justify-between text-xs text-gray-400';
-        const userSpan = document.createElement('span');
-        userSpan.className = 'font-bold text-gold';
-        userSpan.textContent = `@${data.user || 'anon'}`;
-        const dateSpan = document.createElement('span');
-        let dateStr = 'recent';
-        if (data.created && data.created.toDate) {
-          dateStr = new Date(data.created.toDate()).toLocaleString();
-        } else if (data.created && typeof data.created === 'number') {
-          dateStr = new Date(data.created).toLocaleString();
-        }
-        dateSpan.textContent = dateStr;
-        header.appendChild(userSpan);
-        header.appendChild(dateSpan);
-        container.appendChild(header);
-        const textP = document.createElement('p');
-        textP.className = 'mt-1 text-sm';
-        textP.textContent = data.text;
-        container.appendChild(textP);
-        const likeBtn = document.createElement('button');
-        likeBtn.className = 'like-btn-feed text-xs mt-2 text-gold flex items-center gap-1';
-        likeBtn.setAttribute('data-id', docId);
-        likeBtn.innerHTML = `❤️ <span class="like-count">${data.likes || 0}</span>`;
-        likeBtn.addEventListener('click', async (e) => {
-          e.stopPropagation();
           try {
-            await db.collection('posts').doc(docId).update({ likes: firebase.firestore.FieldValue.increment(1) });
-            canvasConfetti({ particleCount: 20, spread: 40, origin: { y: 0.7 }, colors: ['#FFB938'] });
-          } catch (err) { console.error(err); }
-        });
-        container.appendChild(likeBtn);
-        return container;
-      }
-
-      if (firestoreAvailable && db) {
-        const postsRef = db.collection('posts');
-        postsRef.orderBy('created', 'desc').limit(10).onSnapshot(snapshot => {
-          feedDiv.innerHTML = '';
-          let idx = 0;
-          snapshot.forEach(doc => {
-            const data = doc.data();
-            const postEl = createPostElement(data, doc.id, idx === 0);
-            feedDiv.appendChild(postEl);
-            idx++;
-          });
-        }, error => {
-          console.error('Snapshot error:', error);
-          feedDiv.innerHTML = '<p class="text-red-400">Error loading feed. Check Firestore rules.</p>';
-        });
-      } else {
-        feedDiv.innerHTML = '<p class="text-yellow-400">⚠️ Firebase not connected — offline demo mode (no data).</p>';
-      }
-
-      // ========== COMMAND PALETTE ==========
-      const commandsList = [
-        { name: "📊 Go to Impact", action: "weekly-summary" }, { name: "📖 Go to Story", action: "story-of-week" },
-        { name: "👥 Community Signals", action: "community-signals" }, { name: "🔗 Open HuFi Protocol", action: "protocolo" },
-        { name: "✨ Start credit story", action: "membresia" }, { name: "🔒 Privacy policy", action: "privacidad" },
-        { name: "📜 Terms of use", action: "terminos" }
-      ];
-      const fuse = new Fuse(commandsList, { keys: ['name'], threshold: 0.4 });
-      const cmdPalette = document.getElementById('commandPalette');
-      const cmdInput = document.getElementById('commandInput');
-      const cmdResults = document.getElementById('commandResults');
-      function renderCommands(filtered) {
-        cmdResults.innerHTML = '';
-        filtered.forEach(cmd => {
-          const div = document.createElement('div');
-          div.className = 'command-item p-2 cursor-pointer hover:bg-gold/20';
-          div.textContent = cmd.name;
-          div.dataset.action = cmd.action;
-          div.addEventListener('click', () => executeCommand(cmd.action));
-          cmdResults.appendChild(div);
-        });
-      }
-      function executeCommand(action) {
-        if (action === 'weekly-summary') document.getElementById('weekly-summary').scrollIntoView({ behavior: 'smooth' });
-        else if (action === 'story-of-week') document.getElementById('story-of-week').scrollIntoView({ behavior: 'smooth' });
-        else if (action === 'community-signals') document.getElementById('community-signals').scrollIntoView({ behavior: 'smooth' });
-        else if (action === 'protocolo') window.open('https://hu-fi.io/', '_blank');
-        else if (action === 'membresia') document.getElementById('heroModalBtn').click();
-        else if (action === 'privacidad') document.getElementById('privacyModal').classList.add('active');
-        else if (action === 'terminos') document.getElementById('termsModal').classList.add('active');
-        cmdPalette.classList.remove('active');
-      }
-      cmdInput?.addEventListener('input', (e) => {
-        const results = fuse.search(e.target.value).map(res => res.item);
-        renderCommands(results.length ? results : commandsList);
-      });
-      document.getElementById('commandButton')?.addEventListener('click', () => {
-        cmdPalette.classList.add('active');
-        cmdInput.focus();
-        renderCommands(commandsList);
-      });
-      window.addEventListener('keydown', (e) => {
-        if ((e.ctrlKey || e.metaKey) && e.key === 'k') { e.preventDefault(); cmdPalette.classList.add('active'); cmdInput.focus(); renderCommands(commandsList); }
-        if (e.key === 'Escape') cmdPalette.classList.remove('active');
-      });
-
-      // ========== TRADUCCIONES COMPLETAS ==========
-      const translations = {
-        en: {
-          'hero.sub': 'This week: real people accessed healthcare, tools and income — without collateral, without permission.',
-          'what.title': 'What is HuFi?',
-          'what.desc': 'HuFi is a human credit protocol where your reputation – not your bank account – unlocks access to healthcare, tools, and working capital. Each week, we publish real evidence of people building credit without collateral.',
-          'what.step1': 'Participate in the economy',
-          'what.step2': 'Build on-chain reputation',
-          'what.step3': 'Access real-world credit',
-          'stats.people_label': 'People who accessed credit this week',
-          'stats.autopay_label': 'Families on Autopay',
-          'stats.health_label': 'Families protected from health emergencies',
-          'stats.members_label': 'Active members',
-          'stats.distributed_label': 'Distributed this week',
-          'story.title': 'Story of the Week',
-          'story.desc': 'No savings. No insurance. No problem. HuFi covered everything.',
-          'signals.title': '📡 Community Signals — Verified activity',
-          'evidence.title': '📸 Field Evidence — Visual stories',
-          'cta.title': 'Start your credit story today',
-          'cta.sub': 'No banks. No collateral. Just your reputation.',
-          'nav.impact': 'Impact',
-          'nav.story': 'Story',
-          'nav.signals': 'Signals'
-        },
-        es: {
-          'hero.sub': 'Esta semana: personas reales accedieron a salud, herramientas e ingresos — sin garantías, sin permisos.',
-          'what.title': '¿Qué es HuFi?',
-          'what.desc': 'HuFi es un protocolo de crédito humano donde tu reputación – no tu cuenta bancaria – abre acceso a salud, herramientas y capital de trabajo. Cada semana publicamos evidencia real de personas construyendo crédito sin colateral.',
-          'what.step1': 'Participa en la economía',
-          'what.step2': 'Construye reputación on-chain',
-          'what.step3': 'Accede a crédito real',
-          'stats.people_label': 'Personas que accedieron a crédito esta semana',
-          'stats.autopay_label': 'Familias en Autopay',
-          'stats.health_label': 'Familias protegidas de emergencias de salud',
-          'stats.members_label': 'Miembros activos',
-          'stats.distributed_label': 'Distribuido esta semana',
-          'story.title': 'Historia de la Semana',
-          'story.desc': 'Sin ahorros. Sin seguro. Sin problema. HuFi cubrió todo.',
-          'signals.title': '📡 Señales de la Comunidad — Actividad verificada',
-          'evidence.title': '📸 Evidencia de Campo — Historias visuales',
-          'cta.title': 'Comienza hoy tu historia de crédito',
-          'cta.sub': 'Sin bancos. Sin garantías. Solo tu reputación.',
-          'nav.impact': 'Impacto',
-          'nav.story': 'Historia',
-          'nav.signals': 'Señales'
-        }
-      };
-      let currentLang = localStorage.getItem('hufi_lang') || 'en';
-      function applyLanguage(lang) {
-        document.querySelectorAll('[data-i18n]').forEach(el => {
-          const key = el.getAttribute('data-i18n');
-          if (translations[lang] && translations[lang][key]) {
-            if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
-              el.placeholder = translations[lang][key];
-            } else {
-              el.innerText = translations[lang][key];
-            }
+            const credential = await firebase.auth().signInAnonymously();
+            localStorage.setItem('hufi_uid', credential.user.uid);
+          } catch (error) {
+            console.error('Error en auth anónima:', error);
           }
-        });
-        document.getElementById('langSwitch').innerHTML = lang === 'en' ? '🌐 Español' : '🌐 English';
-        currentLang = lang;
-        localStorage.setItem('hufi_lang', lang);
-      }
-      document.getElementById('langSwitch')?.addEventListener('click', () => { applyLanguage(currentLang === 'en' ? 'es' : 'en'); });
-      applyLanguage(currentLang);
-
-      // ========== CTA DINÁMICO (cambia según logged user) ==========
-      function updateDynamicCtas() {
-        const isMember = !!localStorage.getItem('hufi_user');
-        const text = isMember ? 'Continue your credit journey →' : 'Start your credit story today →';
-        document.querySelectorAll('.dynamic-cta').forEach(el => {
-          el.textContent = text;
-        });
-      }
-      updateDynamicCtas();
-
-      // ========== MODALES Y MEMBRESÍA ==========
-      const membershipModal = document.getElementById('membershipModal');
-      const privacyModal = document.getElementById('privacyModal');
-      const termsModal = document.getElementById('termsModal');
-      const chatModal = document.getElementById('chatModal');
-      function sanitizeInput(str) { return str.replace(/[^\w@.-]/g, ''); }
-      document.getElementById('submitMembership')?.addEventListener('click', () => {
-        let telegram = sanitizeInput(document.getElementById('telegramHandle').value);
-        let wallet = sanitizeInput(document.getElementById('walletAddress').value);
-        if (!telegram || !wallet) { alert('Please fill both fields.'); return; }
-        localStorage.setItem('hufi_user', telegram.replace('@',''));
-        alert(`✅ Welcome to HuFi, ${telegram}! Your reputation journey starts.`);
-        membershipModal.classList.remove('active');
-        updateDynamicCtas();
-      });
-      document.getElementById('heroModalBtn')?.addEventListener('click', () => membershipModal.classList.add('active'));
-      document.getElementById('finalCtaBtn')?.addEventListener('click', () => membershipModal.classList.add('active'));
-      document.getElementById('hiddenCta')?.addEventListener('click', () => membershipModal.classList.add('active'));
-      document.getElementById('closeModalBtn')?.addEventListener('click', () => membershipModal.classList.remove('active'));
-      document.getElementById('openPrivacyBtn')?.addEventListener('click', (e) => { e.preventDefault(); privacyModal.classList.add('active'); });
-      document.getElementById('openTermsBtn')?.addEventListener('click', (e) => { e.preventDefault(); termsModal.classList.add('active'); });
-      document.getElementById('closePrivacyBtn')?.addEventListener('click', () => privacyModal.classList.remove('active'));
-      document.getElementById('closeTermsBtn')?.addEventListener('click', () => termsModal.classList.remove('active'));
-      document.getElementById('chatButton')?.addEventListener('click', () => chatModal.classList.add('active'));
-      document.getElementById('closeChatBtn')?.addEventListener('click', () => chatModal.classList.remove('active'));
-
-      // ========== SCROLL TOP Y ENERGÍA ==========
-      const scrollBtn = document.getElementById('scrollTopBtn');
-      window.addEventListener('scroll', () => {
-        scrollBtn.style.opacity = window.scrollY > 400 ? '1' : '0';
-        const winScroll = document.documentElement.scrollTop;
-        const height = document.documentElement.scrollHeight - window.innerHeight;
-        document.getElementById('energy-bar').style.width = (winScroll / height) * 100 + '%';
-      });
-      scrollBtn.addEventListener('click', () => lenis.scrollTo(0));
-    })();
-  </script>
-
-  <!-- INSTRUCCIÓN PARA REGLAS DE FIRESTORE (Copia y pega en la consola de Firebase) -->
-  <!--
-    rules_version = '2';
-    service cloud.firestore {
-      match /databases/{database}/documents {
-        match /posts/{postId} {
-          allow read: if true;
-          allow create: if request.resource.data.keys().hasOnly(['user', 'text', 'likes', 'created']) &&
-                        request.resource.data.text is string &&
-                        request.resource.data.text.size() >= 3 &&
-                        request.resource.data.text.size() <= 280 &&
-                        request.resource.data.likes == 0 &&
-                        request.resource.data.created == request.time;
-          allow update: if request.resource.data.diff(resource.data).affectedKeys().hasOnly(['likes']);
-          allow delete: if false;
         }
+      });
+  
+    } catch(e) { 
+      console.error("Error inicializando Firebase:", e); 
+    }
+  }
+
+  // ========== UTILS ==========
+  const meses = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+  const hoy = new Date();
+  document.getElementById('dateBadge').innerText = `${String(hoy.getDate()).padStart(2,'0')} ${meses[hoy.getMonth()]} ${hoy.getFullYear()}`;
+
+  const lenis = new Lenis({ duration: 1.2, smoothWheel: true });
+  function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+  requestAnimationFrame(raf);
+
+  const bentoCards = document.querySelectorAll('.bento-card');
+  const observerIntersect = new IntersectionObserver((entries) => {
+    entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('visible'); observerIntersect.unobserve(entry.target); } });
+  }, { threshold: 0.1 });
+  bentoCards.forEach(card => observerIntersect.observe(card));
+
+  const lazyImages = document.querySelectorAll('.lazy-img');
+  const imageObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const img = entry.target;
+        img.src = img.dataset.src;
+        img.onload = () => img.classList.add('loaded');
+        imageObserver.unobserve(img);
+      }
+    });
+  }, { rootMargin: '200px' });
+  lazyImages.forEach(img => imageObserver.observe(img));
+
+  // ========== THREE.JS (MEJORADO CON SCROLL INFLUENCE) ==========
+  let scene, camera, renderer, icosa, particles, wireframe;
+  const isMobile = window.innerWidth < 768;
+  if (!isMobile && typeof THREE !== 'undefined') {
+    const container = document.getElementById('canvas-container');
+    scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x000000);
+    camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+    camera.position.set(0, 0, 4.2);
+    renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    container.appendChild(renderer.domElement);
+    const geometry = new THREE.IcosahedronGeometry(1.2, 1);
+    const material = new THREE.MeshStandardMaterial({ color: 0xffaa44, emissive: 0x442200, roughness: 0.25, metalness: 0.9 });
+    icosa = new THREE.Mesh(geometry, material);
+    scene.add(icosa);
+    const edgesGeo = new THREE.EdgesGeometry(geometry);
+    wireframe = new THREE.LineSegments(edgesGeo, new THREE.LineBasicMaterial({ color: 0xffaa66 }));
+    icosa.add(wireframe);
+    const particleCount = 800;
+    const particleGeo = new THREE.BufferGeometry();
+    const particlePositions = new Float32Array(particleCount * 3);
+    for (let i = 0; i < particleCount; i++) {
+      const radius = 1.8 + Math.random() * 0.6;
+      const theta = Math.random() * Math.PI * 2;
+      const phi = Math.acos(2 * Math.random() - 1);
+      particlePositions[i*3] = radius * Math.sin(phi) * Math.cos(theta);
+      particlePositions[i*3+1] = radius * Math.sin(phi) * Math.sin(theta);
+      particlePositions[i*3+2] = radius * Math.cos(phi);
+    }
+    particleGeo.setAttribute('position', new THREE.BufferAttribute(particlePositions, 3));
+    particles = new THREE.Points(particleGeo, new THREE.PointsMaterial({ color: 0xffaa55, size: 0.025, transparent: true, blending: THREE.AdditiveBlending }));
+    scene.add(particles);
+    const ambientLight = new THREE.AmbientLight(0x222222);
+    scene.add(ambientLight);
+    const mainLight = new THREE.PointLight(0xffaa66, 1.2);
+    mainLight.position.set(2, 3, 4);
+    scene.add(mainLight);
+    const fillLight = new THREE.PointLight(0xff8844, 0.6);
+    fillLight.position.set(-2, 1, 3);
+    scene.add(fillLight);
+    const backLight = new THREE.PointLight(0xff6600, 0.5);
+    backLight.position.set(0, 0, -3);
+    scene.add(backLight);
+
+    let targetRotX = 0, targetRotY = 0;
+    let scrollInfluence = 0;
+    window.addEventListener('scroll', () => { scrollInfluence = window.scrollY * 0.0008; });
+    document.addEventListener('mousemove', (e) => {
+      let mouseX = (e.clientX / window.innerWidth) * 2 - 1;
+      let mouseY = (e.clientY / window.innerHeight) * 2 - 1;
+      targetRotY = mouseX * 0.8;
+      targetRotX = mouseY * 0.5;
+    });
+    const originalPositions = geometry.attributes.position.array.slice();
+    let time = 0;
+    function animate3D() {
+      requestAnimationFrame(animate3D);
+      time += 0.016;
+      const positions = icosa.geometry.attributes.position.array;
+      for (let i = 0; i < positions.length / 3; i++) {
+        const ix = i*3, iy = i*3+1, iz = i*3+2;
+        const x = originalPositions[ix];
+        const y = originalPositions[iy];
+        const offsetZ = Math.sin(x * 2.5 + time) * 0.03 + Math.cos(y * 2.0 + time * 1.2) * 0.03;
+        positions[iz] = originalPositions[iz] + offsetZ;
+      }
+      icosa.geometry.attributes.position.needsUpdate = true;
+      if (Math.floor(time * 30) % 30 === 0) {
+        const newEdges = new THREE.EdgesGeometry(icosa.geometry);
+        wireframe.geometry.dispose();
+        wireframe.geometry = newEdges;
+      }
+      icosa.rotation.x += (targetRotX + scrollInfluence - icosa.rotation.x) * 0.08;
+      icosa.rotation.y += (targetRotY + scrollInfluence - icosa.rotation.y) * 0.08;
+      particles.rotation.x = icosa.rotation.x;
+      particles.rotation.y = icosa.rotation.y;
+      particles.rotation.z += 0.003;
+      renderer.render(scene, camera);
+    }
+    animate3D();
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+  } else {
+    const container = document.getElementById('canvas-container');
+    if(container) container.style.display = 'none';
+  }
+
+  // ========== TITULO ANIMADO ==========
+  function splitAndAnimateTitle() {
+    const titleElem = document.getElementById('heroTitle');
+    if (!titleElem) return;
+    const html = titleElem.innerHTML;
+    const temp = document.createElement('div');
+    temp.innerHTML = html;
+    function wrapChars(node) {
+      if (node.nodeType === 3) {
+        const text = node.textContent;
+        if (!text.trim()) return;
+        const span = document.createElement('span');
+        for (let ch of text) { const c = document.createElement('span'); c.className = 'char'; c.textContent = ch; span.appendChild(c); }
+        node.parentNode.replaceChild(span, node);
+      } else if (node.nodeType === 1 && node.tagName !== 'SPAN') {
+        for (let i = 0; i < node.childNodes.length; i++) wrapChars(node.childNodes[i]);
       }
     }
-  -->
+    wrapChars(temp);
+    titleElem.innerHTML = temp.innerHTML;
+    const chars = document.querySelectorAll('#heroTitle .char');
+    gsap.set(chars, { y: 80, opacity: 0, rotationX: -90 });
+    gsap.to(chars, { y: 0, opacity: 1, rotationX: 0, duration: 1.1, stagger: 0.025, ease: "back.out(1.2)" });
+  }
+  splitAndAnimateTitle();
+
+  // ========== STATS COUNTER ==========
+  const statValues = document.querySelectorAll('.stat-value');
+  const statsObserver = new IntersectionObserver((entries) => {
+    if (entries[0].isIntersecting) {
+      statValues.forEach(el => {
+        let target = parseInt(el.getAttribute('data-target'));
+        let current = 0, step = target / 50;
+        let intv = setInterval(() => {
+          current += step;
+          if (current >= target) { current = target; clearInterval(intv); }
+          el.innerText = Math.floor(current) + (el.innerText.includes('%') ? '%' : '');
+        }, 20);
+      });
+      statsObserver.disconnect();
+    }
+  }, { threshold: 0.3 });
+  statsObserver.observe(document.getElementById('impacto'));
+
+  // ========== MASONRY LIKES ==========
+  document.querySelectorAll('.masonry-item .like-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      let countSpan = btn.querySelector('.like-count');
+      let likes = parseInt(btn.getAttribute('data-likes') || '0');
+      likes++;
+      countSpan.innerText = likes;
+      btn.setAttribute('data-likes', likes);
+      canvasConfetti({ particleCount: 40, spread: 55, origin: { y: 0.6 }, colors: ['#FFB938'] });
+    });
+  });
+
+  // ========== FILTROS ==========
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const filter = btn.dataset.filter;
+      document.querySelectorAll('.masonry-item').forEach(item => {
+        if (filter === 'all' || item.dataset.category === filter) item.style.display = 'block';
+        else item.style.display = 'none';
+      });
+    });
+  });
+
+// ========== FEED REAL ==========
+  const feedDiv = document.getElementById('liveFeed');
+  const postInput = document.getElementById('postInput');
+  const postBtn = document.getElementById('postBtn');
+  const currentUserSpan = document.getElementById('currentUserHandle');
+
+  // Funciones de Identidad (El "Cerebro")
+  function getCurrentUser() { return localStorage.getItem('hufi_user') || 'guest'; }
+  function getCurrentUid() { return localStorage.getItem('hufi_uid') || 'anonymous'; }
+
+  // Actualizar la interfaz con el nombre de usuario
+  currentUserSpan.innerText = getCurrentUser();
+
+  function escapeHtml(str) { 
+    return str.replace(/[&<>]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[m])); 
+  }
+
+  function timeAgo(timestamp) {
+    if (!timestamp) return 'now';
+    const mins = Math.floor((Date.now() - timestamp) / 60000);
+    if (mins < 1) return 'just now';
+    if (mins < 60) return mins + 'm ago';
+    const hrs = Math.floor(mins / 60);
+    return hrs < 24 ? hrs + 'h ago' : Math.floor(hrs / 24) + 'd ago';
+  }
+
+  function showToast(message) {
+    const toast = document.createElement('div');
+    toast.className = 'fixed bottom-20 left-1/2 -translate-x-1/2 bg-black/80 border border-gold text-white px-4 py-2 rounded-full text-xs z-50 animate-bounce';
+    toast.innerText = message;
+    document.body.appendChild(toast);
+    setTimeout(() => toast.remove(), 3000);
+  }
+
+  if (firestoreAvailable && db) {
+    const postsRef = db.collection("posts");
+
+    // 1. ESCUCHA REALTIME + RENDERIZADO ANIMADO
+    postsRef.orderBy("created", "desc").limit(10).onSnapshot(snapshot => {
+      feedDiv.innerHTML = '';
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        const postDiv = document.createElement('div');
+        postDiv.className = "feed-card p-3 rounded-xl border border-gold/20 bg-black/40 opacity-0 translate-y-4 transition-all duration-500";
+        
+        const timestampMs = data.created ? data.created.toDate().getTime() : Date.now();
+
+        postDiv.innerHTML = `
+          <div class="flex justify-between text-xs text-gray-400">
+            <span class="font-bold text-gold">@${escapeHtml(data.user || 'anon')}</span>
+            <span class="text-[10px] font-mono">${timeAgo(timestampMs)}</span>
+          </div>
+          <p class="mt-1 text-sm text-gray-200">${escapeHtml(data.text)}</p>
+          <button class="like-btn text-xs mt-2 text-gold flex items-center gap-1 hover:scale-110 transition-transform">
+            ⚡ <span>${data.likes || 0}</span>
+          </button>
+        `;
+
+        // Lógica del botón Like
+        postDiv.querySelector('.like-btn').onclick = async (e) => {
+          e.stopPropagation();
+          try {
+            await postsRef.doc(doc.id).update({ likes: firebase.firestore.FieldValue.increment(1) });
+            if (typeof canvasConfetti === 'function') canvasConfetti({ particleCount: 15, colors: ['#FFB938'] });
+          } catch(err) { console.error(err); }
+        };
+
+        feedDiv.appendChild(postDiv);
+
+        // Revelado progresivo (Observer)
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.remove('opacity-0', 'translate-y-4');
+              observer.unobserve(entry.target);
+            }
+          });
+        });
+        observer.observe(postDiv);
+      });
+    }, error => {
+      console.error(error);
+      feedDiv.innerHTML = '<p class="text-red-400">Error loading ledger.</p>';
+    });
+
+    // 2. ACCIÓN DE PUBLICAR
+    postBtn.onclick = async () => {
+      const text = postInput.value.trim();
+      
+      // Validaciones
+      if (text.length < 3) return alert('Signal too short');
+      if (text.length > 280) return alert('Signal too long');
+      
+      // Cooldown (1 minuto)
+      const lastPost = localStorage.getItem('lastPostTime');
+      if (lastPost && (Date.now() - parseInt(lastPost) < 60000)) {
+        return alert('Wait 1 minute between signals.');
+      }
+
+      const user = getCurrentUser();
+      const uid = getCurrentUid();
+
+      try {
+        await postsRef.add({
+          user: user,
+          userId: uid,
+          text: text,
+          likes: 0,
+          created: firebase.firestore.FieldValue.serverTimestamp()
+        });
+        
+        localStorage.setItem('lastPostTime', Date.now());
+        postInput.value = '';
+        showToast('✅ Signal added to the ledger');
+        
+        if (typeof canvasConfetti === 'function') {
+          canvasConfetti({ particleCount: 50, spread: 60, origin: { y: 0.8 }, colors: ['#FFB938'] });
+        }
+      } catch(err) {
+        console.error(err);
+        alert("Error publishing.");
+      }
+    };
+  } else {
+    feedDiv.innerHTML = '<p class="text-yellow-400 p-4">⚠️ Offline Mode: Connect to Firebase to sync signals.</p>';
+  }
+
+  // ========== COMMAND PALETTE ==========
+  const commandsList = [
+    { name: "📊 Go to Impact", action: "impacto" }, { name: "📖 Go to Stories", action: "historias" },
+    { name: "👥 Go to Community", action: "comunidad" }, { name: "🔗 Open HuFi Protocol", action: "protocolo" },
+    { name: "✨ Join the community", action: "membresia" }, { name: "🔒 Privacy policy", action: "privacidad" },
+    { name: "📜 Terms of use", action: "terminos" }
+  ];
+  const fuse = new Fuse(commandsList, { keys: ['name'], threshold: 0.4 });
+  const cmdPalette = document.getElementById('commandPalette');
+  const cmdInput = document.getElementById('commandInput');
+  const cmdResults = document.getElementById('commandResults');
+  function renderCommands(filtered) {
+    cmdResults.innerHTML = '';
+    filtered.forEach(cmd => { const div = document.createElement('div'); div.className = 'command-item p-2 cursor-pointer hover:bg-gold/20'; div.textContent = cmd.name; div.dataset.action = cmd.action; div.addEventListener('click', () => executeCommand(cmd.action)); cmdResults.appendChild(div); });
+  }
+  function executeCommand(action) {
+    if (action === 'impacto') document.getElementById('impacto').scrollIntoView({ behavior: 'smooth' });
+    else if (action === 'historias') document.getElementById('historias').scrollIntoView({ behavior: 'smooth' });
+    else if (action === 'comunidad') document.getElementById('comunidad').scrollIntoView({ behavior: 'smooth' });
+    else if (action === 'protocolo') window.open('https://hu-fi.io/', '_blank');
+    else if (action === 'membresia') document.getElementById('heroModalBtn').click();
+    else if (action === 'privacidad') document.getElementById('privacyModal').classList.add('active');
+    else if (action === 'terminos') document.getElementById('termsModal').classList.add('active');
+    cmdPalette.classList.remove('active');
+  }
+  cmdInput?.addEventListener('input', (e) => { const results = fuse.search(e.target.value).map(res => res.item); renderCommands(results.length ? results : commandsList); });
+  document.getElementById('commandButton')?.addEventListener('click', () => { cmdPalette.classList.add('active'); cmdInput.focus(); renderCommands(commandsList); });
+  window.addEventListener('keydown', (e) => { if ((e.ctrlKey || e.metaKey) && e.key === 'k') { e.preventDefault(); cmdPalette.classList.add('active'); cmdInput.focus(); renderCommands(commandsList); } if (e.key === 'Escape') cmdPalette.classList.remove('active'); });
+
+  // ========== TRADUCCIONES (MANTENER) ==========
+  const translations = { en: { 'nav.subtitle':'Weekly Community Report','nav.impact':'Impact','nav.stories':'Stories','nav.community':'Community','nav.protocol':'Protocol','hero.badge':'Join the movement','hero.sub':'12,480 people are already building community reputation and access to HuFi tools.','hero.cta':'⚡ Join the community','hero.telegram':'🔐 Join with Telegram','stats.eto':'ETO ECOSYSTEM','stats.nodes':'Verified nodes','stats.autopay':'ACTIVE AUTOPAY','stats.health':'HEALTH COVERAGE','stats.members':'ACTIVE MEMBERS','stats.distributed':'DISTRIBUTED','founder.quote':'Building the future of humanized finance.','stories.title':'Birth in HuFi','stories.case':'REAL CASE #01','stories.caseTitle':'A baby girl born without bank deposits','stories.caseDesc':'All medical care covered by credit + Autopay.','stories.engine':'⚙️ Community engine','stories.engineText':'Peanut oil mill financed with HuFi credit — @Manassehpl','founder.quoteLong':'“Time is our most honest store of value. HuFi gives you tools to build your tomorrow.”','community.title':'📡 Community in action · Visual stories','cta.title':'Access the <span class="text-gold">HuFi Protocol</span>' }, es: { 'nav.subtitle':'Reporte Semanal Comunitario','nav.impact':'Impacto','nav.stories':'Historias','nav.community':'Comunidad','nav.protocol':'Protocolo','hero.badge':'Únete al movimiento','hero.sub':'12.480 personas ya construyen su reputación y acceso a herramientas HuFi.','hero.cta':'⚡ Unirse a la comunidad','hero.telegram':'🔐 Unirse con Telegram','stats.eto':'ECOSISTEMA ETO','stats.nodes':'Nodos verificados','stats.autopay':'AUTOPAY ACTIVO','stats.health':'COBERTURA DE SALUD','stats.members':'MIEMBROS ACTIVOS','stats.distributed':'DISTRIBUIDO','founder.quote':'Construyendo el futuro de las finanzas humanizadas.','stories.title':'Nacimiento en HuFi','stories.case':'CASO REAL #01','stories.caseTitle':'Una niña nace sin depósitos bancarios','stories.caseDesc':'Atención médica cubierta por crédito + Autopay.','stories.engine':'⚙️ Motor comunitario','stories.engineText':'Planta de aceite de maní financiada con crédito HuFi — @Manassehpl','founder.quoteLong':'“El tiempo es nuestra reserva de valor más honesta. HuFi te da herramientas para construir tu mañana.”','community.title':'📡 Comunidad en acción · Historias visuales','cta.title':'Accede al <span class="text-gold">Protocolo HuFi</span>' } };
+  let currentLang = localStorage.getItem('hufi_lang') || 'en';
+  function applyLanguage(lang) {
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.getAttribute('data-i18n');
+      if (translations[lang] && translations[lang][key]) {
+        if (key === 'cta.title') el.innerHTML = translations[lang][key];
+        else el.innerHTML = translations[lang][key];
+      }
+    });
+    document.getElementById('langSwitch').innerHTML = lang === 'en' ? '🌐 Español' : '🌐 English';
+    currentLang = lang;
+    localStorage.setItem('hufi_lang', lang);
+  }
+  document.getElementById('langSwitch')?.addEventListener('click', () => { applyLanguage(currentLang === 'en' ? 'es' : 'en'); });
+  applyLanguage(currentLang);
+
+  // ========== MODAL MEJORADO (RITUAL 2 PASOS) ==========
+  const membershipModal = document.getElementById('membershipModal');
+  const privacyModal = document.getElementById('privacyModal');
+  const termsModal = document.getElementById('termsModal');
+  const chatModal = document.getElementById('chatModal');
+  const requestBtn = document.getElementById('requestCodeBtn');
+  const verificationInput = document.getElementById('verificationCode');
+  const submitBtn = document.getElementById('submitMembership');
+  const tgHandleInput = document.getElementById('telegramHandle');
+  const codeSection = document.getElementById('codeSection');
+  const simulatedCodeSpan = document.getElementById('simulatedCode');
+  let currentSimulatedCode = '';
+  const statusMsg = document.createElement('div');
+  statusMsg.className = 'text-xs text-gold mt-2';
+  document.querySelector('#membershipModal .modal-container').appendChild(statusMsg);
+
+  requestBtn.addEventListener('click', () => {
+    let handle = tgHandleInput.value.trim();
+    if (!handle.startsWith('@') || handle.length < 3) { alert('Valid Telegram handle starting with @ required'); return; }
+    statusMsg.innerText = 'Initializing secure bridge...';
+    setTimeout(() => {
+      currentSimulatedCode = Math.floor(100000 + Math.random() * 900000).toString();
+      simulatedCodeSpan.innerText = currentSimulatedCode;
+      codeSection.style.display = 'block';
+      requestBtn.disabled = true;
+      requestBtn.innerText = 'Code sent (simulated)';
+      statusMsg.innerText = 'Enter the verification code to seal your identity.';
+    }, 800);
+  });
+  verificationInput?.addEventListener('input', () => {
+    if (verificationInput.value === currentSimulatedCode) {
+      submitBtn.disabled = false;
+      submitBtn.classList.remove('bg-gold/50');
+      submitBtn.classList.add('bg-gold');
+      statusMsg.innerText = '✓ Identity verified. Ready to join the ledger.';
+    } else {
+      submitBtn.disabled = true;
+      statusMsg.innerText = 'Code mismatch. Try again.';
+    }
+  });
+  submitBtn.addEventListener('click', async () => {
+    let handle = tgHandleInput.value.trim();
+    let wallet = document.getElementById('walletAddress').value.trim();
+    if (firestoreAvailable && db) {
+      const snapshot = await db.collection('users').where('handle', '==', handle).get();
+      if (!snapshot.empty) { alert('This Telegram handle already registered.'); return; }
+      await db.collection('users').doc(handle).set({ handle: handle, wallet: wallet, verifiedAt: firebase.firestore.FieldValue.serverTimestamp() });
+    }
+    localStorage.setItem('hufi_user', handle.replace('@',''));
+    currentUserSpan.innerText = getCurrentUser();
+    canvasConfetti({ particleCount: 80, spread: 70, origin: { y: 0.6 }, colors: ['#FFB938'] });
+    alert(`✅ Sovereign identity activated: ${handle}. Welcome to the HuFi ledger.`);
+    membershipModal.classList.remove('active');
+  });
+  document.getElementById('heroModalBtn')?.addEventListener('click', () => membershipModal.classList.add('active'));
+  document.getElementById('socialLoginBtn')?.addEventListener('click', () => { tgHandleInput.value = '@'; membershipModal.classList.add('active'); });
+  document.getElementById('closeModalBtn')?.addEventListener('click', () => membershipModal.classList.remove('active'));
+  document.getElementById('openPrivacyBtn')?.addEventListener('click', (e) => { e.preventDefault(); privacyModal.classList.add('active'); });
+  document.getElementById('openTermsBtn')?.addEventListener('click', (e) => { e.preventDefault(); termsModal.classList.add('active'); });
+  document.getElementById('closePrivacyBtn')?.addEventListener('click', () => privacyModal.classList.remove('active'));
+  document.getElementById('closeTermsBtn')?.addEventListener('click', () => termsModal.classList.remove('active'));
+  document.getElementById('chatButton')?.addEventListener('click', () => chatModal.classList.add('active'));
+  document.getElementById('closeChatBtn')?.addEventListener('click', () => chatModal.classList.remove('active'));
+
+  const scrollBtn = document.getElementById('scrollTopBtn');
+  window.addEventListener('scroll', () => {
+    scrollBtn.style.opacity = window.scrollY > 400 ? '1' : '0';
+    const winScroll = document.documentElement.scrollTop;
+    const height = document.documentElement.scrollHeight - window.innerHeight;
+    document.getElementById('energy-bar').style.width = (winScroll / height) * 100 + '%';
+  });
+  scrollBtn.addEventListener('click', () => lenis.scrollTo(0));
+})();
+</script>
 </body>
 </html>
