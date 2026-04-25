@@ -6,6 +6,10 @@
   <title>HuFi Today | Comunidad Viva · Ledger narrativo</title>
   <meta name="description" content="Comunidad HuFi con feed real, likes persistentes y reputación.">
   <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Firebase (orden correcto: app, auth, firestore) -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { background: #000000; color: #ededed; font-family: 'Inter', sans-serif; overflow-x: hidden; }
@@ -45,58 +49,22 @@
     .social-icon:hover { opacity: 1; }
     .icon-insta { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23FFB938'%3E%3Cpath d='M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 11-2.881 0 1.44 1.44 0 012.88 0z'/%3E%3C/svg%3E"); }
     .icon-x { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23FFB938'%3E%3Cpath d='M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z'/%3E%3C/svg%3E"); }
-    /* === MEJORAS PREMIUM === */
-    .feed-card {
-      background: rgba(255, 255, 255, 0.03);
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 185, 56, 0.1);
-      transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-    }
-    .feed-card:hover {
-      border-color: rgba(255, 185, 56, 0.5);
-      box-shadow: 0 0 20px rgba(255, 185, 56, 0.1);
-      transform: translateY(-2px);
-    }
-    .status-pulse {
-      width: 8px;
-      height: 8px;
-      background: #ffb938;
-      border-radius: 50%;
-      box-shadow: 0 0 0 0 rgba(255, 185, 56, 0.7);
-      animation: pulse 2s infinite;
-    }
-    @keyframes pulse {
-      0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(255, 185, 56, 0.7); }
-      70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(255, 185, 56, 0); }
-      100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(255, 185, 56, 0); }
-    }
-    .scan-line {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 2px;
-      background: linear-gradient(90deg, transparent, rgba(255, 185, 56, 0.2), transparent);
-      z-index: 50;
-      pointer-events: none;
-      animation: scan 8s linear infinite;
-    }
-    @keyframes scan {
-      0% { top: -10%; }
-      100% { top: 110%; }
-    }
+    .feed-card { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(10px); border: 1px solid rgba(255, 185, 56, 0.1); transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1); }
+    .feed-card:hover { border-color: rgba(255, 185, 56, 0.5); box-shadow: 0 0 20px rgba(255, 185, 56, 0.1); transform: translateY(-2px); }
+    .status-pulse { width: 8px; height: 8px; background: #ffb938; border-radius: 50%; box-shadow: 0 0 0 0 rgba(255, 185, 56, 0.7); animation: pulse 2s infinite; }
+    @keyframes pulse { 0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(255, 185, 56, 0.7); } 70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(255, 185, 56, 0); } 100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(255, 185, 56, 0); } }
+    .scan-line { position: fixed; top: 0; left: 0; width: 100%; height: 2px; background: linear-gradient(90deg, transparent, rgba(255, 185, 56, 0.2), transparent); z-index: 50; pointer-events: none; animation: scan 8s linear infinite; }
+    @keyframes scan { 0% { top: -10%; } 100% { top: 110%; } }
     .animate-ping-once { animation: ping 0.3s ease-out; }
     @keyframes ping { 0% { transform: scale(1); } 50% { transform: scale(1.3); } 100% { transform: scale(1); } }
   </style>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
   <link href="https://unpkg.com/lenis@1.1.20/dist/lenis.css" rel="stylesheet">
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 </head>
 <body>
-<div class="scan-line"></div>
-<div id="canvas-container"></div>
-<div id="energy-bar"></div>
+  <div class="scan-line"></div>
+  <div id="canvas-container"></div>
+  <div id="energy-bar" class="fixed top-0 left-0 h-1 bg-yellow-500 z-[9999] shadow-[0_0_10px_#FFB938]" style="width: 0%; transition: width 0.2s ease-out;"></div>
 
 <nav class="fixed top-0 w-full z-50 py-2 px-4 md:px-6 nav-blur flex flex-wrap justify-between items-center gap-2">
   <div class="flex items-center gap-2">
@@ -235,9 +203,9 @@
     </div>
   </div>
 </div>
-<div id="privacyModal" class="modal-overlay"><div class="modal-container bg-black/90 border-gold p-6 rounded-2xl"><h2 class="text-xl font-black text-gold mb-2">Privacy Policy</h2><div class="text-xs text-gray-300 space-y-2"><p>We only store your Telegram username and wallet. No sharing with third parties.</p></div><button id="closePrivacyBtn" class="mt-4 btn-outline w-full py-1">Close</button></div></div>
-<div id="termsModal" class="modal-overlay"><div class="modal-container bg-black/90 border-gold p-6 rounded-2xl"><h2 class="text-xl font-black text-gold mb-2">Terms of Use</h2><div class="text-xs text-gray-300"><p>By using this site you agree to community guidelines. HuFi Credit does not constitute a legal financial obligation.</p></div><button id="closeTermsBtn" class="mt-4 btn-outline w-full py-1">Close</button></div></div>
-<div id="chatModal" class="modal-overlay"><div class="modal-container max-w-sm bg-black/90 border-gold p-6 rounded-2xl"><h3 class="text-gold font-black mb-2">Live chat</h3><p class="text-xs text-gray-300 mb-4">Connect with the HuFi community on Telegram.</p><a href="https://t.me/Hu_Fi_Nigeria" target="_blank" class="btn-gold block text-center text-xs">Open official group →</a><button id="closeChatBtn" class="mt-3 text-[10px] text-gray-400 underline w-full">Close</button></div></div>
+<div id="privacyModal" class="modal-overlay"><div class="modal-container bg-black/90 border-gold p-6 rounded-2xl"><h3 class="text-gold">Privacy Policy</h3><p class="text-xs mt-2">We respect your data. No personal information is sold.</p><button id="closePrivacyBtn" class="mt-4 border px-3 py-1 rounded-full text-xs">Close</button></div></div>
+<div id="termsModal" class="modal-overlay"><div class="modal-container bg-black/90 border-gold p-6 rounded-2xl"><h3 class="text-gold">Terms of Use</h3><p class="text-xs mt-2">By using HuFi you agree to community guidelines.</p><button id="closeTermsBtn" class="mt-4 border px-3 py-1 rounded-full text-xs">Close</button></div></div>
+<div id="chatModal" class="modal-overlay"><div class="modal-container bg-black/90 border-gold p-6 rounded-2xl"><h3 class="text-gold">Community Chat</h3><p class="text-xs">Join our Telegram for live support.</p><a href="https://t.me/Hu_Fi_Nigeria" class="btn-gold inline-block mt-3 text-xs">Open Telegram</a><button id="closeChatBtn" class="mt-4 border px-3 py-1 rounded-full text-xs">Close</button></div></div>
 <div class="chat-widget"><div id="chatButton" class="chat-button">💬</div></div>
 <div class="scroll-top" id="scrollTopBtn">↑</div>
 
@@ -246,10 +214,9 @@
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@7.0.0"></script>
 <script src="https://unpkg.com/lenis@1.1.20/dist/lenis.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-
 <script>
 (function() {
-// ========== FIREBASE CONFIG ==========
+  // Configuración de Firebase (ya cargado en head)
   const firebaseConfig = {
     apiKey: "AIzaSyCqJszJQqt6xsKOmCnpvoS_fiObmdkeNyM",
     authDomain: "hufitoday-f69b4.firebaseapp.com",
@@ -263,37 +230,36 @@
   let db;
   let firestoreAvailable = false;
 
-  if (typeof firebase !== 'undefined') {
-    try {
+  try {
+    if (typeof firebase !== 'undefined') {
       const app = firebase.initializeApp(firebaseConfig);
       db = firebase.firestore(app);
       firestoreAvailable = true;
       console.log("Firebase ready");
 
-      // Gestión de Autenticación Anónima
+      // Autenticación anónima
       firebase.auth().onAuthStateChanged(async (user) => {
         if (user) {
-          console.log('Anonymous UID:', user.uid);
           localStorage.setItem('hufi_uid', user.uid);
         } else {
           try {
             const credential = await firebase.auth().signInAnonymously();
             localStorage.setItem('hufi_uid', credential.user.uid);
           } catch (error) {
-            console.error('Error en auth anónima:', error);
+            console.error("Error en auth anónima:", error);
           }
         }
       });
-  
-    } catch(e) { 
-      console.error("Error inicializando Firebase:", e); 
     }
+  } catch(e) {
+    console.error("Error inicializando Firebase:", e);
   }
 
   // ========== UTILS ==========
   const meses = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
   const hoy = new Date();
-  document.getElementById('dateBadge').innerText = `${String(hoy.getDate()).padStart(2,'0')} ${meses[hoy.getMonth()]} ${hoy.getFullYear()}`;
+  const dateBadge = document.getElementById('dateBadge');
+  if (dateBadge) dateBadge.innerText = `${String(hoy.getDate()).padStart(2,'0')} ${meses[hoy.getMonth()]} ${hoy.getFullYear()}`;
 
   const lenis = new Lenis({ duration: 1.2, smoothWheel: true });
   function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
@@ -318,7 +284,7 @@
   }, { rootMargin: '200px' });
   lazyImages.forEach(img => imageObserver.observe(img));
 
-  // ========== THREE.JS (MEJORADO CON SCROLL INFLUENCE) ==========
+  // ========== THREE.JS (Fondo 3D) ==========
   let scene, camera, renderer, icosa, particles, wireframe;
   const isMobile = window.innerWidth < 768;
   if (!isMobile && typeof THREE !== 'undefined') {
@@ -462,7 +428,7 @@
       likes++;
       countSpan.innerText = likes;
       btn.setAttribute('data-likes', likes);
-      canvasConfetti({ particleCount: 40, spread: 55, origin: { y: 0.6 }, colors: ['#FFB938'] });
+      if (typeof canvasConfetti === 'function') canvasConfetti({ particleCount: 40, spread: 55, origin: { y: 0.6 }, colors: ['#FFB938'] });
     });
   });
 
@@ -479,17 +445,15 @@
     });
   });
 
-// ========== FEED REAL ==========
+  // ========== FEED REAL (LEDGER) ==========
   const feedDiv = document.getElementById('liveFeed');
   const postInput = document.getElementById('postInput');
   const postBtn = document.getElementById('postBtn');
   const currentUserSpan = document.getElementById('currentUserHandle');
 
-  // Funciones de Identidad (El "Cerebro")
   function getCurrentUser() { return localStorage.getItem('hufi_user') || 'guest'; }
   function getCurrentUid() { return localStorage.getItem('hufi_uid') || 'anonymous'; }
 
-  // Actualizar la interfaz con el nombre de usuario
   currentUserSpan.innerText = getCurrentUser();
 
   function escapeHtml(str) { 
@@ -515,17 +479,13 @@
 
   if (firestoreAvailable && db) {
     const postsRef = db.collection("posts");
-
-    // 1. ESCUCHA REALTIME + RENDERIZADO ANIMADO
     postsRef.orderBy("created", "desc").limit(10).onSnapshot(snapshot => {
       feedDiv.innerHTML = '';
       snapshot.forEach(doc => {
         const data = doc.data();
         const postDiv = document.createElement('div');
         postDiv.className = "feed-card p-3 rounded-xl border border-gold/20 bg-black/40 opacity-0 translate-y-4 transition-all duration-500";
-        
         const timestampMs = data.created ? data.created.toDate().getTime() : Date.now();
-
         postDiv.innerHTML = `
           <div class="flex justify-between text-xs text-gray-400">
             <span class="font-bold text-gold">@${escapeHtml(data.user || 'anon')}</span>
@@ -536,8 +496,6 @@
             ⚡ <span>${data.likes || 0}</span>
           </button>
         `;
-
-        // Lógica del botón Like
         postDiv.querySelector('.like-btn').onclick = async (e) => {
           e.stopPropagation();
           try {
@@ -545,10 +503,7 @@
             if (typeof canvasConfetti === 'function') canvasConfetti({ particleCount: 15, colors: ['#FFB938'] });
           } catch(err) { console.error(err); }
         };
-
         feedDiv.appendChild(postDiv);
-
-        // Revelado progresivo (Observer)
         const observer = new IntersectionObserver((entries) => {
           entries.forEach(entry => {
             if (entry.isIntersecting) {
@@ -564,23 +519,16 @@
       feedDiv.innerHTML = '<p class="text-red-400">Error loading ledger.</p>';
     });
 
-    // 2. ACCIÓN DE PUBLICAR
     postBtn.onclick = async () => {
       const text = postInput.value.trim();
-      
-      // Validaciones
       if (text.length < 3) return alert('Signal too short');
       if (text.length > 280) return alert('Signal too long');
-      
-      // Cooldown (1 minuto)
       const lastPost = localStorage.getItem('lastPostTime');
       if (lastPost && (Date.now() - parseInt(lastPost) < 60000)) {
         return alert('Wait 1 minute between signals.');
       }
-
       const user = getCurrentUser();
       const uid = getCurrentUid();
-
       try {
         await postsRef.add({
           user: user,
@@ -589,11 +537,9 @@
           likes: 0,
           created: firebase.firestore.FieldValue.serverTimestamp()
         });
-        
         localStorage.setItem('lastPostTime', Date.now());
         postInput.value = '';
         showToast('✅ Signal added to the ledger');
-        
         if (typeof canvasConfetti === 'function') {
           canvasConfetti({ particleCount: 50, spread: 60, origin: { y: 0.8 }, colors: ['#FFB938'] });
         }
@@ -603,7 +549,7 @@
       }
     };
   } else {
-    feedDiv.innerHTML = '<p class="text-yellow-400 p-4">⚠️ Offline Mode: Connect to Firebase to sync signals.</p>';
+    if (feedDiv) feedDiv.innerHTML = '<p class="text-yellow-400 p-4">⚠️ Offline Mode: Connect to Firebase to sync signals.</p>';
   }
 
   // ========== COMMAND PALETTE ==========
@@ -631,11 +577,13 @@
     else if (action === 'terminos') document.getElementById('termsModal').classList.add('active');
     cmdPalette.classList.remove('active');
   }
-  cmdInput?.addEventListener('input', (e) => { const results = fuse.search(e.target.value).map(res => res.item); renderCommands(results.length ? results : commandsList); });
-  document.getElementById('commandButton')?.addEventListener('click', () => { cmdPalette.classList.add('active'); cmdInput.focus(); renderCommands(commandsList); });
-  window.addEventListener('keydown', (e) => { if ((e.ctrlKey || e.metaKey) && e.key === 'k') { e.preventDefault(); cmdPalette.classList.add('active'); cmdInput.focus(); renderCommands(commandsList); } if (e.key === 'Escape') cmdPalette.classList.remove('active'); });
+  if (cmdInput) {
+    cmdInput.addEventListener('input', (e) => { const results = fuse.search(e.target.value).map(res => res.item); renderCommands(results.length ? results : commandsList); });
+  }
+  document.getElementById('commandButton')?.addEventListener('click', () => { cmdPalette.classList.add('active'); if(cmdInput) cmdInput.focus(); renderCommands(commandsList); });
+  window.addEventListener('keydown', (e) => { if ((e.ctrlKey || e.metaKey) && e.key === 'k') { e.preventDefault(); cmdPalette.classList.add('active'); if(cmdInput) cmdInput.focus(); renderCommands(commandsList); } if (e.key === 'Escape') cmdPalette.classList.remove('active'); });
 
-  // ========== TRADUCCIONES (MANTENER) ==========
+  // ========== TRADUCCIONES ==========
   const translations = { en: { 'nav.subtitle':'Weekly Community Report','nav.impact':'Impact','nav.stories':'Stories','nav.community':'Community','nav.protocol':'Protocol','hero.badge':'Join the movement','hero.sub':'12,480 people are already building community reputation and access to HuFi tools.','hero.cta':'⚡ Join the community','hero.telegram':'🔐 Join with Telegram','stats.eto':'ETO ECOSYSTEM','stats.nodes':'Verified nodes','stats.autopay':'ACTIVE AUTOPAY','stats.health':'HEALTH COVERAGE','stats.members':'ACTIVE MEMBERS','stats.distributed':'DISTRIBUTED','founder.quote':'Building the future of humanized finance.','stories.title':'Birth in HuFi','stories.case':'REAL CASE #01','stories.caseTitle':'A baby girl born without bank deposits','stories.caseDesc':'All medical care covered by credit + Autopay.','stories.engine':'⚙️ Community engine','stories.engineText':'Peanut oil mill financed with HuFi credit — @Manassehpl','founder.quoteLong':'“Time is our most honest store of value. HuFi gives you tools to build your tomorrow.”','community.title':'📡 Community in action · Visual stories','cta.title':'Access the <span class="text-gold">HuFi Protocol</span>' }, es: { 'nav.subtitle':'Reporte Semanal Comunitario','nav.impact':'Impacto','nav.stories':'Historias','nav.community':'Comunidad','nav.protocol':'Protocolo','hero.badge':'Únete al movimiento','hero.sub':'12.480 personas ya construyen su reputación y acceso a herramientas HuFi.','hero.cta':'⚡ Unirse a la comunidad','hero.telegram':'🔐 Unirse con Telegram','stats.eto':'ECOSISTEMA ETO','stats.nodes':'Nodos verificados','stats.autopay':'AUTOPAY ACTIVO','stats.health':'COBERTURA DE SALUD','stats.members':'MIEMBROS ACTIVOS','stats.distributed':'DISTRIBUIDO','founder.quote':'Construyendo el futuro de las finanzas humanizadas.','stories.title':'Nacimiento en HuFi','stories.case':'CASO REAL #01','stories.caseTitle':'Una niña nace sin depósitos bancarios','stories.caseDesc':'Atención médica cubierta por crédito + Autopay.','stories.engine':'⚙️ Motor comunitario','stories.engineText':'Planta de aceite de maní financiada con crédito HuFi — @Manassehpl','founder.quoteLong':'“El tiempo es nuestra reserva de valor más honesta. HuFi te da herramientas para construir tu mañana.”','community.title':'📡 Comunidad en acción · Historias visuales','cta.title':'Accede al <span class="text-gold">Protocolo HuFi</span>' } };
   let currentLang = localStorage.getItem('hufi_lang') || 'en';
   function applyLanguage(lang) {
@@ -646,7 +594,8 @@
         else el.innerHTML = translations[lang][key];
       }
     });
-    document.getElementById('langSwitch').innerHTML = lang === 'en' ? '🌐 Español' : '🌐 English';
+    const langSwitch = document.getElementById('langSwitch');
+    if (langSwitch) langSwitch.innerHTML = lang === 'en' ? '🌐 Español' : '🌐 English';
     currentLang = lang;
     localStorage.setItem('hufi_lang', lang);
   }
@@ -658,57 +607,102 @@
   const privacyModal = document.getElementById('privacyModal');
   const termsModal = document.getElementById('termsModal');
   const chatModal = document.getElementById('chatModal');
+
   const requestBtn = document.getElementById('requestCodeBtn');
-  const verificationInput = document.getElementById('verificationCode');
   const submitBtn = document.getElementById('submitMembership');
   const tgHandleInput = document.getElementById('telegramHandle');
+  const verificationInput = document.getElementById('verificationCode');
   const codeSection = document.getElementById('codeSection');
   const simulatedCodeSpan = document.getElementById('simulatedCode');
+
   let currentSimulatedCode = '';
   const statusMsg = document.createElement('div');
   statusMsg.className = 'text-xs text-gold mt-2';
-  document.querySelector('#membershipModal .modal-container').appendChild(statusMsg);
+  const modalContainer = document.querySelector('#membershipModal .modal-container');
+  if (modalContainer) modalContainer.appendChild(statusMsg);
 
-  requestBtn.addEventListener('click', () => {
-    let handle = tgHandleInput.value.trim();
-    if (!handle.startsWith('@') || handle.length < 3) { alert('Valid Telegram handle starting with @ required'); return; }
-    statusMsg.innerText = 'Initializing secure bridge...';
-    setTimeout(() => {
-      currentSimulatedCode = Math.floor(100000 + Math.random() * 900000).toString();
-      simulatedCodeSpan.innerText = currentSimulatedCode;
-      codeSection.style.display = 'block';
-      requestBtn.disabled = true;
-      requestBtn.innerText = 'Code sent (simulated)';
-      statusMsg.innerText = 'Enter the verification code to seal your identity.';
-    }, 800);
-  });
-  verificationInput?.addEventListener('input', () => {
-    if (verificationInput.value === currentSimulatedCode) {
-      submitBtn.disabled = false;
-      submitBtn.classList.remove('bg-gold/50');
-      submitBtn.classList.add('bg-gold');
-      statusMsg.innerText = '✓ Identity verified. Ready to join the ledger.';
-    } else {
-      submitBtn.disabled = true;
-      statusMsg.innerText = 'Code mismatch. Try again.';
-    }
-  });
-  submitBtn.addEventListener('click', async () => {
-    let handle = tgHandleInput.value.trim();
-    let wallet = document.getElementById('walletAddress').value.trim();
-    if (firestoreAvailable && db) {
-      const snapshot = await db.collection('users').where('handle', '==', handle).get();
-      if (!snapshot.empty) { alert('This Telegram handle already registered.'); return; }
-      await db.collection('users').doc(handle).set({ handle: handle, wallet: wallet, verifiedAt: firebase.firestore.FieldValue.serverTimestamp() });
-    }
-    localStorage.setItem('hufi_user', handle.replace('@',''));
-    currentUserSpan.innerText = getCurrentUser();
-    canvasConfetti({ particleCount: 80, spread: 70, origin: { y: 0.6 }, colors: ['#FFB938'] });
-    alert(`✅ Sovereign identity activated: ${handle}. Welcome to the HuFi ledger.`);
-    membershipModal.classList.remove('active');
-  });
+  if (requestBtn) {
+    requestBtn.addEventListener('click', () => {
+      let handle = tgHandleInput.value.trim();
+      if (!handle.startsWith('@') || handle.length < 3) { 
+        alert('Valid Telegram handle starting with @ required'); 
+        return; 
+      }
+      statusMsg.innerText = 'Initializing secure bridge...';
+      setTimeout(() => {
+        currentSimulatedCode = Math.floor(100000 + Math.random() * 900000).toString();
+        if (simulatedCodeSpan) simulatedCodeSpan.innerText = currentSimulatedCode;
+        if (codeSection) codeSection.style.display = 'block';
+        requestBtn.disabled = true;
+        requestBtn.innerText = 'Code sent (simulated)';
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.classList.remove('bg-gold/50');
+          submitBtn.classList.add('bg-gold');
+        }
+        statusMsg.innerText = 'Enter the verification code to seal your identity.';
+      }, 800);
+    });
+  }
+
+  if (verificationInput) {
+    verificationInput.addEventListener('input', () => {
+      if (verificationInput.value === currentSimulatedCode) {
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.classList.remove('bg-gold/50');
+          submitBtn.classList.add('bg-gold');
+        }
+        statusMsg.innerText = '✓ Identity verified. Ready to join the ledger.';
+      } else {
+        if (submitBtn) submitBtn.disabled = true;
+        statusMsg.innerText = 'Code mismatch. Try again.';
+      }
+    });
+  }
+
+  if (submitBtn) {
+    submitBtn.addEventListener('click', async () => {
+      let handle = tgHandleInput.value.trim();
+      let wallet = document.getElementById('walletAddress').value.trim();
+      if (handle.length < 3) { alert('Handle too short.'); return; }
+
+      if (firestoreAvailable && db) {
+        try {
+          const snapshot = await db.collection('users').where('handle', '==', handle).get();
+          if (!snapshot.empty) { 
+            alert('This Telegram handle is already registered.'); 
+            return; 
+          }
+          await db.collection('users').doc(handle).set({ 
+            handle: handle, 
+            wallet: wallet, 
+            verifiedAt: firebase.firestore.FieldValue.serverTimestamp() 
+          });
+          localStorage.setItem('hufi_user', handle.replace('@',''));
+          if (currentUserSpan) currentUserSpan.innerText = handle.replace('@','');
+          if (typeof canvasConfetti === 'function') {
+            canvasConfetti({ particleCount: 80, spread: 70, origin: { y: 0.6 }, colors: ['#FFB938'] });
+          }
+          alert(`✅ Sovereign identity activated: ${handle}. Welcome to the HuFi ledger.`);
+          membershipModal.classList.remove('active');
+        } catch (error) {
+          console.error("Error en el registro:", error);
+          alert("Error connecting to the ledger. Try again.");
+        }
+      } else {
+        // Fallback sin Firebase: solo guardar localmente
+        localStorage.setItem('hufi_user', handle.replace('@',''));
+        if (currentUserSpan) currentUserSpan.innerText = handle.replace('@','');
+        alert(`✅ Sovereign identity activated (local mode): ${handle}.`);
+        membershipModal.classList.remove('active');
+      }
+    });
+  }
+
+  // Botones de modales
   document.getElementById('heroModalBtn')?.addEventListener('click', () => membershipModal.classList.add('active'));
-  document.getElementById('socialLoginBtn')?.addEventListener('click', () => { tgHandleInput.value = '@'; membershipModal.classList.add('active'); });
+  document.getElementById('socialLoginBtn')?.addEventListener('click', () => { if(tgHandleInput) tgHandleInput.value = '@'; membershipModal.classList.add('active'); });
   document.getElementById('closeModalBtn')?.addEventListener('click', () => membershipModal.classList.remove('active'));
   document.getElementById('openPrivacyBtn')?.addEventListener('click', (e) => { e.preventDefault(); privacyModal.classList.add('active'); });
   document.getElementById('openTermsBtn')?.addEventListener('click', (e) => { e.preventDefault(); termsModal.classList.add('active'); });
@@ -717,14 +711,16 @@
   document.getElementById('chatButton')?.addEventListener('click', () => chatModal.classList.add('active'));
   document.getElementById('closeChatBtn')?.addEventListener('click', () => chatModal.classList.remove('active'));
 
+  // Scroll y barra de energía
   const scrollBtn = document.getElementById('scrollTopBtn');
   window.addEventListener('scroll', () => {
-    scrollBtn.style.opacity = window.scrollY > 400 ? '1' : '0';
+    if (scrollBtn) scrollBtn.style.opacity = window.scrollY > 400 ? '1' : '0';
     const winScroll = document.documentElement.scrollTop;
     const height = document.documentElement.scrollHeight - window.innerHeight;
-    document.getElementById('energy-bar').style.width = (winScroll / height) * 100 + '%';
+    const energyBar = document.getElementById('energy-bar');
+    if (energyBar) energyBar.style.width = (winScroll / height) * 100 + '%';
   });
-  scrollBtn.addEventListener('click', () => lenis.scrollTo(0));
+  if (scrollBtn) scrollBtn.addEventListener('click', () => lenis.scrollTo(0));
 })();
 </script>
 </body>
